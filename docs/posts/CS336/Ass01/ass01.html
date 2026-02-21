@@ -410,8 +410,9 @@ window.Quarto = {
       <img src="../../.././style/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
       <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/sta210-s22" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
-    <a href="https://sta210-s22.github.io/website/" title="Course website" class="quarto-navigation-tool px-1" aria-label="Course website"><i class="bi bi-website"></i></a>
+    <a href="https://github.com/YYZhang2025" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/zhang-yuyang/" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+    <a href="https://yyzhang2025.github.io/posts/Blogs/blogs_index.html" title="Personal Blogs" class="quarto-navigation-tool px-1" aria-label="Personal Blogs"><i class="bi bi-globe"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div>
@@ -434,7 +435,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/CS336/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Course Overview</span></a>
+ <span class="menu-text">About this course</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -555,7 +556,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
- <span class="menu-text">📚 DLFaC</span></a>
+ <span class="menu-text">📚 Deep Learning Foundation &amp; Concepts</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -564,7 +565,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/DLFaC/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DLFaC Notes</span></a>
+ <span class="menu-text">About this book</span></a>
   </div>
 </li>
       </ul>
@@ -782,7 +783,7 @@ window.Quarto = {
 <li><strong>Repeat</strong>: 重复步骤2,3，直到达到预定的合并次数</li>
 </ol>
 <p>BPE 的伪代码如下所示：</p>
-<div id="algo-bpe" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-no-end="false" data-comment-delimiter="#" data-line-number="true" data-line-number-punc=":" data-pseudocode-number="1">
+<div id="algo-bpe" class="pseudocode-container quarto-float" data-line-number-punc=":" data-comment-delimiter="#" data-caption-prefix="Algorithm" data-pseudocode-number="1" data-line-number="true" data-no-end="false" data-indent-size="1.2em">
 <div class="pseudocode">
 \begin{algorithm} \caption{BPE Training} \begin{algorithmic} \Require Corpus text $\mathcal{D}$ \Require Number of merges $M$ \Require Special tokens $\mathcal{S}$ (e.g., \texttt{&lt;|endoftext|&gt;}) \Ensure Vocabulary $V$, merge rules list $\Pi$ \State Convert each document $x \in \mathcal{D}$ into bytes $b(x)$ \State Initialize tokenized corpus as sequences of single-byte tokens \State $V \gets \{0,1,\dots,255\} \cup \mathcal{S}$ \State $\Pi \gets [\,]$ \For{$t = 1$ \textbf{to} $M$} \State $C \gets$ empty map from pair $\to$ count \For{\textbf{each} token sequence $s$ in the corpus} \Comment{Count adjacent byte-token pairs} \For{\textbf{each} index $i$ from $1$ to $|s|-1$} \State $C[(s_i, s_{i+1})] \gets C[(s_i, s_{i+1})] + 1$ \EndFor \EndFor \State Choose $(a,b)$ with the largest count in $C$ \Comment{Select the most frequent pair} \State Define a new token $new$ as the merge of $(a,b)$ \State $V \gets V \cup \{new\}$ \Comment{Create a new merged token and record the merge rule} \State Append $(a,b)\rightarrow new$ to $\Pi$ \For{\textbf{each} token sequence $s$ in the corpus} \Comment{Replace all occurrences of $(a,b)$ in the corpus} \State Replace adjacent $(a,b)$ with $new$ left-to-right (non-overlapping) \EndFor \EndFor \State \Return $V, \Pi$ \end{algorithmic} \end{algorithm}
 </div>

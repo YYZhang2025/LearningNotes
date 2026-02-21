@@ -65,6 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../../posts/DLFaC/index.html" rel="next">
+<link href="../../../posts/CS336/Ass02/ass02.html" rel="prev">
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
@@ -76,9 +78,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-c61ca1b0a9f27cb683675ea1929ac2e3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-c0eab5a31fbea23c8affb95fb4fbb9c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-c61ca1b0a9f27cb683675ea1929ac2e3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-54ea7a8788961299870a163422834ed2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.css" rel="stylesheet">
 <script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
@@ -370,7 +372,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Assignment 05: LLM Alignment: SFT, Expert Iteration, GRPO &amp; DPO</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/CS336/index.html">🎓 Stanford CS336: LLM from Scratch</a></li><li class="breadcrumb-item"><a href="../../../posts/CS336/Ass05/ass05.html">Assignment 05: SFT &amp; GRPO</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -385,10 +387,12 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header">
       <a href="../../../index.html" class="sidebar-logo-link">
-      <img src="../../../logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <img src="../../.././style/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
-      <div class="sidebar-tools-main">
-    <a href="https://github.com/sta210-s22" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
+      <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/YYZhang2025" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/zhang-yuyang/" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+    <a href="https://yyzhang2025.github.io/posts/Blogs/blogs_index.html" title="Personal Blogs" class="quarto-navigation-tool px-1" aria-label="Personal Blogs"><i class="bi bi-globe"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div>
@@ -399,10 +403,16 @@ window.Quarto = {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
- <span class="menu-text">Stanford CS336: LLM from Scratch</span></a>
+ <span class="menu-text">📝 100 AI Papers with Code</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -410,8 +420,37 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../../posts/100-AI-Papers/100_Papers_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About this series</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/100-AI-Papers/01-transformer/Transformer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Transformer</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vision Transformer</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">🎓 Stanford CS336: LLM from Scratch</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../../posts/CS336/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Course Overview</span></a>
+ <span class="menu-text">About this course</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -486,27 +525,39 @@ window.Quarto = {
  <span class="menu-text">Lecture 16 &amp; 17: LLM Alignment SFT &amp; RLVR(GRPO)</span></a>
   </div>
 </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">100 AI Papers</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../posts/100-AI-Papers/01-transformer/Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Transformer</span></a>
+  <a href="../../../posts/CS336/Ass01/ass01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment 01: BPE Tokenizer &amp; Transformer LM</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Vision Transformer</span></a>
+  <a href="../../../posts/CS336/Ass02/ass02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment 02: Flash Attention &amp; Parallelism</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/CS336/Ass05/ass05.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Assignment 05: SFT &amp; GRPO</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">📖 Deep Learning Foundation &amp; Concepts</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About this book</span></a>
   </div>
 </li>
       </ul>
@@ -562,7 +613,7 @@ window.Quarto = {
 <main class="content page-columns page-full" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/CS336/index.html">🎓 Stanford CS336: LLM from Scratch</a></li><li class="breadcrumb-item"><a href="../../../posts/CS336/Ass05/ass05.html">Assignment 05: SFT &amp; GRPO</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Assignment 05: LLM Alignment: SFT, Expert Iteration, GRPO &amp; DPO</h1>
 </div>
@@ -860,7 +911,7 @@ Table&nbsp;1: Qwen2.5-Math-1.5B Zero-Shot Evaluation Results on MATH and GSM8K D
 </ol>
 <p>在 PPO/GRPO 里经常会担心 reward hacking、模式坍塌、输出退化。 SFT 提供一个强先验：即使 RL 更新过猛，KL/参考模型通常也把它拉回 SFT 附近，让训练更稳。</p>
 <p>SFT的算法如下</p>
-<div id="algo-sft" class="pseudocode-container quarto-float" data-no-end="false" data-comment-delimiter="#" data-caption-prefix="Algorithm" data-line-number-punc=":" data-pseudocode-number="1" data-line-number="true" data-indent-size="1.2em">
+<div id="algo-sft" class="pseudocode-container quarto-float" data-indent-size="1.2em" data-line-number-punc=":" data-caption-prefix="Algorithm" data-line-number="true" data-pseudocode-number="1" data-comment-delimiter="#" data-no-end="false">
 <div class="pseudocode">
 \begin{algorithm} \caption{Supervised Fine-Tuning (SFT)} \begin{algorithmic} \Require Initial policy model $\pi_{\theta_{\text{init}}}$ \Require SFT dataset $\mathcal{D}$ (prompt–response pairs) \Require Number of SFT steps $n_{\text{sft\_steps}}$ \Require Learning rate $\alpha$ \State $\pi_{\theta} \gets \pi_{\theta_{\text{init}}}$ \For{$\text{step} = 1$ \textbf{to} $n_{\text{sft\_steps}}$} \State Sample a minibatch $\mathcal{D}_b = \{(x_j, y_j)\}_{j=1}^{B}$ from $\mathcal{D}$ \Comment{$x$: prompt/question, $y$: target response} \State $\mathcal{L}_{\text{CE}}(\theta) \gets -\mathbb{E}_{(x,y)\sim \mathcal{D}_b}\left[\sum_{t=1}^{|y|}\log \pi_{\theta}(y_t \mid x, y_{&lt;t})\right]$ \Comment{Teacher-forcing cross-entropy / NLL} \State $\theta \gets \theta - \alpha \nabla_{\theta}\mathcal{L}_{\text{CE}}(\theta)$ \EndFor \State \Return $\pi_{\theta}$ \end{algorithmic} \end{algorithm}
 </div>
@@ -1202,7 +1253,7 @@ Figure&nbsp;1: Result of SFT on Qwen2.5-Math-1.5B
 </section>
 <section id="expert-iteration" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Expert Iteration</h1>
-<div id="algo-ei" class="pseudocode-container quarto-float" data-no-end="false" data-comment-delimiter="#" data-caption-prefix="Algorithm" data-line-number-punc=":" data-pseudocode-number="2" data-line-number="true" data-indent-size="1.2em">
+<div id="algo-ei" class="pseudocode-container quarto-float" data-indent-size="1.2em" data-line-number-punc=":" data-caption-prefix="Algorithm" data-line-number="true" data-pseudocode-number="2" data-comment-delimiter="#" data-no-end="false">
 <div class="pseudocode">
 \begin{algorithm} \caption{Expert Iteration (EI)} \begin{algorithmic} \Require Initial policy model $\pi_{\theta_{\text{init}}}$ \Require Reward function $R(q, o)$ \Require Task question set $\mathcal{D}$ \Require Number of EI steps $n_{\text{ei\_steps}}$ \Require Number of samples per prompt $G$ \State $\pi_{\theta} \gets \pi_{\theta_{\text{init}}}$ \For{$\text{step} = 1$ \textbf{to} $n_{\text{ei\_steps}}$} \State Sample a batch of questions $\mathcal{D}_b \subset \mathcal{D}$ \State $\pi_{\theta_{\text{old}}} \gets \pi_{\theta}$ \Comment{freeze current policy as expert} \For{\textbf{each} question $q \in \mathcal{D}_b$} \State Sample $G$ candidate outputs $\{o^{(i)}\}_{i=1}^G \sim \pi_{\theta_{\text{old}}}(\cdot \mid q)$ \State Compute rewards $\{r^{(i)}\}_{i=1}^G$, where $r^{(i)} = R(q, o^{(i)})$ \EndFor \State $\mathcal{D}_{\text{sft}} \gets \{(q, o^{(i)}) \mid r^{(i)} &gt; 0\}$ \Comment{keep only correct / high-reward samples} \State $\pi_{\theta} \gets \text{SFT}(\pi_{\theta}, \mathcal{D}_{\text{sft}})$ \Comment{Algorithm 1: supervised fine-tuning on filtered data} \EndFor \State \Return $\pi_{\theta}$ \end{algorithmic} \end{algorithm}
 </div>
@@ -1306,7 +1357,7 @@ Figure&nbsp;2: Result of EI on Qwen2.5-Math-1.5B on MATH and GSM8K Datasets
 <section id="grpo" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> GRPO</h1>
 <p>经过前两轮的热身，终于到了我们本次Assignment的重头戏：GRPO。 GRPO的算法如下：</p>
-<div id="algo-grpo" class="pseudocode-container quarto-float" data-no-end="false" data-comment-delimiter="#" data-caption-prefix="Algorithm" data-line-number-punc=":" data-pseudocode-number="3" data-line-number="true" data-indent-size="1.2em">
+<div id="algo-grpo" class="pseudocode-container quarto-float" data-indent-size="1.2em" data-line-number-punc=":" data-caption-prefix="Algorithm" data-line-number="true" data-pseudocode-number="3" data-comment-delimiter="#" data-no-end="false">
 <div class="pseudocode">
 \begin{algorithm} \caption{Group Relative Policy Optimization (GRPO)} \begin{algorithmic} \Require Initial policy $\pi_{\theta_{\text{init}}}$, reward function $R$, dataset of prompts/questions $\mathcal{D}$ \State Initialize policy $\pi_\theta \leftarrow \pi_{\theta_{\text{init}}}$ \For{$\text{step}=1,\dots,n_{\text{grpo\_steps}}$} \State Sample a minibatch of questions $\mathcal{D}_b \subset \mathcal{D}$ \State Snapshot old policy $\pi_{\theta_{\text{old}}} \leftarrow \pi_\theta$ \ForAll{$q \in \mathcal{D}_b$} \State Sample $G$ candidate outputs $\{o^{(i)}\}_{i=1}^{G} \sim \pi_{\theta_{\text{old}}}(\cdot \mid q)$ \State Compute rewards $r^{(i)} \leftarrow R\!\left(q, o^{(i)}\right)$ for $i=1,\dots,G$ \State Compute group-normalized advantages $A^{(i)}$ from $\{r^{(i)}\}_{i=1}^G$ (group normalization) \For{$\text{train\_step}=1,\dots,n_{\text{train\_steps\_per\_rollout\_batch}}$} \State Update $\pi_\theta$ by maximizing the GRPO-Clip objective using $\pi_{\theta_{\text{old}}}$ and $\{(o^{(i)},A^{(i)})\}_{i=1}^G$ \EndFor \EndFor \EndFor \State \Return $\pi_\theta$ \end{algorithmic} \end{algorithm}
 </div>
@@ -1541,7 +1592,7 @@ Figure&nbsp;3: Result of GRPO on Qwen2.5-Math-1.5B on GSM8K Dataset
 <section id="dpo" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> DPO</h1>
 <p>这个部分，是Assignment05 的补充内容，其主要目的是了解DPO算法的基本思想和实现方式。 由于时间的关系， 我并没有实现DPO的完整代码， 但是我会介绍DPO的基本思想和实现方式。DPO的算法如下：</p>
-<div id="algo-ei" class="pseudocode-container quarto-float" data-no-end="false" data-comment-delimiter="#" data-caption-prefix="Algorithm" data-line-number-punc=":" data-pseudocode-number="4" data-line-number="true" data-indent-size="1.2em">
+<div id="algo-ei" class="pseudocode-container quarto-float" data-indent-size="1.2em" data-line-number-punc=":" data-caption-prefix="Algorithm" data-line-number="true" data-pseudocode-number="4" data-comment-delimiter="#" data-no-end="false">
 <div class="pseudocode">
 \begin{algorithm} \caption{Direct Preference Optimization (DPO)} \begin{algorithmic} \Require Initial policy model $\pi_{\theta_{\text{init}}}$ \Require Reference policy $\pi_{\text{ref}}$ (e.g., SFT model; fixed) \Require Preference dataset $\mathcal{D}=\{(x, y^{+}, y^{-})\}$ \Require Inverse temperature $\beta &gt; 0$ \Require Number of DPO steps $n_{\text{dpo\_steps}}$ \State $\pi_{\theta} \gets \pi_{\theta_{\text{init}}}$ \For{$\text{step} = 1$ \textbf{to} $n_{\text{dpo\_steps}}$} \State Sample a minibatch $\mathcal{B} \subset \mathcal{D}$ of triples $(x, y^{+}, y^{-})$ \For{\textbf{each} $(x, y^{+}, y^{-}) \in \mathcal{B}$} \State Compute log-likelihood ratios vs reference: \State $s^{+} \gets \log \pi_{\theta}(y^{+}\mid x) - \log \pi_{\text{ref}}(y^{+}\mid x)$ \State $s^{-} \gets \log \pi_{\theta}(y^{-}\mid x) - \log \pi_{\text{ref}}(y^{-}\mid x)$ \State Compute preference margin: \State $\Delta \gets \beta \, (s^{+} - s^{-})$ \State Compute DPO loss: \State $\ell \gets -\log \sigma(\Delta)$ \Comment{$\sigma(\cdot)$ is the logistic sigmoid} \EndFor \State Update $\theta$ by minimizing mean loss: \State $\theta \gets \theta - \eta \nabla_{\theta}\left(\frac{1}{|\mathcal{B}|}\sum_{(x,y^+,y^-)\in\mathcal{B}} \ell\right)$ \EndFor \State \Return $\pi_{\theta}$ \end{algorithmic} \end{algorithm}
 </div>
@@ -2000,6 +2051,18 @@ Figure&nbsp;3: Result of GRPO on Qwen2.5-Math-1.5B on GSM8K Dataset
   }
   loadGiscus();
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../posts/CS336/Ass02/ass02.html" class="pagination-link" aria-label="Assignment 02: Flash Attention &amp; Parallelism">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Assignment 02: Flash Attention &amp; Parallelism</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../posts/DLFaC/index.html" class="pagination-link" aria-label="About this book">
+        <span class="nav-page-text">About this book</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

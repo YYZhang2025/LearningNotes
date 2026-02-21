@@ -30,6 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -41,9 +43,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-f52972b40854ad4f03dcf6987cd75bb8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-19cbd57329c521a9bd0ae601891bae6d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-f52972b40854ad4f03dcf6987cd75bb8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-54ea7a8788961299870a163422834ed2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.css" rel="stylesheet">
 <script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
@@ -74,6 +76,91 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-course .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-project','listing-bibliography','listing-biblio-style','listing-tbl-cap-location','listing-format','listing-freeze','listing-execute','listing-filters','listing-pseudocode','listing-website','listing-language','listing-comments','listing-title','listing-description','listing-image','listing-listing','listing-author','listing-number-sections','listing-title-block-banner','listing-path','listing-outputHref','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      
+      searchColumns: ["listing-project","listing-bibliography","listing-biblio-style","listing-tbl-cap-location","listing-format","listing-freeze","listing-execute","listing-filters","listing-pseudocode","listing-website","listing-language","listing-comments","listing-title","listing-description","listing-image","listing-listing","listing-author","listing-number-sections","listing-title-block-banner","listing-path","listing-outputHref","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-course'] = new List('listing-course', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-reading .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-project','listing-bibliography','listing-biblio-style','listing-tbl-cap-location','listing-format','listing-freeze','listing-execute','listing-filters','listing-pseudocode','listing-website','listing-language','listing-comments','listing-title','listing-description','listing-image','listing-author','listing-listing','listing-path','listing-outputHref','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      
+      searchColumns: ["listing-project","listing-bibliography","listing-biblio-style","listing-tbl-cap-location","listing-format","listing-freeze","listing-execute","listing-filters","listing-pseudocode","listing-website","listing-language","listing-comments","listing-title","listing-description","listing-image","listing-author","listing-listing","listing-path","listing-outputHref","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-reading'] = new List('listing-reading', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-papers .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-project','listing-bibliography','listing-biblio-style','listing-tbl-cap-location','listing-format','listing-freeze','listing-execute','listing-filters','listing-pseudocode','listing-website','listing-language','listing-comments','listing-title','listing-description','listing-image','listing-categories','listing-paper_url','listing-code_url','listing-path','listing-outputHref','listing-author','listing-filename','listing-file-modified','listing-reading-time','listing-word-count',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-file-modified-sort'] },{ data: ['listing-reading-time-sort'] },{ data: ['listing-word-count-sort'] }],
+      
+      searchColumns: ["listing-project","listing-bibliography","listing-biblio-style","listing-tbl-cap-location","listing-format","listing-freeze","listing-execute","listing-filters","listing-pseudocode","listing-website","listing-language","listing-comments","listing-title","listing-description","listing-image","listing-categories","listing-paper_url","listing-code_url","listing-path","listing-outputHref","listing-author","listing-filename","listing-file-modified","listing-reading-time","listing-word-count"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-papers'] = new List('listing-papers', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <link href="https://fonts.cdnfonts.com/css/cmu-sans-serif" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <script>
@@ -132,10 +219,39 @@ document.addEventListener("DOMContentLoaded", function () {
       </style>
     
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -306,7 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">About</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -316,7 +432,7 @@ document.addEventListener("DOMContentLoaded", function () {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header">
@@ -324,8 +440,9 @@ document.addEventListener("DOMContentLoaded", function () {
       <img src="././style/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
       <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/sta210-s22" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
-    <a href="https://sta210-s22.github.io/website/" title="Course website" class="quarto-navigation-tool px-1" aria-label="Course website"><i class="bi bi-website"></i></a>
+    <a href="https://github.com/YYZhang2025" title="GitHub organization" class="quarto-navigation-tool px-1" aria-label="GitHub organization"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/zhang-yuyang/" title="LinkedIn" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+    <a href="https://yyzhang2025.github.io/posts/Blogs/blogs_index.html" title="Personal Blogs" class="quarto-navigation-tool px-1" aria-label="Personal Blogs"><i class="bi bi-globe"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div>
@@ -336,10 +453,16 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">About</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
- <span class="menu-text">🎓 Stanford CS336: LLM from Scratch</span></a>
+ <span class="menu-text">📝 100 AI Papers with Code</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -347,8 +470,37 @@ document.addEventListener("DOMContentLoaded", function () {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./posts/100-AI-Papers/100_Papers_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About this series</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/100-AI-Papers/01-transformer/Transformer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Transformer</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vision Transformer</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">🎓 Stanford CS336: LLM from Scratch</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./posts/CS336/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Course Overview</span></a>
+ <span class="menu-text">About this course</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -445,31 +597,8 @@ document.addEventListener("DOMContentLoaded", function () {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
- <span class="menu-text">📚 100 AI Papers</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/100-AI-Papers/01-transformer/Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Transformer</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Vision Transformer</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
- <span class="menu-text">📚 DLFaC</span></a>
+ <span class="menu-text">📖 Deep Learning Foundation &amp; Concepts</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -478,7 +607,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./posts/DLFaC/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">DLFaC Notes</span></a>
+ <span class="menu-text">About this book</span></a>
   </div>
 </li>
       </ul>
@@ -490,18 +619,218 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
 
-<section id="preface" class="level1">
-<h1>Preface</h1>
-<p>This is a Quarto book.</p>
-<p>To learn more about Quarto books visit <a href="https://quarto.org/docs/books" class="uri">https://quarto.org/docs/books</a>.</p>
+<section id="about-this-website" class="level1">
+<h1>About This Website</h1>
+<p>在2026年春节期间，无聊至极，于是将之前的资料重新整理了一下，组成了这个网站。与之前的<a href="https://yyzhang2025.github.io/posts/Blogs/blogs_index.html">网站</a>不一样，这个网站主要是用来记录不同课程，阅读笔记，以及还在进行的100 Paper with Code 系列的。之所以把这个网站命名为“Learning Notes”，是因为我觉得这个名字比较贴切，毕竟这个网站的主要内容就是一些学习笔记。希望这个网站能够帮助到一些正在学习相关课程或者对相关领域感兴趣的人。</p>
+<section id="为什么在ai时代还要写学习笔记" class="level2">
+<h2 class="anchored" data-anchor-id="为什么在ai时代还要写学习笔记">为什么在AI时代还要写学习笔记？</h2>
+<p>随着2023年ChatGPT的爆发，随之而来的是各种各样的AI工具，网络上也充斥着各种AI生成的内容。在这种情况下，也有好多小伙伴私信我说，<span class="hilite-pink">为什么还要写这种学习的笔记？现在AI这么发达，直接AI总结，生成不就好了吗？</span> 的确，从ChatGPT， 到现在（2026年初）大火的<a href="https://openclaw.ai/">OpenClaw</a>，这些AI工具的确可以帮助我们完成很多任务，但是使用下来，给我带来的是一种空虚感，就好像吃了快餐一样，虽然很方便，但是吃完之后就没有什么满足感了。内容爆炸式的增长，每天被各种信息包围，不断用AI填补空白，但却很难真正消化和理解这些信息。包括现在的Vibe Coding，可以在几分钟内搭建，部署一个可运行的网站，然后呢？我们需要的不是一个可运行的网站，而是一个有价值，有内容的网站。就好像现在的AI工具，可以在几秒钟内生成一篇文章，但是我们需要的不是一篇文章，而是一篇有深度，有见解的文章。所以我觉得，在这个AI时代，写学习笔记依然是非常有必要的。通过写学习笔记，我们可以更好地消化和理解这些信息，真正掌握这些知识，而不是被这些信息所淹没。我尝试过用Claude来收集总结我想要的内容，很厉害，一下子创建出来20多个Markdown文件，内容也是可圈可点，有许多我没有了解过的角度，但是我不能立马吸收里面的内容，就好像囫囵吞枣, 过目就忘， 反而是自己写的笔记，虽然可能不够完美，但是在写的过程中，我需要不断地思考，不断地理解，这样才能真正掌握这些知识。所以我觉得，在这个AI时代，写学习笔记依然是非常有必要的。知其然还要知其所以然，只有真正理解了这些知识，才能更好地应用这些知识，而不是被这些知识所束缚。</p>
+<p>第二原因就是，在本科期间，有幸拜读过<a href="https://csdiy.wiki/">CS自学指南</a>。我算是它的忠实粉丝了，从它在几百个⭐️的阶段，到现在已经有7万多个⭐️，我都一直在关注它的更新。它的内容非常丰富，涵盖了计算机科学的各个领域，从基础的编程，到算法，再到人工智能，机器学习，深度学习等等。从那时起，我就被它的作者，以及里面涵盖的所有课程的大学，教授的Open Source精神所深深吸引了。也正是因为这个网站，我才有了写学习笔记的想法，希望能够把我在学习过程中积累的一些知识和经验分享给更多的人，帮助他们更好地学习和成长。</p>
+</section>
+<section id="网站内容" class="level2">
+<h2 class="anchored" data-anchor-id="网站内容">网站内容</h2>
+<p>这个网站主要分为三个部分，分别是：</p>
+<ul>
+<li>课程笔记：一些之前学过的经典课程的笔记以及总结，比如最近大火的<a href="https://cs336.stanford.edu/">CS336</a>等。</li>
+<li>阅读笔记：记录经典的书籍，以及里面Exercise的解答，比如Bishop的<a href="https://www.bishopbook.com/">《Deep Learning Foundations and Concapts》</a>。</li>
+<li>100 Paper with Code系列: 记录一些经典的论文，以及结合代码实现，对其中的一些重要内容进行总结和分享，比如 Transformer, DINO, CLIP等等。</li>
+</ul>
+<section id="课程笔记" class="level3">
+<h3 class="anchored" data-anchor-id="课程笔记">课程笔记</h3>
+<div id="listing-course" class="quarto-listing quarto-listing-container-custom">
+<div class="research-card-grid">
+
+  
+
+  
+
+    <div class="research-card" data-index="0" data-listing-file-modified-sort="1771694624568" data-listing-reading-time-sort="2" data-listing-word-count-sort="342">
+
+      <!-- IMAGE -->
+      
+        <a class="card-image-wrapper" href="./posts/CS336/index.html">
+          <img src="./posts/CS336/cover.png" alt="cover">
+        </a>
+      
+
+      <div class="card-body">
+
+        <!-- TITLE -->
+        <a class="card-title" href="./posts/CS336/index.html">
+          CS336: LLM from Scratch Lecture Notes and Assignments
+        </a>
+
+        <!-- DESCRIPTION -->
+        
+          <div class="card-description">
+            CS336 是关于从零开始构建大型语言模型的综合课程，涵盖了从Transformer架构的基础知识，到MoE模型，GPU加速，Parallelism训练，模型的评估，数据的收集和处理，以及LLM的对齐算法等最新的进展。这个页面包含了CS336课程的所有学习笔记和作业解答。
+          </div>
+        
+
+      </div>
+
+    </div>
+
+  
+
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+</section>
+<section id="阅读笔记" class="level3">
+<h3 class="anchored" data-anchor-id="阅读笔记">阅读笔记</h3>
+<div id="listing-reading" class="quarto-listing quarto-listing-container-custom">
+<div class="research-card-grid">
+
+  
+
+  
+
+    <div class="research-card" data-index="0" data-listing-file-modified-sort="1771694391012" data-listing-reading-time-sort="1" data-listing-word-count-sort="61">
+
+      <!-- IMAGE -->
+      
+        <a class="card-image-wrapper" href="./posts/DLFaC/index.html">
+          <img src="./posts/DLFaC/cover.png" alt="cover">
+        </a>
+      
+
+      <div class="card-body">
+
+        <!-- TITLE -->
+        <a class="card-title" href="./posts/DLFaC/index.html">
+          Deep Learning Foundation and Concepts(DLFaC) Learning Notes
+        </a>
+
+        <!-- DESCRIPTION -->
+        
+          <div class="card-description">
+            This page contains all the learning notes for the Deep Learning Foundation and Concepts (DLFaC) course. I hope you can find something useful here. HAPPY LEARNING😁😁!!!
+          </div>
+        
+
+      </div>
+
+    </div>
+
+  
+
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+</section>
+<section id="paper-with-code系列" class="level3">
+<h3 class="anchored" data-anchor-id="paper-with-code系列">100 Paper with Code系列</h3>
+<div id="listing-papers" class="quarto-listing quarto-listing-container-custom">
+<div class="research-card-grid">
+
+  
+
+  
+
+    <div class="research-card" data-index="0" data-categories="TkxQJTJDQXJjaGl0ZWN0dXJlJTJDVHJhbnNmb3JtZXIlMkMlRTIlQUQlOTAlRUYlQjglOEYlRTIlQUQlOTAlRUYlQjglOEYlRTIlQUQlOTAlRUYlQjglOEYlRTIlQUQlOTAlRUYlQjglOEYlRTIlQUQlOTAlRUYlQjglOEY=" data-listing-file-modified-sort="1771693024200" data-listing-reading-time-sort="36" data-listing-word-count-sort="7123">
+
+      <!-- IMAGE -->
+      
+        <a class="card-image-wrapper" href="./posts/100-AI-Papers/01-transformer/Transformer.html">
+          <img src="./posts/100-AI-Papers/01-transformer/assets/DETR.jpg" alt="cover">
+        </a>
+      
+
+      <div class="card-body">
+
+        <!-- TITLE -->
+        <a class="card-title" href="./posts/100-AI-Papers/01-transformer/Transformer.html">
+          01: Attention is All You Need (&lt;tag style='color:orange'&gt;Transformer&lt;/tag&gt;)
+        </a>
+
+        <!-- DESCRIPTION -->
+        
+          <div class="card-description">
+            Transformer 是一种基于<strong>自注意力机制</strong>的深度学习架构，
+能够并行处理序列，在语言、视觉和多模态任务中表现出色，
+并且作为 <strong>GPT</strong>、<strong>BERT</strong> 等大型语言模型（LLM）的核心基础，
+推动了当今生成式人工智能的快速发展。
+在本篇文章中，我们将深入探讨 Transformer 的基本原理，
+以及关键组件，包括
+<strong>Word Embedding</strong>、
+<strong>Position Embedding</strong>、
+<strong>Attention</strong>、
+<strong>Normalization Layer</strong>
+和 <strong>Feed Forward Layer</strong>。
+并且通过在
+<a href="https://huggingface.co/datasets/IWSLT/ted_talks_iwslt" target="_blank" rel="noopener">
+Ted Talks
+</a>
+数据集上的实验，展示 Transformer 在实际任务中的应用效果。
+
+          </div>
+        
+
+      </div>
+
+    </div>
+
+  
+
+    <div class="research-card" data-index="1" data-categories="Q29tcHV0ZXIlMjBWaXNpb24lMkNUcmFuc2Zvcm1lcg==" data-listing-file-modified-sort="1771606327789" data-listing-reading-time-sort="21" data-listing-word-count-sort="4086">
+
+      <!-- IMAGE -->
+      
+        <a class="card-image-wrapper" href="./posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html">
+          <img src="./posts/100-AI-Papers/02-vision-transformer/assets/cover.png" alt="cover">
+        </a>
+      
+
+      <div class="card-body">
+
+        <!-- TITLE -->
+        <a class="card-title" href="./posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html">
+          02: AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE (&lt;tag style='color:blue'&gt;Vision-Transformer&lt;/tag&gt;)
+        </a>
+
+        <!-- DESCRIPTION -->
+        
+          <div class="card-description">
+            Vision Transformer (ViT) 通过将图像切分为 Patch 并直接应用标准 Transformer 架构，实现了图像分类任务。本文介绍了 ViT 的核心组件，包括 `Patch Embedding`、`Position Embedding`、`[CLS] Token`  以及 Transformer 编码器块，探讨了 ViT 相较于传统 CNN 的归纳偏置差异(Inductive Bias)，并展示了 ViT 在大规模数据集上的优异表现。
+          </div>
+        
+
+      </div>
+
+    </div>
+
+  
+
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+</section>
+</section>
+<section id="最后" class="level2">
+<h2 class="anchored" data-anchor-id="最后">最后</h2>
+<p>最后，希望这个网站能够帮助到一些正在学习相关课程或者对相关领域感兴趣的人。如果你想要更全面的了解某一方面的知识，我推荐可以去阅读我们的<a href="https://yyzhang2025.github.io/posts/Blogs/blogs_index.html">Blog</a>，里面有很多关于不同领域的内容。</p>
+<p><a href="https://yyzhang2025.github.io/posts/Blogs/blogs_index.html"><img src="./style/blog.png" class="img-fluid"></a></p>
+<p>当然，由于个人精力有限，网站内容难免有所不足之处，如果你有任何建议或者想要分享的内容，欢迎随时联系我。谢谢！</p>
+</section>
+<section id="关于logo" class="level2">
+<h2 class="anchored" data-anchor-id="关于logo">关于Logo</h2>
+<p>这个网站的Logo是我家的猫，叫做花花。希望大家在AI的时代，能够像花花一样，保持好奇心和探索精神，不断地学习和成长。也希望这个网站能够成为一个有价值，有内容的网站，帮助更多的人学习和成长。也希望这只可爱的猫咪能够给大家带来一些快乐和温暖。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./style/huahua.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
 
 
+
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -922,6 +1251,38 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
   </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark_dimmed">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "YYZhang2025/YYZhang2025.github.io";
+    script.dataset.repoId = "R_kgDOQlDTcQ";
+    script.dataset.category = "General";
+    script.dataset.categoryId = "DIC_kwDOQlDTcc4C2MRz";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

@@ -1,5 +1,14 @@
 [
   {
+    "listing": "/index.html",
+    "items": [
+      "/posts/CS336/index.html",
+      "/posts/DLFaC/index.html",
+      "/posts/100-AI-Papers/01-transformer/Transformer.html",
+      "/posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html"
+    ]
+  },
+  {
     "listing": "/posts/DLFaC/index.html",
     "items": [
       "/posts/DLFaC/Chapter01/Chapter01.html",

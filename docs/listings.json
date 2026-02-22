@@ -44,10 +44,6 @@
   {
     "listing": "/posts/CS336/index.html",
     "items": [
-      "/posts/CS336/Ass01/ass01.html",
-      "/posts/CS336/Ass02/ass02.html",
-      "/posts/CS336/Ass04/ass04.html",
-      "/posts/CS336/Ass05/ass05.html",
       "/posts/CS336/Lecture01/lec01.html",
       "/posts/CS336/Lecture02/lec02.html",
       "/posts/CS336/Lecture03/lec03.html",
@@ -59,7 +55,11 @@
       "/posts/CS336/Lecture12/lec12.html",
       "/posts/CS336/Lecture13&14/lec13.html",
       "/posts/CS336/Lecture15/lec15.html",
-      "/posts/CS336/Lecture16&17/lec16.html"
+      "/posts/CS336/Lecture16&17/lec16.html",
+      "/posts/CS336/Ass01/ass01.html",
+      "/posts/CS336/Ass02/ass02.html",
+      "/posts/CS336/Ass04/ass04.html",
+      "/posts/CS336/Ass05/ass05.html"
     ]
   }
 ]

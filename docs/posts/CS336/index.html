@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="">
-<meta name="description" content="CS336 是关于从零开始构建大型语言模型的综合课程，涵盖了从Transformer架构的基础知识，到MoE模型，GPU加速，Parallelism训练，模型的评估，数据的收集和处理，以及LLM的对齐算法等最新的进展。这个页面包含了CS336课程的所有学习笔记和作业解答。">
+<meta name="description" content="CS336是关于从零开始构建大型语言模型的综合课程，涵盖了从Transformer架构的基础知识，到MoE模型，GPU加速，Parallelism训练，模型的评估，数据的收集和处理，以及LLM的对齐算法等最新的进展。这个页面包含了CS336课程的所有学习笔记和作业解答。">
 
 <title>CS336: LLM from Scratch Lecture Notes and Assignments – Learning Note</title>
 <style>
@@ -31,8 +31,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../posts/CS336/Lecture01/lec01.html" rel="next">
-<link href="../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" rel="prev">
 <script src="../../site_libs/quarto-listing/list.min.js"></script>
 <script src="../../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
@@ -46,9 +44,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-54ea7a8788961299870a163422834ed2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-01e1ab90bb0902c54ef2dc3889c8698d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-987788bda8b0cf97ae4c62c0f40f22af.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-01e1ab90bb0902c54ef2dc3889c8698d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.css" rel="stylesheet">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
@@ -82,20 +80,48 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-lectures .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-title','listing-author','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-description','listing-image',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
       searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-lectures'] = new List('listing-lectures', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-assignments .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-description','listing-image',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-assignments'] = new List('listing-assignments', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -108,6 +134,15 @@ ul.task-list li input[type="checkbox"] {
     }
   })
   </script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E8EJCZTZG1"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-E8EJCZTZG1', { 'anonymize_ip': true});
+</script>
 <link href="https://fonts.cdnfonts.com/css/cmu-sans-serif" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <script>
@@ -369,9 +404,9 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/CS336/index.html">🎓 Stanford CS336: LLM from Scratch</a></li><li class="breadcrumb-item"><a href="../../posts/CS336/index.html">About this course</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">CS336: LLM from Scratch Lecture Notes and Assignments</h1>
+        </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -569,14 +604,14 @@ window.Quarto = {
 <main class="content column-page-right" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../posts/CS336/index.html">🎓 Stanford CS336: LLM from Scratch</a></li><li class="breadcrumb-item"><a href="../../posts/CS336/index.html">About this course</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">CS336: LLM from Scratch Lecture Notes and Assignments</h1>
+<h1 class="title d-none d-lg-block">CS336: LLM from Scratch Lecture Notes and Assignments</h1>
 </div>
 
 <div>
   <div class="description">
-    CS336 是关于从零开始构建大型语言模型的综合课程，涵盖了从Transformer架构的基础知识，到MoE模型，GPU加速，Parallelism训练，模型的评估，数据的收集和处理，以及LLM的对齐算法等最新的进展。这个页面包含了CS336课程的所有学习笔记和作业解答。
+    CS336是关于从零开始构建大型语言模型的综合课程，涵盖了从Transformer架构的基础知识，到MoE模型，GPU加速，Parallelism训练，模型的评估，数据的收集和处理，以及LLM的对齐算法等最新的进展。这个页面包含了CS336课程的所有学习笔记和作业解答。
   </div>
 </div>
 
@@ -593,21 +628,6 @@ window.Quarto = {
 </header>
 
 
-<div class="note foldable is-open">
-<div class="note-header foldable-header">
-<p>Note</p>
-</div>
-<div class="note-container foldable-content">
-<p><tag style="font-size:25px; "> Due to the time constraint, these notes may contain errors or omissions. To speed up the writing process, I only wrote the notes in <strong>CHINESES</strong>. If you are interested in collaborating to improve these notes,or transalting to different languages, please feel free to <a href="mailto:zhangyuyang1211@gmail.com">contact me</a>. </tag></p>
-</div>
-</div>
-<pre data-code-line-numbers=""><code>listing:
-  - id: lectures
-    contents: ./Lectures
-
-
-  - id: assignments 
-    contents: ./Assignments</code></pre>
 <div class="columns quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="column quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
@@ -627,7 +647,6 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<hr>
 <p>For those who have <tag style="color:orange">limited time</tag>, I recommend focusing on the following key lectures and assignments:</p>
 <ul>
 <li><strong>LECTURE 1, 2, 3, 4 &amp; Assignment01</strong>: After completing these, you will have a solid understanding of the fundamentals of LLMs, such as the <strong>Transformer Language Model architecture</strong>, <strong>attention mechanism</strong>, <strong>Mixture of Experts</strong>, and the training process of LLMs using autoregressive language modeling.</li>
@@ -642,26 +661,248 @@ window.Quarto = {
 </ul></li>
 </ul>
 <hr>
-<p><br> <br> <br></p>
-<section id="lecture-notes-for-cs336" class="level1">
-<h1>Lecture Notes for CS336</h1>
 <p><br></p>
-<div id="lectures">
+<section id="lectures-notes" class="level1">
+<h1>Lectures Notes</h1>
+<p><br></p>
+<div id="listing-lectures" class="quarto-listing quarto-listing-container-default">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1771609549752" data-listing-reading-time-sort="4" data-listing-word-count-sort="756">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture01/lec01.html" class="no-external">
 
+<p class="card-img-top"><img src="Lecture01/assets/course-overview.png"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title" data-anchor-id="lectures-notes">
+<a href="../../posts/CS336/Lecture01/lec01.html" class="no-external">Lecture 01: Introduction &amp; Tokenization</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture01/lec01.html" class="no-external">
+<p>Lecture01介绍了课程的大纲以及LLM的现状和基本概念。在课程的后半段介绍了Language Modeling的第一步，即Tokenization的基本概念和常用方法。着重介绍了<strong>Byte Pair Encoding (BPE)</strong>算法的原理和实现。在学习完Lecture 01后，我们可以开始尝试Assignment 01的第一部分，即BPE-Tokenization的实现</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture01/lec01.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-listing-file-modified-sort="1771609549761" data-listing-reading-time-sort="7" data-listing-word-count-sort="1317">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture02/lec02.html" class="no-external">
+
+<p class="card-img-top"><img src="Lecture02/assets/float-represent.png"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture02/lec02.html" class="no-external">Lecture 02: PyTorch Basics &amp; Resource Accounts</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture02/lec02.html" class="no-external">
+<p>Lecture02 介绍了PyTorch的基本概念和使用方法。可以将这节课当作一个review，复习一下之前学过的PyTorch知识点。同时，课程中介绍了一个 <code>einops</code> 的库，可以简化张量操作的代码编写。这节课也介绍了不同数据类型（如<code>FP32</code>, <code>FP16</code>, <code>BF16</code>等）在深度学习中的应用和优缺点。并且通过计算这些数据类型在内存中的占用，帮助我们理解为什么有些数据类型更适合在有限资源下进行训练, 并且在什么情况下需要应用混合精度训练（Mixed Precision Training），什么情况下需要用高精度的数据类型。在课程的最后，还介绍了不同的Optimizer（如SGD, Adam等）的基本原理和使用场景</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture02/lec02.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-listing-file-modified-sort="1771609549771" data-listing-reading-time-sort="4" data-listing-word-count-sort="624">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture03/lec03.html" class="no-external">
+
+<p class="card-img-top"><img src="Lecture03/assets/lec03-overview.png"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture03/lec03.html" class="no-external">Lecture 03: LM Model Architecture &amp; Hyperparameters</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture03/lec03.html" class="no-external">
+<p>Lecture03 介绍了现代大语言模型的核心架构与超参数设计。课程对比了原始 Transformer 与主流 LLaMA-like 架构，总结了 pre-norm、RMSNorm、SwiGLU、RoPE 等关键设计的经验共识，并结合大量近期模型实践，讲解了 MLP 宽度比例、注意力头配置、模型深宽比与词表规模等超参数选择原则。同时还介绍了 z-loss、QK-Norm、MQA/GQA 等用于提升训练稳定性和推理效率的关键技巧。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture03/lec03.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-listing-file-modified-sort="1771609549782" data-listing-reading-time-sort="4" data-listing-word-count-sort="760">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture04/lec04.html" class="no-external">
+
+<p class="card-img-top"><img src="Lecture04/assets/dense-fnn-vs-moe.png"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture04/lec04.html" class="no-external">Lecture 04: Introduction to MoE</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture04/lec04.html" class="no-external">
+<p>Lecture 04 介绍了 MoE（Mixture of Experts）的基本概念和原理。从模型架构、路由机制、训练方法等方面进行了详细讲解，并讨论了 MoE 在自然语言处理中的应用和优势。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture04/lec04.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-listing-file-modified-sort="1771609549782" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture05&amp;06/lec05.html" class="no-external">
+
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture05&amp;06/lec05.html" class="no-external">Lecture 05 &amp; 06: GPUs, Kernels &amp; Flash Attention</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture05&amp;06/lec05.html" class="no-external">
+<p>Lecture05介绍了GPU的基本架构与工作原理，并且介绍了几种提升计算效率的方法，比如Kernel Fusion, Memory Coalescing Tiling 等，并且在课程最后介绍了Flash Attention的原理及其实现细节。在Lecture06中，主要介绍了Triton，一个用于编写高性能GPU代码的开源编译器。内容涵盖了Triton的基本概念、编程模型以及如何使用Triton编写高效的GPU内核。通过实际示例，展示了Triton在深度学习中的应用和优势。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture05&amp;06/lec05.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-listing-file-modified-sort="1771609549782" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture07&amp;08/lec07.html" class="no-external">
+
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture07&amp;08/lec07.html" class="no-external">Lecture 07 &amp; 08: Parallelism Training</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture07&amp;08/lec07.html" class="no-external">
+<p>Lecture 07与08介绍了深度学习中的并行训练方法，包括Data Parallelism， Model Parallelism，ZeRO，Pipleline Parallelism等技术。重点讲解了各类并行方法的原理、实现及其在大规模模型训练中的应用。个人认为这两节内容非常重要，理解这些并行训练技术对于处理大规模深度学习模型至关重要。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture07&amp;08/lec07.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-listing-file-modified-sort="1771609549800" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture9&amp;11/lec9.html" class="no-external">
+
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture9&amp;11/lec9.html" class="no-external">Lecture 09 &amp; 11: Scaling Laws</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture9&amp;11/lec9.html" class="no-external">
+<p>为什么<strong>LARGE</strong> language models在规模上表现更好？Lecture 09和11介绍了Scaling Laws的基本概念和原理，探讨了模型规模、数据规模与计算资源之间的关系。内容涵盖了不同类型的Scaling Laws（如参数规模、数据规模和计算规模）以及它们对模型性能的影响。通过实际案例，展示了Scaling Laws在深度学习中的应用和重要性。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture9&amp;11/lec9.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-listing-file-modified-sort="1771609549783" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture10/lec10.html" class="no-external">
+
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture10/lec10.html" class="no-external">Lecture 10: Inference &amp; Deployment</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture10/lec10.html" class="no-external">
+<p>训练完LLM之后，如何进行高效的推理和部署是非常重要的。Lecture 10介绍了模型压缩、量化、蒸馏等技术，以提升推理效率和降低资源消耗。此外，还讨论了模型部署的常见方法和挑战，包括云端部署、本地部署以及边缘计算等。通过这些技术，可以更好地将训练好的模型应用于实际场景中。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture10/lec10.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="8" data-listing-file-modified-sort="1771609549783" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture12/lec12.html" class="no-external">
+
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture12/lec12.html" class="no-external">Lecture 12: Evaluation Metrics</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture12/lec12.html" class="no-external">
+<p>Lecture 12介绍了评估语言模型性能的各种指标和方法。内容涵盖了传统的评估指标，如困惑度（Perplexity）、准确率（Accuracy）等，以及更适用于生成任务的指标，如BLEU、ROUGE和METEOR等。此外，还讨论了人类评估的重要性及其在模型评估中的作用。通过这些评估方法，可以更全面地了解语言模型的表现和改进方向。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture12/lec12.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="9" data-listing-file-modified-sort="1771609549783" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture13&amp;14/lec13.html" class="no-external">
+
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture13&amp;14/lec13.html" class="no-external">Lecture 13 &amp; 14: Data</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture13&amp;14/lec13.html" class="no-external">
+<p>要想训练好一个LLM，除了有强大的模型架构和充足的计算资源，数据同样至关重要。Lecture 13和14深入探讨了用于训练大型语言模型的数据收集、清洗和处理方法。内容涵盖了不同类型的数据源（如网络文本、书籍、对话数据等），以及如何进行数据预处理以提升模型性能。此外，还介绍了数据增强技术和数据质量评估方法，帮助我们更好地理解如何利用高质量的数据来训练出更优秀的语言模型。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture13&amp;14/lec13.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="10" data-listing-file-modified-sort="1771609549791" data-listing-reading-time-sort="21" data-listing-word-count-sort="4185">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture15/lec15.html" class="no-external">
+
+<p class="card-img-top"><img src="Lecture15/assets/lec15-overview-post-training.png"  class="thumbnail-image card-img"/></p>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture15/lec15.html" class="no-external">Lecture 15: LLM Alignment SFT &amp; RLHF(PPO, DPO)</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture15/lec15.html" class="no-external">
+<p>Lecture15主要梳理 LLM 的后训练（<strong>Post-Training</strong>）主线：从监督微调（<strong>SFT</strong>）的数据与目标函数出发，解释为何SFT可以让模型获得一定的Instruct Following的能力，并系统介绍 RLHF 的奖励模型训练与 <strong>PPO</strong> 更新流程，进一步对比 <strong>DPO</strong>/<strong>SimPO</strong> 等将 RL 简化为监督学习的替代方案。最后总结 RLHF 的关键风险（<strong>reward hacking</strong>、<strong>model collapse</strong>），并说明为何需要走向可验证奖励的 RLVR 来提升推理能力与训练稳定性。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture15/lec15.html" class="no-external">
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="11" data-listing-file-modified-sort="1771609549800" data-listing-reading-time-sort="19" data-listing-word-count-sort="3745">
+<div class="thumbnail"><a href="../../posts/CS336/Lecture16&amp;17/lec16.html" class="no-external">
+
+<img loading="lazy" src="../../posts/CS336/Lecture16&amp;17/assets/lec16-grpo-ppo.png" class="thumbnail-image">
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="../../posts/CS336/Lecture16&amp;17/lec16.html" class="no-external">Lecture 16 &amp; 17: LLM Alignment SFT &amp; RLVR（GRPO）</a>
+</h3>
+<div class="delink listing-description"><a href="../../posts/CS336/Lecture16&amp;17/lec16.html" class="no-external">
+<p>这节介绍了PPO， 以及DPO所存在的问题，并且引出了Reinforcement Learning from Verified Rewards (RLVR)的新方法<strong>GRPO</strong>。内容包括Advantage Function、Length Normalization关键技术细节，并通过DeepSeek-R1、Kimi 1.5和Qwen3等案例展示了GRPO在实际中的应用。而Lecture17则通过一个排序任务的具体例子，详细讲解了GRPO算法的实现细节，包括数据生成、奖励函数设计、模型架构以及训练过程，在这里就把两节课合成一节课来写。</p>
+</a></div>
+</div>
+<div class="metadata">
+<a href="../../posts/CS336/Lecture16&amp;17/lec16.html" class="no-external">
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div>
 </section>
-<section id="assignments" class="level1">
-<h1>Assignments</h1>
+<section id="assignments-solutions" class="level1">
+<h1>Assignments Solutions</h1>
 <p><br></p>
-<div id="assignments">
-
-</div>
-
-
-
-</section>
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div id="listing-assignments" class="quarto-listing quarto-listing-container-default">
 <div class="list quarto-listing-default">
 <div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1771609549711" data-listing-reading-time-sort="76" data-listing-word-count-sort="15100">
 <div class="thumbnail"><a href="../../posts/CS336/Ass01/ass01.html" class="no-external">
@@ -670,7 +911,7 @@ window.Quarto = {
 
 </a></div>
 <div class="body">
-<h3 class="no-anchor listing-title">
+<h3 class="no-anchor listing-title" data-anchor-id="assignments-solutions">
 <a href="../../posts/CS336/Ass01/ass01.html" class="no-external">Assignment 01: Tokenization &amp; Language Modeling</a>
 </h3>
 <div class="delink listing-description"><a href="../../posts/CS336/Ass01/ass01.html" class="no-external">
@@ -739,237 +980,15 @@ window.Quarto = {
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-listing-file-modified-sort="1771609549752" data-listing-reading-time-sort="4" data-listing-word-count-sort="756">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture01/lec01.html" class="no-external">
-
-<p class="card-img-top"><img src="Lecture01/assets/course-overview.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture01/lec01.html" class="no-external">Lecture 01: Introduction &amp; Tokenization</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture01/lec01.html" class="no-external">
-<p>Lecture01介绍了课程的大纲以及LLM的现状和基本概念。在课程的后半段介绍了Language Modeling的第一步，即Tokenization的基本概念和常用方法。着重介绍了<strong>Byte Pair Encoding (BPE)</strong>算法的原理和实现。在学习完Lecture 01后，我们可以开始尝试Assignment 01的第一部分，即BPE-Tokenization的实现</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture01/lec01.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-listing-file-modified-sort="1771609549761" data-listing-reading-time-sort="7" data-listing-word-count-sort="1317">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture02/lec02.html" class="no-external">
-
-<p class="card-img-top"><img src="Lecture02/assets/float-represent.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture02/lec02.html" class="no-external">Lecture 02: PyTorch Basics &amp; Resource Accounts</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture02/lec02.html" class="no-external">
-<p>Lecture02 介绍了PyTorch的基本概念和使用方法。可以将这节课当作一个review，复习一下之前学过的PyTorch知识点。同时，课程中介绍了一个 <code>einops</code> 的库，可以简化张量操作的代码编写。这节课也介绍了不同数据类型（如<code>FP32</code>, <code>FP16</code>, <code>BF16</code>等）在深度学习中的应用和优缺点。并且通过计算这些数据类型在内存中的占用，帮助我们理解为什么有些数据类型更适合在有限资源下进行训练, 并且在什么情况下需要应用混合精度训练（Mixed Precision Training），什么情况下需要用高精度的数据类型。在课程的最后，还介绍了不同的Optimizer（如SGD, Adam等）的基本原理和使用场景</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture02/lec02.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-listing-file-modified-sort="1771609549771" data-listing-reading-time-sort="4" data-listing-word-count-sort="624">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture03/lec03.html" class="no-external">
-
-<p class="card-img-top"><img src="Lecture03/assets/lec03-overview.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture03/lec03.html" class="no-external">Lecture 03: LM Model Architecture &amp; Hyperparameters</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture03/lec03.html" class="no-external">
-<p>Lecture03 介绍了现代大语言模型的核心架构与超参数设计。课程对比了原始 Transformer 与主流 LLaMA-like 架构，总结了 pre-norm、RMSNorm、SwiGLU、RoPE 等关键设计的经验共识，并结合大量近期模型实践，讲解了 MLP 宽度比例、注意力头配置、模型深宽比与词表规模等超参数选择原则。同时还介绍了 z-loss、QK-Norm、MQA/GQA 等用于提升训练稳定性和推理效率的关键技巧。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture03/lec03.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-listing-file-modified-sort="1771609549782" data-listing-reading-time-sort="4" data-listing-word-count-sort="760">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture04/lec04.html" class="no-external">
-
-<p class="card-img-top"><img src="Lecture04/assets/dense-fnn-vs-moe.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture04/lec04.html" class="no-external">Lecture 04: Introduction to MoE</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture04/lec04.html" class="no-external">
-<p>Lecture 04 介绍了 MoE（Mixture of Experts）的基本概念和原理。从模型架构、路由机制、训练方法等方面进行了详细讲解，并讨论了 MoE 在自然语言处理中的应用和优势。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture04/lec04.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-listing-file-modified-sort="1771609549782" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture05&amp;06/lec05.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture05&amp;06/lec05.html" class="no-external">Lecture 05 &amp; 06: GPUs, Kernels &amp; Flash Attention</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture05&amp;06/lec05.html" class="no-external">
-<p>Lecture05介绍了GPU的基本架构与工作原理，并且介绍了几种提升计算效率的方法，比如Kernel Fusion, Memory Coalescing Tiling 等，并且在课程最后介绍了Flash Attention的原理及其实现细节。在Lecture06中，主要介绍了Triton，一个用于编写高性能GPU代码的开源编译器。内容涵盖了Triton的基本概念、编程模型以及如何使用Triton编写高效的GPU内核。通过实际示例，展示了Triton在深度学习中的应用和优势。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture05&amp;06/lec05.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-listing-file-modified-sort="1771609549782" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture07&amp;08/lec07.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture07&amp;08/lec07.html" class="no-external">Lecture 07 &amp; 08: Parallelism Training</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture07&amp;08/lec07.html" class="no-external">
-<p>Lecture 07与08介绍了深度学习中的并行训练方法，包括Data Parallelism， Model Parallelism，ZeRO，Pipleline Parallelism等技术。重点讲解了各类并行方法的原理、实现及其在大规模模型训练中的应用。个人认为这两节内容非常重要，理解这些并行训练技术对于处理大规模深度学习模型至关重要。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture07&amp;08/lec07.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-listing-file-modified-sort="1771609549800" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture9&amp;11/lec9.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture9&amp;11/lec9.html" class="no-external">Lecture 09 &amp; 11: Scaling Laws</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture9&amp;11/lec9.html" class="no-external">
-<p>为什么<strong>LARGE</strong> language models在规模上表现更好？Lecture 09和11介绍了Scaling Laws的基本概念和原理，探讨了模型规模、数据规模与计算资源之间的关系。内容涵盖了不同类型的Scaling Laws（如参数规模、数据规模和计算规模）以及它们对模型性能的影响。通过实际案例，展示了Scaling Laws在深度学习中的应用和重要性。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture9&amp;11/lec9.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-listing-file-modified-sort="1771609549783" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture10/lec10.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture10/lec10.html" class="no-external">Lecture 10: Inference &amp; Deployment</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture10/lec10.html" class="no-external">
-<p>训练完LLM之后，如何进行高效的推理和部署是非常重要的。Lecture 10介绍了模型压缩、量化、蒸馏等技术，以提升推理效率和降低资源消耗。此外，还讨论了模型部署的常见方法和挑战，包括云端部署、本地部署以及边缘计算等。通过这些技术，可以更好地将训练好的模型应用于实际场景中。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture10/lec10.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="12" data-listing-file-modified-sort="1771609549783" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture12/lec12.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture12/lec12.html" class="no-external">Lecture 12: Evaluation Metrics</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture12/lec12.html" class="no-external">
-<p>Lecture 12介绍了评估语言模型性能的各种指标和方法。内容涵盖了传统的评估指标，如困惑度（Perplexity）、准确率（Accuracy）等，以及更适用于生成任务的指标，如BLEU、ROUGE和METEOR等。此外，还讨论了人类评估的重要性及其在模型评估中的作用。通过这些评估方法，可以更全面地了解语言模型的表现和改进方向。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture12/lec12.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="13" data-listing-file-modified-sort="1771609549783" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture13&amp;14/lec13.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture13&amp;14/lec13.html" class="no-external">Lecture 13 &amp; 14: Data</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture13&amp;14/lec13.html" class="no-external">
-<p>要想训练好一个LLM，除了有强大的模型架构和充足的计算资源，数据同样至关重要。Lecture 13和14深入探讨了用于训练大型语言模型的数据收集、清洗和处理方法。内容涵盖了不同类型的数据源（如网络文本、书籍、对话数据等），以及如何进行数据预处理以提升模型性能。此外，还介绍了数据增强技术和数据质量评估方法，帮助我们更好地理解如何利用高质量的数据来训练出更优秀的语言模型。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture13&amp;14/lec13.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="14" data-listing-file-modified-sort="1771609549791" data-listing-reading-time-sort="21" data-listing-word-count-sort="4185">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture15/lec15.html" class="no-external">
-
-<p class="card-img-top"><img src="Lecture15/assets/lec15-overview-post-training.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture15/lec15.html" class="no-external">Lecture 15: LLM Alignment SFT &amp; RLHF(PPO, DPO)</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture15/lec15.html" class="no-external">
-<p>Lecture15主要梳理 LLM 的后训练（<strong>Post-Training</strong>）主线：从监督微调（<strong>SFT</strong>）的数据与目标函数出发，解释为何SFT可以让模型获得一定的Instruct Following的能力，并系统介绍 RLHF 的奖励模型训练与 <strong>PPO</strong> 更新流程，进一步对比 <strong>DPO</strong>/<strong>SimPO</strong> 等将 RL 简化为监督学习的替代方案。最后总结 RLHF 的关键风险（<strong>reward hacking</strong>、<strong>model collapse</strong>），并说明为何需要走向可验证奖励的 RLVR 来提升推理能力与训练稳定性。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture15/lec15.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="15" data-listing-file-modified-sort="1771609549800" data-listing-reading-time-sort="19" data-listing-word-count-sort="3745">
-<div class="thumbnail"><a href="../../posts/CS336/Lecture16&amp;17/lec16.html" class="no-external">
-
-<img loading="lazy" src="../../posts/CS336/Lecture16&amp;17/assets/lec16-grpo-ppo.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="../../posts/CS336/Lecture16&amp;17/lec16.html" class="no-external">Lecture 16 &amp; 17: LLM Alignment SFT &amp; RLVR（GRPO）</a>
-</h3>
-<div class="delink listing-description"><a href="../../posts/CS336/Lecture16&amp;17/lec16.html" class="no-external">
-<p>这节介绍了PPO， 以及DPO所存在的问题，并且引出了Reinforcement Learning from Verified Rewards (RLVR)的新方法<strong>GRPO</strong>。内容包括Advantage Function、Length Normalization关键技术细节，并通过DeepSeek-R1、Kimi 1.5和Qwen3等案例展示了GRPO在实际中的应用。而Lecture17则通过一个排序任务的具体例子，详细讲解了GRPO算法的实现细节，包括数据生成、奖励函数设计、模型架构以及训练过程，在这里就把两节课合成一节课来写。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="../../posts/CS336/Lecture16&amp;17/lec16.html" class="no-external">
-</a>
-</div>
-</div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div>
+
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -1055,7 +1074,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/sta210-s22\.github\.io\/website\/");
+        var filterRegex = new RegExp("https:\/\/yyzhang2025\.github\.io\/LearningNotes");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1387,18 +1406,6 @@ window.Quarto = {
     }
   });
   </script>
-<nav class="page-navigation column-page-right">
-  <div class="nav-page nav-page-previous">
-      <a href="../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="pagination-link" aria-label="Vision Transformer">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Vision Transformer</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="../../posts/CS336/Lecture01/lec01.html" class="pagination-link" aria-label="Lecture 01: Introduction &amp; BPE">
-        <span class="nav-page-text">Lecture 01: Introduction &amp; BPE</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

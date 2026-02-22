@@ -6,7 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Transformer 是一种基于自注意力机制的深度学习架构， 能够并行处理序列，在语言、视觉和多模态任务中表现出色， 并且作为 GPT、BERT 等大型语言模型（LLM）的核心基础， 推动了当今生成式人工智能的快速发展。 在本篇文章中，我们将深入探讨 Transformer 的基本原理， 以及关键组件，包括 Word Embedding、 Position Embedding、 Attention、 Normalization Layer 和 Feed Forward Layer。 并且通过在  Ted Talks  数据集上的实验，展示 Transformer 在实际任务中的应用效果。">
+<meta name="author" content="YY Zhang">
+<meta name="description" content="Transformer 是一种基于 自注意力机制 的深度学习架构，能够并行处理序列，在语言、视觉和多模态任务中表现出色；并且作为 GPT、BERT 等大型语言模型（LLM）的核心基础，推动了当今生成式人工智能的快速发展。在本篇文章中，我们将深入探讨 Transformer 的基本原理，以及关键组件，包括 Word Embedding、Position Embedding、Attention、Normalization Layer 和 Feed Forward Layer。并通过在 Ted Talks 数据集上的实验，展示 Transformer 在实际任务中的应用效果。">
 
 <title>01: Attention is All You Need (Transformer) – Learning Note</title>
 <style>
@@ -87,6 +88,7 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../../">
 <link href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" rel="next">
 <link href="../../../posts/100-AI-Papers/100_Papers_index.html" rel="prev">
+<link href="../../.././style/icon.avif" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
@@ -98,9 +100,9 @@ div.csl-indent {
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-54ea7a8788961299870a163422834ed2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-01e1ab90bb0902c54ef2dc3889c8698d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-987788bda8b0cf97ae4c62c0f40f22af.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-01e1ab90bb0902c54ef2dc3889c8698d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.css" rel="stylesheet">
 <script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
@@ -131,6 +133,15 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E8EJCZTZG1"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-E8EJCZTZG1', { 'anonymize_ip': true});
+</script>
 <link href="https://fonts.cdnfonts.com/css/cmu-sans-serif" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <script>
@@ -392,9 +403,9 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/100-AI-Papers/100_Papers_index.html">📝 100 AI Papers with Code</a></li><li class="breadcrumb-item"><a href="../../../posts/100-AI-Papers/01-transformer/Transformer.html">Transformer</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">01: Attention is All You Need (<tag style="color:orange">Transformer</tag>)</h1>
+        </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -426,7 +437,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About</span></a>
+ <span class="menu-text">About website</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -447,13 +458,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/01-transformer/Transformer.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Transformer</span></a>
+ <span class="menu-text">001: Transformer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Vision Transformer</span></a>
+ <span class="menu-text">002: Vision Transformer</span></a>
   </div>
 </li>
       </ul>
@@ -580,6 +591,18 @@ window.Quarto = {
  <span class="menu-text">About this book</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter01/Chapter01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 01: Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter02/Chapter02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 02: Probability and Information Theory</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -659,9 +682,9 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/100-AI-Papers/100_Papers_index.html">📝 100 AI Papers with Code</a></li><li class="breadcrumb-item"><a href="../../../posts/100-AI-Papers/01-transformer/Transformer.html">Transformer</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">01: Attention is All You Need (<tag style="color:orange">Transformer</tag>)</h1>
+<h1 class="title d-none d-lg-block">01: Attention is All You Need (<tag style="color:orange">Transformer</tag>)</h1>
   <div class="quarto-categories">
     <div class="quarto-category">NLP</div>
     <div class="quarto-category">Architecture</div>
@@ -672,13 +695,19 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    <p>Transformer 是一种基于<strong>自注意力机制</strong>的深度学习架构， 能够并行处理序列，在语言、视觉和多模态任务中表现出色， 并且作为 <strong>GPT</strong>、<strong>BERT</strong> 等大型语言模型（LLM）的核心基础， 推动了当今生成式人工智能的快速发展。 在本篇文章中，我们将深入探讨 Transformer 的基本原理， 以及关键组件，包括 <strong>Word Embedding</strong>、 <strong>Position Embedding</strong>、 <strong>Attention</strong>、 <strong>Normalization Layer</strong> 和 <strong>Feed Forward Layer</strong>。 并且通过在 <a href="https://huggingface.co/datasets/IWSLT/ted_talks_iwslt" target="_blank" rel="noopener"> Ted Talks </a> 数据集上的实验，展示 Transformer 在实际任务中的应用效果。</p>
+    Transformer 是一种基于 <strong>自注意力机制</strong> 的深度学习架构，能够并行处理序列，在语言、视觉和多模态任务中表现出色；并且作为 <strong>GPT</strong>、<strong>BERT</strong> 等大型语言模型（LLM）的核心基础，推动了当今生成式人工智能的快速发展。在本篇文章中，我们将深入探讨 Transformer 的基本原理，以及关键组件，包括 <strong>Word Embedding</strong>、<strong>Position Embedding</strong>、<strong>Attention</strong>、<strong>Normalization Layer</strong> 和 <strong>Feed Forward Layer</strong>。并通过在 <a href="https://huggingface.co/datasets/IWSLT/ted_talks_iwslt">Ted Talks</a> 数据集上的实验，展示 Transformer 在实际任务中的应用效果。
   </div>
 </div>
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>YY Zhang </p>
+          </div>
+  </div>
     
   
     
@@ -1922,7 +1951,7 @@ W_{i,j} \sim \mathcal{U}\left(-\sqrt{\frac{6}{n_{in} + n_{out}}}, \sqrt{\frac{6}
 <section id="optimizer" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="optimizer"><span class="header-section-number">3.3</span> Optimizer</h2>
 <p>Transformer的论文中，用的是Adam Optimizer <span class="citation" data-cites="AdamMethodStochastic2017kingma">(<a href="#ref-AdamMethodStochastic2017kingma" role="doc-biblioref">Kingma and Ba 2017</a>)</span>, 它是一种自适应学习率优化算法，结合了动量法和RMSProp的优点。Adam通过计算梯度的一阶矩估计（动量）和二阶矩估计（梯度的平方的指数加权平均）来调整每个参数的学习率，从而提高训练的稳定性和收敛速度。Adam的更新规则如下:</p>
-<div id="algo-adam-wd" class="pseudocode-container quarto-float" data-indent-size="1.2em" data-comment-delimiter="#" data-pseudocode-number="1" data-line-number-punc=":" data-no-end="false" data-line-number="true" data-caption-prefix="Algorithm">
+<div id="algo-adam-wd" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-comment-delimiter="#" data-pseudocode-number="1" data-line-number-punc=":" data-no-end="false" data-indent-size="1.2em" data-line-number="true">
 <div class="pseudocode">
 \begin{algorithm} \caption{Adam with L2 Regularization(Weight Decay)} \begin{algorithmic} \Require Parameters $\theta_0$ \Require Learning rate $\alpha$, betas $(\beta_1,\beta_2)$ \Require Weight decay coefficient $\lambda$ \State Initialize $m_0 \gets 0$, $v_0 \gets 0$, $t \gets 0$ \While{not converged} \State $t \gets t + 1$ \State Compute gradient $g_t \gets \nabla_{\theta}\mathcal{L}(\theta_{t-1})$ \State Apply L2 regularization: $g_t^{\text{wd}} \gets g_t + \lambda \theta_{t-1}$ \State First moment: $m_t \gets \beta_1 m_{t-1} + (1-\beta_1) g_t^{\text{wd}}$ \State Second moment: $v_t \gets \beta_2 v_{t-1} + (1-\beta_2)\left(g_t^{\text{wd}}\right)^2$ \State Bias-corrected moments: $\hat m_t \gets \dfrac{m_t}{1-\beta_1^t}$, $\hat v_t \gets \dfrac{v_t}{1-\beta_2^t}$ \State Parameter update: $\theta_t \gets \theta_{t-1} - \alpha \dfrac{\hat m_t}{\sqrt{\hat v_t} + \epsilon}$ \EndWhile \end{algorithmic} \end{algorithm}
 </div>
@@ -2362,7 +2391,7 @@ Table&nbsp;1: Key Concepts in Transformer
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-LayerNormalization2016ba" class="csl-entry" role="listitem">
 Ba, Jimmy Lei, Jamie Ryan Kiros, and Geoffrey E. Hinton. 2016. <span>“Layer <span>Normalization</span>.”</span> July 21, 2016. <a href="https://doi.org/10.48550/arXiv.1607.06450">https://doi.org/10.48550/arXiv.1607.06450</a>.
 </div>
@@ -2488,7 +2517,7 @@ Zhang, Biao, and Rico Sennrich. 2019. <span>“Root <span>Mean Square Layer Norm
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/sta210-s22\.github\.io\/website\/");
+        var filterRegex = new RegExp("https:\/\/yyzhang2025\.github\.io\/LearningNotes");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -2859,8 +2888,8 @@ Zhang, Biao, and Rico Sennrich. 2019. <span>“Root <span>Mean Square Layer Norm
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="pagination-link" aria-label="Vision Transformer">
-        <span class="nav-page-text">Vision Transformer</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="pagination-link" aria-label="002: Vision Transformer">
+        <span class="nav-page-text">002: Vision Transformer</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

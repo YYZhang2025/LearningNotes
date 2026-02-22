@@ -87,6 +87,7 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../../">
 <link href="../../../posts/CS336/Ass01/ass01.html" rel="next">
 <link href="../../../posts/CS336/Lecture15/lec15.html" rel="prev">
+<link href="../../.././style/icon.avif" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
@@ -98,9 +99,9 @@ div.csl-indent {
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-54ea7a8788961299870a163422834ed2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-01e1ab90bb0902c54ef2dc3889c8698d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-987788bda8b0cf97ae4c62c0f40f22af.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-01e1ab90bb0902c54ef2dc3889c8698d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.css" rel="stylesheet">
 <script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
@@ -131,6 +132,15 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E8EJCZTZG1"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-E8EJCZTZG1', { 'anonymize_ip': true});
+</script>
 <link href="https://fonts.cdnfonts.com/css/cmu-sans-serif" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <script>
@@ -392,9 +402,9 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/CS336/index.html">🎓 Stanford CS336: LLM from Scratch</a></li><li class="breadcrumb-item"><a href="../../../posts/CS336/Lecture16&amp;17/lec16.html">Lecture 16 &amp; 17: LLM Alignment SFT &amp; RLVR(GRPO)</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">Lecture 16 &amp; 17: LLM Alignment SFT &amp; RLVR（GRPO）</h1>
+        </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -642,9 +652,9 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/CS336/index.html">🎓 Stanford CS336: LLM from Scratch</a></li><li class="breadcrumb-item"><a href="../../../posts/CS336/Lecture16&amp;17/lec16.html">Lecture 16 &amp; 17: LLM Alignment SFT &amp; RLVR(GRPO)</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lecture 16 &amp; 17: LLM Alignment SFT &amp; RLVR（GRPO）</h1>
+<h1 class="title d-none d-lg-block">Lecture 16 &amp; 17: LLM Alignment SFT &amp; RLVR（GRPO）</h1>
 </div>
 
 <div>
@@ -858,7 +868,7 @@ Figure&nbsp;2: 对比了 PPO 与 GRPO 的训练流程差异： <br>上半部分�
 <section id="grpo-algorithm" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="grpo-algorithm"><span class="header-section-number">3.3</span> GRPO Algorithm</h2>
 <p>了解了GRPO的Objective Function (<a href="#eq-grpo" class="quarto-xref">Equation&nbsp;1</a>) 和Advantage计算(<a href="#eq-grpo-advantage" class="quarto-xref">Equation&nbsp;3</a>) 后，我们来看一下GRPO的整体算法流程：</p>
-<div id="algo-grpo" class="pseudocode-container quarto-float" data-indent-size="1.2em" data-no-end="false" data-pseudocode-number="1" data-caption-prefix="Algorithm" data-comment-delimiter="#" data-line-number-punc=":" data-line-number="true">
+<div id="algo-grpo" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-line-number="true" data-line-number-punc=":" data-comment-delimiter="#" data-pseudocode-number="1" data-no-end="false">
 <div class="pseudocode">
 \begin{algorithm} \caption{Iterative Group Relative Policy Optimization (GRPO)}\begin{algorithmic} \Require initial policy model $\pi_{\theta_{\text{init}}}$; reward model(s) $r_\phi$; task prompts $\mathcal{D}$; hyperparameters $\epsilon, \beta, \mu$; group size $G$; iterations $I$; steps $M$ \Ensure trained policy $\pi_\theta$ \State $\pi_\theta \gets \pi_{\theta_{\text{init}}}$ \For{$\text{iteration} = 1, \ldots, I$} \State $\pi_{\text{ref}} \gets \pi_\theta$ \Comment{reference (anchor) policy} \For{$\text{step} = 1, \ldots, M$} \State Sample a batch $\mathcal{D}_b$ from $\mathcal{D}$ \State $\pi_{\theta_{\text{old}}} \gets \pi_\theta$ \Comment{snapshot old policy} \ForAll{$q \in \mathcal{D}_b$} \State Sample $G$ outputs $\{o_i\}_{i=1}^{G} \sim \pi_{\theta_{\text{old}}}(\cdot \mid q)$ \State Compute rewards $\{r_i\}_{i=1}^{G}$ by $r_i \gets r_\phi(q, o_i)$ \State Compute group-relative advantages $\{\hat{A}_{i,t}\}$ for each token $t$ in each $o_i$ \EndFor \For{$\text{GRPO-iter} = 1, \ldots, \mu$} \State Update $\pi_\theta$ by maximizing the GRPO objective \EndFor \State Update $r_\phi$ via continuous training using a replay mechanism \EndFor \EndFor \State \Return $\pi_\theta$ \end{algorithmic} \end{algorithm}
 </div>
@@ -1376,7 +1386,7 @@ prompt: [3, 6, 0, 2] | pred: [1, 1, 3, 7] | gt: [0, 2, 3, 6] | sort reward: 1 | 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-DeepSeekR1IncentivizingReasoning2025deepseek-ai" class="csl-entry" role="listitem">
 DeepSeek-AI, Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Peiyi Wang, Qihao Zhu, et al. 2025. <span>“<span>DeepSeek-R1</span>: <span>Incentivizing Reasoning Capability</span> in <span>LLMs</span> via <span>Reinforcement Learning</span>.”</span> <em>Nature</em> 645 (8081): 633–38. <a href="https://doi.org/10.1038/s41586-025-09422-z">https://doi.org/10.1038/s41586-025-09422-z</a>.
 </div>
@@ -1472,7 +1482,7 @@ Shao, Zhihong, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Z
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/sta210-s22\.github\.io\/website\/");
+        var filterRegex = new RegExp("https:\/\/yyzhang2025\.github\.io\/LearningNotes");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

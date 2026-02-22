@@ -87,6 +87,7 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../../">
 <link href="../../../posts/CS336/Ass02/ass02.html" rel="next">
 <link href="../../../posts/CS336/Lecture16&amp;17/lec16.html" rel="prev">
+<link href="../../.././style/icon.avif" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
@@ -98,9 +99,9 @@ div.csl-indent {
 <link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../../site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-54ea7a8788961299870a163422834ed2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../../site_libs/bootstrap/bootstrap-d955a6f9d49e1ec5ed65a13bb8102cd7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-01e1ab90bb0902c54ef2dc3889c8698d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-987788bda8b0cf97ae4c62c0f40f22af.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-01e1ab90bb0902c54ef2dc3889c8698d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../../site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.css" rel="stylesheet">
 <script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
@@ -131,6 +132,15 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E8EJCZTZG1"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-E8EJCZTZG1', { 'anonymize_ip': true});
+</script>
 <link href="https://fonts.cdnfonts.com/css/cmu-sans-serif" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 <script>
@@ -392,9 +402,9 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/CS336/index.html">🎓 Stanford CS336: LLM from Scratch</a></li><li class="breadcrumb-item"><a href="../../../posts/CS336/Ass01/ass01.html">Assignment 01: BPE Tokenizer &amp; Transformer LM</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">Assignment 01: Tokenization &amp; Language Modeling</h1>
+        </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -690,9 +700,9 @@ window.Quarto = {
 <main class="content page-columns page-full" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../posts/CS336/index.html">🎓 Stanford CS336: LLM from Scratch</a></li><li class="breadcrumb-item"><a href="../../../posts/CS336/Ass01/ass01.html">Assignment 01: BPE Tokenizer &amp; Transformer LM</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Assignment 01: Tokenization &amp; Language Modeling</h1>
+<h1 class="title d-none d-lg-block">Assignment 01: Tokenization &amp; Language Modeling</h1>
 </div>
 
 <div>
@@ -795,7 +805,7 @@ window.Quarto = {
 <li><strong>Repeat</strong>: 重复步骤2,3，直到达到预定的合并次数</li>
 </ol>
 <p>BPE 的伪代码如下所示：</p>
-<div id="algo-bpe" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-no-end="false" data-line-number-punc=":" data-indent-size="1.2em" data-pseudocode-number="1" data-line-number="true" data-comment-delimiter="#">
+<div id="algo-bpe" class="pseudocode-container quarto-float" data-line-number-punc=":" data-pseudocode-number="1" data-comment-delimiter="#" data-line-number="true" data-no-end="false" data-indent-size="1.2em" data-caption-prefix="Algorithm">
 <div class="pseudocode">
 \begin{algorithm} \caption{BPE Training} \begin{algorithmic} \Require Corpus text $\mathcal{D}$ \Require Number of merges $M$ \Require Special tokens $\mathcal{S}$ (e.g., \texttt{&lt;|endoftext|&gt;}) \Ensure Vocabulary $V$, merge rules list $\Pi$ \State Convert each document $x \in \mathcal{D}$ into bytes $b(x)$ \State Initialize tokenized corpus as sequences of single-byte tokens \State $V \gets \{0,1,\dots,255\} \cup \mathcal{S}$ \State $\Pi \gets [\,]$ \For{$t = 1$ \textbf{to} $M$} \State $C \gets$ empty map from pair $\to$ count \For{\textbf{each} token sequence $s$ in the corpus} \Comment{Count adjacent byte-token pairs} \For{\textbf{each} index $i$ from $1$ to $|s|-1$} \State $C[(s_i, s_{i+1})] \gets C[(s_i, s_{i+1})] + 1$ \EndFor \EndFor \State Choose $(a,b)$ with the largest count in $C$ \Comment{Select the most frequent pair} \State Define a new token $new$ as the merge of $(a,b)$ \State $V \gets V \cup \{new\}$ \Comment{Create a new merged token and record the merge rule} \State Append $(a,b)\rightarrow new$ to $\Pi$ \For{\textbf{each} token sequence $s$ in the corpus} \Comment{Replace all occurrences of $(a,b)$ in the corpus} \State Replace adjacent $(a,b)$ with $new$ left-to-right (non-overlapping) \EndFor \EndFor \State \Return $V, \Pi$ \end{algorithmic} \end{algorithm}
 </div>
@@ -3773,7 +3783,7 @@ Figure&nbsp;12: 生成文本示例, prompt=“Once upon a time”, <code>max_new
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-DecoupledWeightDecay2019loshchilov" class="csl-entry" role="listitem">
 Loshchilov, Ilya, and Frank Hutter. 2019. <span>“Decoupled <span>Weight Decay Regularization</span>.”</span> January 4, 2019. <a href="https://doi.org/10.48550/arXiv.1711.05101">https://doi.org/10.48550/arXiv.1711.05101</a>.
 </div>
@@ -3881,7 +3891,7 @@ Zhuo, Zhijian, Yutao Zeng, Ya Wang, Sijun Zhang, Jian Yang, Xiaoqing Li, Xun Zho
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/sta210-s22\.github\.io\/website\/");
+        var filterRegex = new RegExp("https:\/\/yyzhang2025\.github\.io\/LearningNotes");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

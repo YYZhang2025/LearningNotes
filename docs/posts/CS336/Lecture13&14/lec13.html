@@ -21,7 +21,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -352,7 +372,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About</span></a>
+ <span class="menu-text">About website</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -373,13 +393,19 @@ document.addEventListener("DOMContentLoaded", function () {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/01-transformer/Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Transformer</span></a>
+ <span class="menu-text">01: Transformer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Vision Transformer</span></a>
+ <span class="menu-text">02: Vision Transformer</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/100-AI-Papers/03-deit/DeiT.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03: DeiT</span></a>
   </div>
 </li>
       </ul>
@@ -506,6 +532,18 @@ document.addEventListener("DOMContentLoaded", function () {
  <span class="menu-text">About this book</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter01/Chapter01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 01: Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter02/Chapter02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 02: Probability and Information Theory</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -513,8 +551,28 @@ document.addEventListener("DOMContentLoaded", function () {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#why-data-matters" id="toc-why-data-matters" class="nav-link active" data-scroll-target="#why-data-matters"><span class="header-section-number">1</span> Why Data Matters?</a></li>
+  <li><a href="#different-types-of-data" id="toc-different-types-of-data" class="nav-link" data-scroll-target="#different-types-of-data"><span class="header-section-number">2</span> Different Types of Data</a>
+  <ul>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">2.1</span> Example</a></li>
+  </ul></li>
+  <li><a href="#pre-training-data-collection" id="toc-pre-training-data-collection" class="nav-link" data-scroll-target="#pre-training-data-collection"><span class="header-section-number">3</span> Pre-Training Data Collection</a>
+  <ul>
+  <li><a href="#common-crawl" id="toc-common-crawl" class="nav-link" data-scroll-target="#common-crawl"><span class="header-section-number">3.1</span> Common Crawl</a>
+  <ul>
+  <li><a href="#filter-common-crawl" id="toc-filter-common-crawl" class="nav-link" data-scroll-target="#filter-common-crawl"><span class="header-section-number">3.1.1</span> Filter Common Crawl</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">3.1.1.1</span> </a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -544,10 +602,75 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
+<p>我们知道，模型训练需要两个重要的因素：模型架构和数据。前面的几节课程我们主要关注了模型架构的设计和优化，而在这一节，我们将重点讨论数据的重要性。要想训练好一个LLM，除了有强大的模型架构和充足的计算资源，数据同样至关重要。Lecture 13 和 14 将深入探讨用于训练大型语言模型的数据收集、清洗和处理方法。</p>
+<section id="why-data-matters" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Why Data Matters?</h1>
+<p>在很多开源权重模型（例如 LLaMA）的论文中，我们经常看到模型架构的描述和训练细节，但很少有关于数据的详细介绍。其背后主要有两个原因：</p>
+<ol type="1">
+<li><strong>数据隐私和商业机密</strong>：许多公司和研究机构在训练大型语言模型时使用了大量的网络文本、书籍、对话数据等，这些数据往往涉及版权和隐私问题，因此不便公开。</li>
+<li><strong>竞争壁垒</strong>：数据处理是最贵、最难复制的资产之一。</li>
+</ol>
+<p>在Foundation Model之前，数据通常是heavy annotation（例如图像分类中的ImageNet），但对于LLM来说，数据主要来自于网络文本、书籍、对话数据等，这些数据的规模和质量直接影响模型的性能和泛化能力。并且，Data 是一个long-tail problem，数据的质量和多样性对于模型的表现有着深远的影响。</p>
+</section>
+<section id="different-types-of-data" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Different Types of Data</h1>
+<p>大模型的训练阶段简单来说，可以分成3个阶段（现实里阶段节的边界可能更模糊）：</p>
+<ol type="1">
+<li>Pre-Training：在这个阶段，模型会使用大规模的文本数据进行无监督的训练，学习语言的基本结构和语义。</li>
+<li>Mid-Training：定向补充能力，数据更小，但更高质量，通常是一些特定领域的数据。</li>
+<li>Post-Training：让模型可以了聊天，更安全，需要做RLHF等，在这一阶段，需要一些指令数据、对话数据、偏好数据等。</li>
+</ol>
+<p>一个很实用的直觉是：</p>
+<div class="highlight">
+<p>越往后，数据越小、越贵、越“人为设计”，但对最终体验影响越大。</p>
+</div>
+<section id="example" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="example"><span class="header-section-number">2.1</span> Example</h2>
+<p>接下来我们来看一个具体的例子</p>
+<p>了解了不同的LLM训练阶段，接下来，我们来看一下在不同的阶段中，数据是如何收集的，我们先来看一下Pre-Training阶段，之后我们再来介绍Mid-Training和Post-Training阶段的数据收集方法。</p>
+</section>
+</section>
+<section id="pre-training-data-collection" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Pre-Training Data Collection</h1>
+<p>在Pre-Training阶段，模型需要大量的文本数据来学习语言的基本结构和语义。其实在GPT火之前，NLP领域已经有很多预训练语言模型了，例如BERT <span class="citation" data-cites="BERTPretrainingDeep2019devlin">(<a href="#ref-BERTPretrainingDeep2019devlin" role="doc-biblioref">Devlin et al. 2019</a>)</span>，这些模型的训练数据主要来自于网络文本、书籍等公开可用的数据源。 以BERT为例，BERT的训练数据主要来自于以下几个来源：</p>
+<ul>
+<li>BooksCorpus：当年从 Smashwords 抓取的免费自出版书籍（后来因 ToS 被下架）</li>
+<li>Wikipedia：高质量、结构化、引用链清晰，但有明显“缺失面”（观点、生活细节、长尾知识很多不在里面）</li>
+</ul>
+<p>Even high quality data source might contain bad content。</p>
+<p>我们之所以要以BERT为例子，是因为BERT标志着在Training阶段，Sequence are Document而不是之前的一个短句子Sentence，</p>
+<p>接下来我们来看一下GPT-2的训练数据，GPT-2的训练数据主要来自于WebText数据集，WebText是从Reddit上抓取的高质量文本数据，包含了大量的网络文本、新闻文章、博客等内容。其中包含了从 Reddit 高 karma 帖子的外链抓网页，相当于用群体行为做了一层过滤。</p>
+<section id="common-crawl" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="common-crawl"><span class="header-section-number">3.1</span> Common Crawl</h2>
+<p>Common Crawl 是一个非营利组织，致力于定期抓取和存档整个互联网的数据。它提供了一个庞大的、公开可用的网络文本数据集，涵盖了各种类型的网站和内容。Common Crawl 的数据集包含了数十亿个网页的文本内容，这些数据对于训练大型语言模型非常有价值，因为它们提供了丰富的语言表达和多样化的语料来源。Common Crawl（CC）更像：</p>
+<ul>
+<li>每月一次大规模 crawl</li>
+<li>输出 WARC（原始 HTTP 响应）和 WET（抽取后的文本）</li>
+<li>覆盖不完整、重复极多、噪声很大、而且 HTML→text 的工具会显著影响质量</li>
+</ul>
+<p>接下来讨论一下如何将HTML转化为Text。</p>
+<section id="filter-common-crawl" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="filter-common-crawl"><span class="header-section-number">3.1.1</span> Filter Common Crawl</h3>
+<p>原始的Common Crawl数据包含了大量的噪声和无关内容，因此需要进行过滤和清洗。常见的过滤方法包括：</p>
+<ul>
+<li>Rule-Based：基于规则的过滤方法，例如使用正则表达式来去除HTML标签、脚本、样式等无关内容。</li>
+<li>Model-Based：基于模型的过滤方法，例如使用预训练的语言模型来评估文本的质量，去除低质量或无意义的文本。</li>
+</ul>
+<section id="section" class="level4" data-number="3.1.1.1">
 
 
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+
+</section>
+</section>
+</section>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">3.1.1.1 </h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-BERTPretrainingDeep2019devlin" class="csl-entry" role="listitem">
+Devlin, Jacob, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2019. <span>“<span>BERT</span>: <span class="nocase">Pre-training</span> of <span>Deep Bidirectional Transformers</span> for <span>Language Understanding</span>.”</span> May 24, 2019. <a href="https://doi.org/10.48550/arXiv.1810.04805">https://doi.org/10.48550/arXiv.1810.04805</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

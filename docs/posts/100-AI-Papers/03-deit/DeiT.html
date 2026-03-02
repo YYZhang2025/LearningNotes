@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Training data-efficient image transformers &amp; distillation through attention（DeiT）提出了一种通过知识蒸馏（distillation token 与 attention-based distillation）显著提升 Vision Transformer 数据效率的方法，使 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。">
+<meta name="description" content="DeiT提出了一种通过知识蒸馏（distillation token 与 attention-based distillation）显著提升 Vision Transformer 数据效率的方法，使 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。">
 
 <title>03: Training data-efficient image transformers &amp; distillation through attention (DeiT) – Learning Note</title>
 <style>
@@ -21,7 +21,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -30,6 +50,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../../posts/CS336/index.html" rel="next">
+<link href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" rel="prev">
 <link href="../../.././style/icon.avif" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -142,6 +164,35 @@ document.addEventListener("DOMContentLoaded", function () {
       </style>
     
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -317,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title">03: Training data-efficient image transformers &amp; distillation through attention (<tag style="color:blue">DeiT</tag>)</h1>
+          <h1 class="quarto-secondary-nav-title">03: Training data-efficient image transformers &amp; distillation through attention (<tag style="color:orange">DeiT</tag>)</h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -350,18 +401,18 @@ document.addEventListener("DOMContentLoaded", function () {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About</span></a>
+ <span class="menu-text">About website</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">📝 100 AI Papers with Code</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/100_Papers_index.html" class="sidebar-item-text sidebar-link">
@@ -371,13 +422,19 @@ document.addEventListener("DOMContentLoaded", function () {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/01-transformer/Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Transformer</span></a>
+ <span class="menu-text">01: Transformer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Vision Transformer</span></a>
+ <span class="menu-text">02: Vision Transformer</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/100-AI-Papers/03-deit/DeiT.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">03: DeiT</span></a>
   </div>
 </li>
       </ul>
@@ -504,6 +561,18 @@ document.addEventListener("DOMContentLoaded", function () {
  <span class="menu-text">About this book</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter01/Chapter01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 01: Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter02/Chapter02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 02: Probability and Information Theory</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -516,10 +585,20 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#preliminary" id="toc-preliminary" class="nav-link active" data-scroll-target="#preliminary"><span class="header-section-number">1</span> Preliminary</a></li>
+  <li><a href="#preliminary" id="toc-preliminary" class="nav-link active" data-scroll-target="#preliminary"><span class="header-section-number">1</span> Preliminary</a>
+  <ul>
+  <li><a href="#knowledge-distillation" id="toc-knowledge-distillation" class="nav-link" data-scroll-target="#knowledge-distillation"><span class="header-section-number">1.1</span> Knowledge Distillation</a></li>
+  </ul></li>
   <li><a href="#deit" id="toc-deit" class="nav-link" data-scroll-target="#deit"><span class="header-section-number">2</span> DeiT</a>
   <ul>
-  <li><a href="#experiment" id="toc-experiment" class="nav-link" data-scroll-target="#experiment"><span class="header-section-number">2.1</span> Experiment</a></li>
+  <li><a href="#why-need-distillation" id="toc-why-need-distillation" class="nav-link" data-scroll-target="#why-need-distillation"><span class="header-section-number">2.1</span> Why need distillation?</a></li>
+  <li><a href="#loss-functions-in-deit" id="toc-loss-functions-in-deit" class="nav-link" data-scroll-target="#loss-functions-in-deit"><span class="header-section-number">2.2</span> Loss Functions in DeiT</a>
+  <ul>
+  <li><a href="#hard-vs.-soft-distillation" id="toc-hard-vs.-soft-distillation" class="nav-link" data-scroll-target="#hard-vs.-soft-distillation"><span class="header-section-number">2.2.1</span> Hard vs.&nbsp;Soft Distillation</a></li>
+  <li><a href="#classical-distillation-vs.-token-distillation" id="toc-classical-distillation-vs.-token-distillation" class="nav-link" data-scroll-target="#classical-distillation-vs.-token-distillation"><span class="header-section-number">2.2.2</span> Classical Distillation vs.&nbsp;Token Distillation</a></li>
+  </ul></li>
+  <li><a href="#teacher-model" id="toc-teacher-model" class="nav-link" data-scroll-target="#teacher-model"><span class="header-section-number">2.3</span> Teacher Model</a></li>
+  <li><a href="#experiment" id="toc-experiment" class="nav-link" data-scroll-target="#experiment"><span class="header-section-number">2.4</span> Experiment</a></li>
   </ul></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">3</span> Summary</a></li>
   <li><a href="#key-concepts" id="toc-key-concepts" class="nav-link" data-scroll-target="#key-concepts"><span class="header-section-number">4</span> Key Concepts</a></li>
@@ -534,7 +613,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">03: Training data-efficient image transformers &amp; distillation through attention (<tag style="color:blue">DeiT</tag>)</h1>
+<h1 class="title d-none d-lg-block">03: Training data-efficient image transformers &amp; distillation through attention (<tag style="color:orange">DeiT</tag>)</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Computer Vision</div>
     <div class="quarto-category">Transformer</div>
@@ -544,7 +623,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <div>
   <div class="description">
-    Training data-efficient image transformers &amp; distillation through attention（DeiT）提出了一种通过知识蒸馏（distillation token 与 attention-based distillation）显著提升 Vision Transformer 数据效率的方法，使 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。
+    DeiT提出了一种通过知识蒸馏（distillation token 与 attention-based distillation）显著提升 Vision Transformer 数据效率的方法，使 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。
   </div>
 </div>
 
@@ -561,32 +640,262 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<p><img src="assets/cover.png" class="img-fluid"></p>
+<p>再上一篇，我们介绍了 Vision Transformer（ViT），它将 Transformer 架构成功应用于计算机视觉任务，展示了在大规模数据集上优越的性能。然而，ViT 对训练数据的需求非常高（data hungry），在中小规模数据集上表现不佳（在CIFAR-10上仅有30%左右的准确率）。为了解决这个问题，DeiT（Data-efficient Image Transformers）提出了一种基于知识蒸馏的方法，通过引入一个专门的蒸馏 token 和 attention-based distillation 技术，使得 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。</p>
+<p>在本篇文章中，我们将深入探讨 DeiT 的核心思想、实验结果以及其在计算机视觉领域的影响。我们将首先介绍 DeiT 的基本架构和训练方法，然后分析其在多个数据集上的表现，最后总结其关键概念并提供相关资源供进一步学习。</p>
 <section id="preliminary" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Preliminary</h1>
+<p>首先，我们来准备一些必要的背景知识，以便更好地理解 DeiT 的创新之处。当然，我们要先了解什么是<a href="https://yyzhang2025.github.io/LearningNotes/posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html">Vision Transformer</a> 在这里就不多赘述了，有需要的同学可以回顾一下上一篇文章。其次，我们还需要了解一下知识蒸馏（Knowledge Distillation）的基本概念。</p>
+<section id="knowledge-distillation" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="knowledge-distillation"><span class="header-section-number">1.1</span> Knowledge Distillation</h2>
+<p>Knowledge Distillation(<span class="citation" data-cites="DistillingKnowledgeNeural2015hinton">(<a href="#ref-DistillingKnowledgeNeural2015hinton" role="doc-biblioref">Hinton, Vinyals, and Dean 2015</a>)</span>) 是一种<strong>Model Compression</strong>技术，旨在将一个大型、复杂的教师模型（teacher model）中的知识传递给一个较小、较简单的学生模型（student model）。通过这种方式，<u>学生模型可以在保持较高性能的同时减少计算资源的需求</u>。通过最小化KL-Divergence等损失函数，学生模型学习模仿教师模型的输出分布，从而获得更好的泛化能力:</p>
+<p><span id="eq-kd-loss"><span class="math display">\[
+L_{KD} = \alpha L_{CE}(y, p_{student}) + (1 - \alpha) L_{KL}(p_{teacher}, p_{student})
+\tag{1}\]</span></span></p>
+<p>其中，<span class="math inline">\(L_{CE}\)</span> 是学生模型的Cross Entropy Loss，<span class="math inline">\(L_{KL}\)</span> 是教师模型和学生模型输出分布之间的 KL 散度，<span class="math inline">\(\alpha\)</span> 是一个权衡参数, <span class="math inline">\(p_{teacher}\)</span> 和 <span class="math inline">\(p_{student}\)</span> 分别是教师模型和学生模型的输出概率分布, <span class="math inline">\(y\)</span> 是真实标签的one-hot encoding。</p>
+<p>从这个损失函数(<a href="#eq-kd-loss" class="quarto-xref">Equation&nbsp;1</a>)可以看出，知识蒸馏不仅考虑了学生模型与真实标签之间的误差（通过交叉熵损失），还考虑了学生模型与教师模型输出分布之间的差异（通过 KL 散度）。这种双重监督机制使得学生模型能够更好地捕捉教师模型中的知识，从而在性能上得到提升。</p>
+</section>
 </section>
 <section id="deit" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> DeiT</h1>
-<section id="experiment" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="experiment"><span class="header-section-number">2.1</span> Experiment</h2>
+<p>有了上述背景知识，我们现在可以深入探讨 DeiT 的核心创新。DeiT是由 Facebook AI Research（FAIR）的研究人员提出的，旨在通过知识蒸馏显著提升 Vision Transformer 的数据效率。DeiT 的核心思想是引入一个专门的蒸馏 token 和 attention-based distillation 技术，使得 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。DeiT的整体架构如下图所示：</p>
+<div id="fig-deit-architecture" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-deit-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/cover.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-deit-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Overview of the DeiT architecture.
+</figcaption>
+</figure>
+</div>
+<p>从图中可以看出，DeiT 在 ViT 的基础上引入了一个新的蒸馏 token （<code>[DIS]</code>），该 token 通过与教师模型的输出进行对齐来学习教师模型的知识。并且在训练过程中，DeiT 同时优化两个损失函数：</p>
+<ul>
+<li>一个是常规的交叉熵损失，用于监督 class token 的分类性能；</li>
+<li>另一个是 KL 散度损失，用于监督 distillation token 的输出与教师模型的输出分布之间的一致性。</li>
+</ul>
+<p>从代码实现的角度来看，DeiT 的训练过程可以分为以下几个步骤：</p>
+<ol type="1">
+<li><strong>教师模型训练</strong>：首先，训练一个大型的教师模型（通常是一个预训练的 CNN）来获得高性能的视觉特征表示。</li>
+<li><strong>学生模型初始化</strong>：然后，初始化一个较小的学生模型（DeiT），并引入一个新的蒸馏 token。</li>
+<li><strong>知识蒸馏训练</strong>：在训练过程中，学生模型通过最小化与教师模型输出的 KL 散度来学习教师模型的知识，同时通过最小化注意力分布差异来进一步提升性能。</li>
+</ol>
+<p>接下来我们来具体看一下DeiT的实现细节，以及为什么要这么设定。</p>
+<section id="why-need-distillation" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="why-need-distillation"><span class="header-section-number">2.1</span> Why need distillation?</h2>
+<div id="fig-throughput-accuracy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-throughput-accuracy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/throughput-accuracy.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-throughput-accuracy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: 比较 DeiT 与其他模型在吞吐量（images/s）和精度（top-1 accuracy）上的权衡。
+</figcaption>
+</figure>
+</div>
+<p>在 DeiT 的实验中，作者比较了不同模型在吞吐量（images/s）和精度（top-1 accuracy）上的权衡。通过引入知识蒸馏，DeiT 在保持较高精度的同时显著提升了吞吐量。这表明 DeiT 的核心创新（引入 distillation token 和 attention-based distillation）在提升 ViT 的数据效率方面起到了关键作用，使得 ViT 能够在中小规模数据集上高效训练并达到与 CNN 可比的性能。</p>
+</section>
+<section id="loss-functions-in-deit" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="loss-functions-in-deit"><span class="header-section-number">2.2</span> Loss Functions in DeiT</h2>
+<p>在DeiT这篇文章中，它将Distillation 分为两个维度：</p>
+<ol type="1">
+<li><strong>Hard vs Soft Distillation</strong>：Hard distillation 直接使用教师模型的 argmax 类别作为伪标签进行交叉熵监督，而 soft distillation 则通过对齐教师模型和学生模型的 softmax 分布来进行监督。</li>
+<li><strong>Classical Distllation vs Token Distillation</strong>：Classical distillation 直接对学生模型的 class token 输出进行蒸馏，而 token distillation 则引入一个专门的 distillation token，通过自注意力与其他 token 交互并预测教师模型的标签。</li>
+</ol>
+<p>我们先来看一下Hard vs Soft Distillation</p>
+<section id="hard-vs.-soft-distillation" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="hard-vs.-soft-distillation"><span class="header-section-number">2.2.1</span> Hard vs.&nbsp;Soft Distillation</h3>
+<p>Soft Distllation 是最常见的Knowledge Distillation的方法，与我们在前面提到的 KD Loss(<a href="#eq-kd-loss" class="quarto-xref">Equation&nbsp;1</a>) 中的 KL 散度部分类似，旨在对齐教师模型和学生模型的输出分布。它的损失函数可以表示为：</p>
+<p><span class="math display">\[
+\mathcal{L}_\text{global} = (1 - \lambda) \cdot \mathcal{L}_\text{CE}(\psi(Z_s), y) + \lambda \cdot T^2 \cdot \mathcal{L}_\text{KL}(\psi(Z_t / T), \psi(Z_s / T))
+\]</span></p>
+<p>其中，<span class="math inline">\(T\)</span> 是温度参数，用于平滑教师模型的输出分布，<span class="math inline">\(Z_t\)</span> 和 <span class="math inline">\(Z_s\)</span> 分别是教师模型和学生模型的输出的 logits，<span class="math inline">\(\psi\)</span> 是 softmax 函数，<span class="math inline">\(\lambda\)</span> 是权衡参数。</p>
+<p>通过调节温度参数 <span class="math inline">\(T\)</span>，我们可以控制教师模型输出分布的平滑程度，从而影响学生模型学习的效果。通常情况下，较高的温度会使教师模型的输出分布更加平滑，有助于学生模型更好地捕捉教师模型中的知识。</p>
+<p>与soft distillation相比， DeiT提出了hard distillation的概念，即直接使用教师模型的 argmax 类别作为伪标签进行交叉熵监督。它的损失函数可以表示为：</p>
+<p><span class="math display">\[
+\mathcal{L}_\text{global}^{\text{hard}} = \frac{1}{2} \cdot \mathcal{L}_\text{CE}(\psi(Z_s), y) + \frac{1}{2} \cdot \mathcal{L}_\text{CE}(\psi(Z_s), \text{argmax}(Z_t))
+\]</span></p>
+<p>在 DeiT 的实验中，作者发现 hard distillation 在强增强和数据匮乏的情况下表现更好，推测是因为 hard 监督更稳健、更“像标签”，而 soft distillation 在这种情况下可能过于平滑，导致学生模型难以捕捉教师模型中的关键信息。</p>
+<div class="note foldable is-open">
+<div class="note-header foldable-header">
+<p>NOTE: Convert Between Hard and Soft Distillation</p>
+</div>
+<div class="note-container foldable-content">
+<p>论文中提到，Hard-Label Disllation 可以通过Label Smoothing的方法，从而转化为Soft Distillation。具体来说，在Transformer的章节，我们已经了解了Label Smoothing的概念：它通过将真实标签的 one-hot encoding 转换为一个平滑的分布来防止模型过拟合：</p>
+<p><span class="math display">\[
+y_{smooth} = (1 - \epsilon) \cdot y + \epsilon / K
+\]</span></p>
+<p>其中，<span class="math inline">\(y\)</span> 是原始的 one-hot 标签，<span class="math inline">\(\epsilon\)</span> 是平滑参数，<span class="math inline">\(K\)</span> 是类别总数，通过这种方法，True Label有<span class="math inline">\(1 - \epsilon\)</span> 的概率，而其他类别有 <span class="math inline">\(\epsilon / K\)</span> 的概率。通过调整 <span class="math inline">\(\epsilon\)</span> 的值，我们可以在 Hard Distillation 和 Soft Distillation 之间进行平滑过渡, 比如当 <span class="math inline">\(\epsilon\)</span> 接近 0 时，<span class="math inline">\(y_{smooth}\)</span> 接近于原始的 one-hot 标签，类似于 Hard Distillation；当 <span class="math inline">\(\epsilon\)</span> 较大时，<span class="math inline">\(y_{smooth}\)</span> 更加平滑，类似于 Soft Distillation。</p>
+</div>
+</div>
+</section>
+<section id="classical-distillation-vs.-token-distillation" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="classical-distillation-vs.-token-distillation"><span class="header-section-number">2.2.2</span> Classical Distillation vs.&nbsp;Token Distillation</h3>
+<p>了解了 Loss 函数的不同，接下来我们来看一下 Classical Distillation 和 Token Distillation 的区别。我们知道在传统的知识蒸馏方法中，学生模型直接对齐教师模型的输出 logits，这种方法我们称之为 Classical Distillation。 并且ViT 的输出是一个 class token 的表示，我们可以直接对齐这个 class token 的输出与教师模型的输出进行蒸馏，这也是一种常见的做法。然而，DeiT 提出了一个创新的概念，即引入一个专门的 distillation token，通过自注意力与其他 token 交互并预测教师模型的标签。这种方法被称为 Token Distillation。 在 Token Distillation 中，学生模型不仅通过 class token 来进行分类，还通过 distillation token 来学习教师模型的知识。具体来说，distillation token 会通过自注意力机制与其他 token 进行交互，从而形成一个结构化的信息流，使得学生模型能够更好地捕捉教师模型中的知识。</p>
+<div id="fig-disllation-methods-compare" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-disllation-methods-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/disllation-methods-compare.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-disllation-methods-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Comparison of different distillation methods in DeiT.
+</figcaption>
+</figure>
+</div>
+<p>我们可以看到，通过不用的Loss 以及不用的蒸馏方法，组合 （<code>Hard + Token</code>） 的效果明显优于其他组合，说明 DeiT 的核心创新（引入 distillation token 和 hard distillation）在提升 ViT 的数据效率方面起到了关键作用。</p>
+<div class="tldr foldable is-open">
+<div class="tldr-header foldable-header">
+<p>TL;DR: DeiT</p>
+</div>
+<div class="tldr-container foldable-content">
+<p>回头看DeiT的核心创新，我们可以总结为以下几点：</p>
+<ol type="1">
+<li><strong>引入 Distillation Token</strong>：DeiT 在 ViT 的基础上引入了一个专门的 distillation token，通过自注意力与其他 token 交互并预测教师模型的标签，从而实现了更有效的知识蒸馏。</li>
+<li><strong>Hard Distillation 的优势</strong>：DeiT 强调在强增强和数据匮乏的情况下，hard distillation 比 soft distillation 更稳健、更“像标签”，从而在多个数据集上取得了更好的性能。</li>
+<li><strong>Late Fusion 的效果</strong>：在推理时，DeiT 通过融合 class head 和 distill head 的预测来提升鲁棒性和精度，这种 late fusion 的策略在实验中表现出色。</li>
+</ol>
+<p>很简单，也很实用。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="teacher-model" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="teacher-model"><span class="header-section-number">2.3</span> Teacher Model</h2>
+<p>有了损失函数，以及Token Distillation的概念，接下来我们来看看如何选择Teacher Model。DeiT的团队观察到：用卷积网络（convnet）当 teacher，蒸馏效果更好，甚至比“用另一个性能差不多的 transformer 当 teacher”更能让学生 DeiT 提升，他们认为这是因为 CNN 的归纳偏置（局部性等）能通过蒸馏迁移给 ViT，缓解 ViT 在小数据训练时的劣势。因此，DeiT 的默认设置是使用一个预训练的 CNN 作为教师模型来指导 DeiT 的训练。</p>
+<p>在CNN中，它们比较不同的RegNet的变体，</p>
+<div id="fig-regnet_teacher" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-regnet_teacher-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/regnet_teacher.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-regnet_teacher-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Compare different RegNet variants as teachers for DeiT-S.
+</figcaption>
+</figure>
+</div>
+<p>因此在 DeiT 的实验中，作者选择了 RegNetY-16GF 作为教师模型，因为它在 ImageNet 上表现出色，并且具有适当的容量来指导 DeiT 的训练。通过使用这个预训练的 CNN 作为教师模型，DeiT 能够更有效地学习到视觉特征，从而在多个数据集上取得了显著的性能提升。</p>
+</section>
+<section id="experiment" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="experiment"><span class="header-section-number">2.4</span> Experiment</h2>
 </section>
 </section>
 <section id="summary" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Summary</h1>
+<p>在这篇文章中，我们深入探讨了 DeiT（Data-efficient Image Transformers）的核心创新和实验结果。DeiT 通过引入一个专门的蒸馏 token 和 attention-based distillation 技术，显著提升了 Vision Transformer 的数据效率，使其能够在中小规模数据集上高效训练并达到与 CNN 可比的性能。我们还分析了 DeiT 在多个数据集上的表现，并总结了其关键概念，如 hard distillation、token distillation 和 late fusion 等。</p>
 </section>
 <section id="key-concepts" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Key Concepts</h1>
+<div id="tbl-transformer-key-concepts" class="hover quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<div aria-describedby="tbl-transformer-key-concepts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-hover table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 59%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Data-efficient training</td>
+<td>通过更强的数据增强/正则/训练日程等，使 ViT 在 ImageNet-only 下也能稳定收敛并获得高精度</td>
+</tr>
+<tr class="even">
+<td>Knowledge distillation</td>
+<td>Teacher–student 训练范式，让 student 学 teacher 的输出/分布</td>
+</tr>
+<tr class="odd">
+<td>Hard-label distillation</td>
+<td>用 teacher 的 argmax 类别当伪标签做交叉熵监督</td>
+</tr>
+<tr class="even">
+<td>Soft distillation (KL)</td>
+<td>对齐 teacher/student 的 softmax 分布，常见为 KL + CE</td>
+</tr>
+<tr class="odd">
+<td>Distillation token</td>
+<td>在输入序列加入专职 token，通过自注意力与其他 token 交互并预测 teacher 标签</td>
+</tr>
+<tr class="even">
+<td>Late fusion</td>
+<td>推理时融合 class head 与 distill head 的预测</td>
+</tr>
+<tr class="odd">
+<td>Inductive bias transfer</td>
+<td>借助 CNN teacher 把局部性等归纳偏置迁移给 ViT</td>
+</tr>
+<tr class="even">
+<td>Throughput–accuracy trade-off</td>
+<td>用 image/s 与 top-1 精度共同衡量部署价值。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-transformer-key-concepts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Key Concepts in DeiT
+</figcaption>
+</figure>
+</div>
 </section>
 <section id="q-a" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Q &amp; A</h1>
+<div class="question foldable">
+<div class="question-header foldable-header">
+<p>Question 1: DeiT 和 ViT 的结构差异到底在哪里？</p>
+</div>
+<div class="question-container foldable-content">
+<p>Answer: DeiT-B 与 ViT-B 结构基本一致，主要差异在训练策略；引入 distillation 时额外加入 distillation token 以及对应的 head/损失与融合策略。</p>
+</div>
+</div>
+<div class="question foldable">
+<div class="question-header foldable-header">
+<p>Question 2: 为什么 DeiT 强调 hard distillation，soft distillation 反而不行？</p>
+</div>
+<div class="question-container foldable-content">
+<p>Answer: 论文实证显示在相同设置下 hard distill 明显优于 soft（例如 DeiT-B@224：soft≈81.8，而 hard≈83.0），推测 hard 监督在强增强与数据匮乏下更稳、更“像标签”。</p>
+</div>
+</div>
+<div class="question foldable">
+<div class="question-header foldable-header">
+<p>Question 3: distillation token 相比“直接对 logits 做蒸馏”到底多了什么？</p>
+</div>
+<div class="question-container foldable-content">
+<p>Answer: 它把 teacher 信号绑定到序列里一个专职 token，并让该 token 通过自注意力与 patch/class token 交互，形成结构化的信息流；实证上 token 蒸馏与双头融合优于常规蒸馏基线。</p>
+</div>
+</div>
+<div class="question foldable">
+<div class="question-header foldable-header">
+<p>Question 4: 推理时用 class token 还是 distillation token？</p>
+</div>
+<div class="question-container foldable-content">
+<p>Answer: 两者都可以单独做分类，但论文默认用 late fusion（两路 softmax 相加）效果最好；并且 distillation token 往往略强、与 CNN 预测更相关。</p>
+</div>
+</div>
+<div class="question foldable">
+<div class="question-header foldable-header">
+<p>Question 5: 为什么“CNN 当 teacher 比 Transformer 当 teacher 更好”？</p>
+</div>
+<div class="question-container foldable-content">
+<p>Answer: 论文观察到 CNN teacher 的蒸馏效果更佳，合理解释是 CNN 的归纳偏置（局部性等）能通过蒸馏迁移给 ViT，缓解 ViT 在小数据训练时的劣势。</p>
+</div>
+</div>
 </section>
 <section id="related-resource-further-reading" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Related resource &amp; Further Reading</h1>
+<p><a href="https://ai.meta.com/blog/data-efficient-image-transformers-a-promising-new-technique-for-image-classification/?utm_source=chatgpt.com">Meta Blog: Data-efficient image Transformers: A promising new technique for image classification</a> <a href="https://huggingface.co/docs/transformers/en/model_doc/deit?utm_source=chatgpt.com">Huggingface DeiT model card</a></p>
+
 
 
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-DistillingKnowledgeNeural2015hinton" class="csl-entry" role="listitem">
+Hinton, Geoffrey, Oriol Vinyals, and Jeff Dean. 2015. <span>“Distilling the <span>Knowledge</span> in a <span>Neural Network</span>.”</span> March 9, 2015. <a href="https://doi.org/10.48550/arXiv.1503.02531">https://doi.org/10.48550/arXiv.1503.02531</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -1036,6 +1345,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   loadGiscus();
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="pagination-link" aria-label="02: Vision Transformer">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">02: Vision Transformer</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../posts/CS336/index.html" class="pagination-link" aria-label="About this course">
+        <span class="nav-page-text">About this course</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="为什么LARGE language models在规模上表现更好？Lecture 09和11介绍了Scaling Laws的基本概念和原理，探讨了模型规模、数据规模与计算资源之间的关系。内容涵盖了不同类型的Scaling Laws（如参数规模、数据规模和计算规模）以及它们对模型性能的影响。通过实际案例，展示了Scaling Laws在深度学习中的应用和重要性。">
+<meta name="description" content="为什么LARGE language models在大规模上表现更好？Lecture 09和11介绍了Scaling Laws的基本概念和原理，探讨了模型规模、数据规模与计算资源之间的关系。内容涵盖了不同类型的Scaling Laws（如参数规模、数据规模和计算规模）以及它们对模型性能的影响。通过实际案例，展示了Scaling Laws在深度学习中的应用和重要性。">
 
 <title>Lecture 09 &amp; 11: Scaling Laws – Learning Note</title>
 <style>
@@ -21,7 +21,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -144,6 +164,35 @@ document.addEventListener("DOMContentLoaded", function () {
       </style>
     
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -352,7 +401,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About</span></a>
+ <span class="menu-text">About website</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -373,13 +422,19 @@ document.addEventListener("DOMContentLoaded", function () {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/01-transformer/Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Transformer</span></a>
+ <span class="menu-text">01: Transformer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Vision Transformer</span></a>
+ <span class="menu-text">02: Vision Transformer</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/100-AI-Papers/03-deit/DeiT.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03: DeiT</span></a>
   </div>
 </li>
       </ul>
@@ -506,6 +561,18 @@ document.addEventListener("DOMContentLoaded", function () {
  <span class="menu-text">About this book</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter01/Chapter01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 01: Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter02/Chapter02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 02: Probability and Information Theory</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -513,8 +580,21 @@ document.addEventListener("DOMContentLoaded", function () {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#why-scaling-laws" id="toc-why-scaling-laws" class="nav-link active" data-scroll-target="#why-scaling-laws"><span class="header-section-number">1</span> Why Scaling Laws?</a></li>
+  <li><a href="#neural-llm-scaling-laws" id="toc-neural-llm-scaling-laws" class="nav-link" data-scroll-target="#neural-llm-scaling-laws"><span class="header-section-number">2</span> Neural (LLM) Scaling Laws</a>
+  <ul>
+  <li><a href="#data-scaling-law" id="toc-data-scaling-law" class="nav-link" data-scroll-target="#data-scaling-law"><span class="header-section-number">2.1</span> Data Scaling Law</a>
+  <ul>
+  <li><a href="#mean-estimation-example" id="toc-mean-estimation-example" class="nav-link" data-scroll-target="#mean-estimation-example"><span class="header-section-number">2.1.1</span> Mean Estimation Example</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -527,7 +607,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <div>
   <div class="description">
-    为什么<strong>LARGE</strong> language models在规模上表现更好？Lecture 09和11介绍了Scaling Laws的基本概念和原理，探讨了模型规模、数据规模与计算资源之间的关系。内容涵盖了不同类型的Scaling Laws（如参数规模、数据规模和计算规模）以及它们对模型性能的影响。通过实际案例，展示了Scaling Laws在深度学习中的应用和重要性。
+    为什么<strong>LARGE</strong> language models在大规模上表现更好？Lecture 09和11介绍了Scaling Laws的基本概念和原理，探讨了模型规模、数据规模与计算资源之间的关系。内容涵盖了不同类型的Scaling Laws（如参数规模、数据规模和计算规模）以及它们对模型性能的影响。通过实际案例，展示了Scaling Laws在深度学习中的应用和重要性。
   </div>
 </div>
 
@@ -544,10 +624,131 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
+<p>当我们从头开始训练一个LLM的时候，我们要考虑很多因素：</p>
+<ul>
+<li>要用什么样的模型</li>
+<li>模型的参数数量要多少</li>
+<li>训练数据要多少</li>
+<li>手头上有多少计算资源</li>
+</ul>
+<p>等等。</p>
+<p>这些因素之间是相互关联的，我们需要找到一个平衡点，才能训练出一个性能优越的模型。但是，LLM的训练有一个难点就是：我们无法在训练之前就知道这些因素之间的关系，并且也没有办法用Grid Search或者Random Search来找到最优的组合，因为训练一个LLM需要消耗大量的计算资源和时间。因此我们就需要一些理论上的指导来帮助我们理解这些因素之间的关系，这就是Scaling Laws的作用，它告诉我们在不同的模型规模、数据规模和计算资源下，我们可以预期模型的性能会如何变化。Lecture 09将介绍Scaling Laws 的基本概念和原理，以及了解当Scaling不同的因素时，模型性能的变化趋势。Lecture 11将进一步探讨Scaling Laws在实际中的应用和重要性，以及如何利用Scaling Laws来指导我们在训练LLM时的决策。 个人认为，当我们真的需要从0开始训练一个LLM的时候，Scaling Laws是非常重要的，因为它可以帮助我们在有限的资源下做出更明智的决策，从而训练出一个性能更好的模型。</p>
+<section id="why-scaling-laws" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Why Scaling Laws?</h1>
+<p>我们先来讨论一下，为什么需要Scaling Law，以及Scaling Law可以解决什么问题。 我们先来考虑一下这个问题：</p>
+<div class="highlight">
+<p>我们有1000个H100的GPUs，我们的目的是在1个月之内，训练出一个表现不错的LLM模型，我们该怎么做？选择什么样的模型，模型的参数数量要多少，训练数据要多少，等等。</p>
+</div>
+<p>传统的方法是：</p>
+<ol type="1">
+<li>直接训练一个模型（假设是Transformer LLM）</li>
+<li>大量的尝试不同的Learning Rate，Batch Size，model depth，model width，等等</li>
+<li>观察模型的性能，调整参数，继续训练</li>
+</ol>
+<p>当模型规模比较小的时候，这种办法是可行的，但是当模型规模变大，训练时间变长的时候，这种办法就不太可行了，因为每次训练一个模型都需要消耗大量的计算资源和时间，我们无法在短时间内尝试不同的参数组合来找到最优的模型。因此我们需要一些理论上的指导来帮助我们理解这些因素之间的关系，这就是Scaling Laws。Scaling Laws 的<span class="hilite-teal">核心价值</span>就是：</p>
+<div class="highlight">
+<p>用“小实验”预测“大结果”，先训练一堆小模型，从小模型学规律，然后外推到大模型。</p>
+</div>
+<div class="note foldable is-open">
+<div class="note-header foldable-header">
+<p>NOTE: History of Scaling Law</p>
+</div>
+<div class="note-container foldable-content">
+
+</div>
+</div>
+</section>
+<section id="neural-llm-scaling-laws" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Neural (LLM) Scaling Laws</h1>
+<p>接下来，我们来看一下Scaling Law如何在LLM中的应用，并且介绍不用类型的Scaling Laws：</p>
+<ul>
+<li>Data Scaling Law：预测Data Size和模型性能之间的关系</li>
+<li>Model Scaling Law：预测Model Size和模型性能之间的关系</li>
+</ul>
+<p>Scaling Law在LLM中的应用，首先是由Kaplan等人在2020年提出的<span class="citation" data-cites="ScalingLawsNeural2020kaplan">(<a href="#ref-ScalingLawsNeural2020kaplan" role="doc-biblioref">Kaplan et al. 2020</a>)</span>，他们的实验结果，可以浓缩成下面的图：</p>
+<div id="fig-scaling-law-kaplan" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scaling-law-kaplan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/scaling-law-kaplan.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scaling-law-kaplan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: 随着Compute， Dataset，Parameter的增加，模型的性能（Loss）在不断下降，并且这种下降是有规律可循的。
+</figcaption>
+</figure>
+</div>
+<section id="data-scaling-law" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="data-scaling-law"><span class="header-section-number">2.1</span> Data Scaling Law</h2>
+<p>Data Scaling Law 就是一个简答的formula，来预测Data Size和模型性能之间的关系。<span class="citation" data-cites="DeepLearningScaling2017hestness">(<a href="#ref-DeepLearningScaling2017hestness" role="doc-biblioref">Hestness et al. 2017</a>)</span>做了实验，提出如下图所示的Data Scaling Law：</p>
+<div id="fig-data-scaling-law.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-data-scaling-law.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/data-scaling-law.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-data-scaling-law.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Data Scaling Law 是一条 Monotonic， Logistic-Like curve，随着Data Size的增加，模型的性能（Loss）在不断下降，并且这种下降是有规律可循的。
+</figcaption>
+</figure>
+</div>
+<p>如<a href="#fig-data-scaling-law.png" class="quarto-xref">Figure&nbsp;2</a>所示，Data Scaling Law可以分成3个部分：</p>
+<ol type="1">
+<li>Small Data Region: 当Data Size比较小的时候，模型的性能（Loss）不会有太大的提升，因为模型没有足够的数据来学习。</li>
+<li>Power Law Region：当Data Size增加到一定程度的时候，模型的性能（Loss）会有一个明显的提升，并且这种提升是按照Power Law的规律进行的。</li>
+<li>Irreducible Loss Region：当Data Size继续增加的时候，模型的性能（Loss）会逐渐趋于一个不可降低的水平，这个水平就是Irreducible Loss。</li>
+</ol>
+<p>可以看到，在Power Law Region，模型的性能（Loss）和Data Size之间的关系是一个Power Law的关系，也就是说，模型的性能（Loss）会随着Data Size的增加而按照一个幂函数的规律进行下降。</p>
+<div id="fig-data-scaling-log-log.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-data-scaling-log-log.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/data-scaling-log-log.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-data-scaling-log-log.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3
+</figcaption>
+</figure>
+</div>
+<p>好的，直觉来说，我们知道，随着Data Size的增加，模型的性能（Loss）会不断下降，但是我们想知道，这个下降的规律是什么样的？是线性的，还是指数的，还是幂函数的？为什么是这种规律？接下来我们通过一个简单的Mean Estimation 的例子来解释一下Data Scaling Law的原理。</p>
+<section id="mean-estimation-example" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="mean-estimation-example"><span class="header-section-number">2.1.1</span> Mean Estimation Example</h3>
+<p>我们有一<span class="math inline">\(N\)</span>个input，<span class="math inline">\(x_1, \cdots, x_N \sim \mathcal{N}(\mu, \sigma^2)\)</span>，我们想要估计它们的平均值<span class="math inline">\(\mu\)</span>，我们可以使用一个简单的模型来进行估计：</p>
+<p><span class="math display">\[
+\hat{\mu} = \frac{1}{N} \sum_{i=1}^{N} x_i
+\]</span>{#eqn-mean-estimation}</p>
+<p>通过这种Monte Carlo的方式，我们可以得到一个<span class="math inline">\(\hat{\mu}\)</span>的估计值，那么这个估计值的误差（Loss）是什么样子的呢？我们可以通过计算来得到：</p>
+<p><span id="eq-mean-estimation-loss"><span class="math display">\[
+\mathbb{E}[(\hat{\mu} - \mu)^2] = \frac{\sigma^2}{N}
+\tag{1}\]</span></span></p>
+<p>可以看到，Mean Estimation的Loss和Data Size <span class="math inline">\(N\)</span>之间的关系是一个Power Law的关系，也就是说，Loss会随着Data Size的增加而按照一个幂函数的规律进行下降, 当我们用对<a href="#eq-mean-estimation-loss" class="quarto-xref">Equation&nbsp;1</a>取log值，我们可以得到：</p>
+<p><span id="eq-mean-estimation-loss-log"><span class="math display">\[
+\log \mathbb{E}[(\hat{\mu} - \mu)^2] = \log \sigma^2 - \log N
+\tag{2}\]</span></span></p>
+<p>可以看到，Mean Estimation的Loss和Data Size <span class="math inline">\(N\)</span>之间的关系是一个线性的关系，也就是说，Loss会随着Data Size的增加而按照一个线性的规律进行下降。</p>
+<p>这种类型的情况在别的模型中也会出现，比如</p>
+<div id="fig-scaling-law-intriguing.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scaling-law-intriguing.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/scaling-law-intriguing.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-scaling-law-intriguing.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4
+</figcaption>
+</figure>
+</div>
+<p>从图中可以看到，对于不同的数据类型，模型的性能和Data Size 之间的关系呈现一个Power Law的关系，但是，其对应的参数是（红色框）是不同的，这说明不同的数据类型会有不同的Scaling Law的参数，这也是我们在训练LLM的时候需要考虑的因素之一。接下来我们通过一个简单的例子来解释一下为什么不同的数据类型会有不同的Scaling Law的参数。</p>
 
 
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+</section>
+</section>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-DeepLearningScaling2017hestness" class="csl-entry" role="listitem">
+Hestness, Joel, Sharan Narang, Newsha Ardalani, Gregory Diamos, Heewoo Jun, Hassan Kianinejad, Md Mostofa Ali Patwary, Yang Yang, and Yanqi Zhou. 2017. <span>“Deep <span>Learning Scaling</span> Is <span>Predictable</span>, <span>Empirically</span>.”</span> December 1, 2017. <a href="https://doi.org/10.48550/arXiv.1712.00409">https://doi.org/10.48550/arXiv.1712.00409</a>.
+</div>
+<div id="ref-ScalingLawsNeural2020kaplan" class="csl-entry" role="listitem">
+Kaplan, Jared, Sam McCandlish, Tom Henighan, Tom B. Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. 2020. <span>“Scaling <span>Laws</span> for <span>Neural Language Models</span>.”</span> January 23, 2020. <a href="https://doi.org/10.48550/arXiv.2001.08361">https://doi.org/10.48550/arXiv.2001.08361</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

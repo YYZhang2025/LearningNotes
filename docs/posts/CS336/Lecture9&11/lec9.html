@@ -591,6 +591,15 @@ window.Quarto = {
   <li><a href="#data-scaling-law" id="toc-data-scaling-law" class="nav-link" data-scroll-target="#data-scaling-law"><span class="header-section-number">2.1</span> Data Scaling Law</a>
   <ul>
   <li><a href="#mean-estimation-example" id="toc-mean-estimation-example" class="nav-link" data-scroll-target="#mean-estimation-example"><span class="header-section-number">2.1.1</span> Mean Estimation Example</a></li>
+  <li><a href="#data-composition" id="toc-data-composition" class="nav-link" data-scroll-target="#data-composition"><span class="header-section-number">2.1.2</span> Data Composition</a></li>
+  </ul></li>
+  <li><a href="#model-scaling-law" id="toc-model-scaling-law" class="nav-link" data-scroll-target="#model-scaling-law"><span class="header-section-number">2.2</span> Model Scaling Law</a>
+  <ul>
+  <li><a href="#model-architecture" id="toc-model-architecture" class="nav-link" data-scroll-target="#model-architecture"><span class="header-section-number">2.2.1</span> Model Architecture</a></li>
+  <li><a href="#optimizer" id="toc-optimizer" class="nav-link" data-scroll-target="#optimizer"><span class="header-section-number">2.2.2</span> Optimizer</a></li>
+  <li><a href="#depth-vs-width" id="toc-depth-vs-width" class="nav-link" data-scroll-target="#depth-vs-width"><span class="header-section-number">2.2.3</span> Depth vs Width</a></li>
+  <li><a href="#batch-size" id="toc-batch-size" class="nav-link" data-scroll-target="#batch-size"><span class="header-section-number">2.2.4</span> Batch Size</a></li>
+  <li><a href="#learning-rate" id="toc-learning-rate" class="nav-link" data-scroll-target="#learning-rate"><span class="header-section-number">2.2.5</span> Learning Rate</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -733,7 +742,161 @@ Figure&nbsp;4
 </figcaption>
 </figure>
 </div>
-<p>从图中可以看到，对于不同的数据类型，模型的性能和Data Size 之间的关系呈现一个Power Law的关系，但是，其对应的参数是（红色框）是不同的，这说明不同的数据类型会有不同的Scaling Law的参数，这也是我们在训练LLM的时候需要考虑的因素之一。接下来我们通过一个简单的例子来解释一下为什么不同的数据类型会有不同的Scaling Law的参数。</p>
+<p>从图中可以看到，对于不同的数据类型，模型的性能和Data Size 之间的关系呈现一个Power Law的关系，但是，其对应的参数是（红色框）是不同的，这说明不同的数据类型会有不同的Scaling Law的参数，这也是我们在训练LLM的时候需要考虑的因素之一。接下来我们通过一个简单的例子来解释一下为什么不同的数据类型会有不同的Scaling Law的参数。 神经网络能拟合“几乎任意函数”，我们把它变成一个具体例子来算误差怎么随数据量变化。我们先来思考一下这个问题：</p>
+<div class="highlight">
+<p><span class="math inline">\(x_1, \cdots, x_N\)</span> 是从一个Uniform Distribution中采样的，<span class="math inline">\(y_i = f(x_i) + \mathcal{N}(0, 1)\)</span>, 我们想要训练一个模型<span class="math inline">\(f_\theta\)</span>来拟合这个函数，我们该怎么做？</p>
+</div>
+<p>最直接的方法是就是将这个 2D 的space切成不同的小块，每个小块的长度是 <span class="math inline">\(n^{-\farc{1}{4}}\)</span>, 通过这种方式，我们可以得到 <span class="math inline">\(\sqrt{N}\)</span> boxes， 每个box里面有 <span class="math inline">\(\sqrt{N}\)</span>个点，那这个误差是什么呢？</p>
+<p><span id="eq-error-uniform"><span class="math display">\[
+Error \approx \frac{1}{\sqrt{N}} + (\text{other smothness terms})
+\tag{3}\]</span></span></p>
+<p>从这个式子可以看出来，在 <span class="math inline">\(d\)</span>-dimensional space中，这个误差就变成了 <span class="math inline">\(Error = n^{\frac{-1}{d}}\)</span>，当我们取 <span class="math inline">\(\log\)</span> 之后，就可以得到线性关系，也就是说，随着数据维度的增加，误差的下降速度会变慢，这就是所谓的“Curse of Dimensionality”，这也是为什么不同的数据类型会有不同的Scaling Law的参数的原因之一。</p>
+<p>上面这个简单的例子说明了，当intrinsic dimension很高时，我们看到scaling law的指数很小。</p>
+</section>
+<section id="data-composition" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="data-composition"><span class="header-section-number">2.1.2</span> Data Composition</h3>
+<p>之前我们讨论的Data Scaling Law是基于一个假设的前提条件的，那就是我们的数据是从一个Distribution中采样的，也就是说，我们的数据是同质的，但是在实际中，我们的数据往往是异质的，也就是说，我们的数据可能来自不同的Distribution，这时候我们就需要考虑Data Composition的问题了。Data Composition 就是指当我们有多个不同类型的数据的时候，我们该如何进行Scaling Law的分析呢？这个scaling law也叫做 distribution shift scaling law.</p>
+<div id="fig-dis-shift-scaling-law.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dis-shift-scaling-law.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/dis-shift-scaling-law.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-dis-shift-scaling-law.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5
+</figcaption>
+</figure>
+</div>
+<p>我们可以看到，不同的data composition，只影响了scaling law的offset，这有个好处就是，我们可以通过在小模型上做实现验来估计这个offset，然后通过这个offset来预测大模型的性能。我们还可以通过这种方法来训练一个简单的模型（比如linear model）来预测不同data composition下的模型性能，这样我们就可以在训练大模型之前，来选出一个比较好的data composition来进行训练。</p>
+<p>下一个问题就是，随着模型训练的规模增大，unique的data变得越来越小，在这种情况下，如果我们重复data，还会有一样的scaling law吗？这个也就是data repetition scaling law.</p>
+<div id="fig-scaling-law-datarepetition.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scaling-law-datarepetition.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/scaling-law-datarepetition.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-scaling-law-datarepetition.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6
+</figcaption>
+</figure>
+</div>
+<p>在这种情况下，scaling law会有以下的形式：</p>
+<p><span id="eq-data-repetition-scaling-law"><span class="math display">\[
+D' = U_D + U_DR^{*}_D(1 - e^{\frac{-R_D}{R^{*}_D}})
+\tag{4}\]</span></span></p>
+<p>我们是要重复数据，还是要增加unique的数据，但是质量比较低。</p>
+<div id="fig-data-selection-data-repetition.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-data-selection-data-repetition.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/data-selection-data-repetition.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-data-selection-data-repetition.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="model-scaling-law" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="model-scaling-law"><span class="header-section-number">2.2</span> Model Scaling Law</h2>
+<p>接下来我们来看一下Model Scaling Law，现在模型的规模越来越大，模型的类型也会来越多，如果从头开始训练的话，我们该怎么选择模型的规模和类型呢？在这一小节，会从以下几个方面来讨论：</p>
+<ul>
+<li>Model Architecture</li>
+<li>Optimizer</li>
+<li>Aspect Ratio / Depth</li>
+<li>Batch Size</li>
+</ul>
+<section id="model-architecture" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="model-architecture"><span class="header-section-number">2.2.1</span> Model Architecture</h3>
+<p>首先来看一下Model Architecture，我们熟知的Sequence Model有，Transformer 和 LSTM等, 要如何选择？</p>
+<div id="fig-transformer-lstm.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-transformer-lstm.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/transformer-lstm.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-transformer-lstm.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8
+</figcaption>
+</figure>
+</div>
+<p>通过上面这个图，不管我们叠多少层LSTM，模型的性能都无法达到Transformer的水平，这说明在LLM的训练中，Transformer是一个更好的选择。</p>
+</section>
+<section id="optimizer" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="optimizer"><span class="header-section-number">2.2.2</span> Optimizer</h3>
+<p>接下来，如果我们选择了Transformer作为我们的模型架构，那么我们该选择什么样的Optimizer呢？</p>
+<div id="fig-optimizer-choice.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-optimizer-choice.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/optimizer-choice.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-optimizer-choice.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9
+</figcaption>
+</figure>
+</div>
+<p>上面这张图说明了，Adam的性能总体上要比SGD好很多，尤其是在模型规模比较大的时候，这也是为什么在LLM的训练中，Adam是一个更好的选择。</p>
+</section>
+<section id="depth-vs-width" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="depth-vs-width"><span class="header-section-number">2.2.3</span> Depth vs Width</h3>
+<p>Transformer的模型规模可以通过增加Depth或者Width来进行扩展，那么我们该选择增加Depth还是Width呢？</p>
+<div id="fig-depth-width.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-depth-width.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/depth-width.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-depth-width.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10
+</figcaption>
+</figure>
+</div>
+<p>从图中可以看到：</p>
+<ul>
+<li>在 1 layer和2 layer之间，模型的性能提升非常大</li>
+<li>当模型的参数提升到了 <span class="math inline">\(10^7\)</span> 之后（width 增加了），增加Depth的效果就不太明显了</li>
+</ul>
+<p>有一个点需要注意的就是，在Transformer模型中，不是所有的参数都是equal的：</p>
+<div id="fig-depth-width-embedding.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-depth-width-embedding.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/depth-width-embedding.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-depth-width-embedding.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11
+</figcaption>
+</figure>
+</div>
+<p>从图中可以看到，当我们将embedding的参数也纳入考虑的范围时，得到的结果就不太一样了。</p>
+<p>接下来，我们来了解一下如果选择Aspect Ratio。下图展示了不同Aspect Ratio下模型的性能：</p>
+<div id="fig-aspect-ratio.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-aspect-ratio.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/aspect-ratio.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-aspect-ratio.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12
+</figcaption>
+</figure>
+</div>
+<p>从中间的图中，我们可以看出，不管是什么样参数的模型，Aspect Ratio的与Loss的关系都是一样的，呈现一个U型的关系，而且在最低点都在一个range里面，这也就说明，只要在这个range里，我们就可以得到一个比较好的模型性能。</p>
+</section>
+<section id="batch-size" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="batch-size"><span class="header-section-number">2.2.4</span> Batch Size</h3>
+<p>最后，我们来讨论一下Batch Size和Learning Rate的选择，在LLM的训练中，Batch Size和Learning Rate的选择也是非常重要的，因为它们会直接影响到模型的性能和训练的效率。不同的Batch Size 对应这不同的“最优” Learning Rate。</p>
+<div id="fig-batch-size-pre-trained-model.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-batch-size-pre-trained-model.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./assets/batch-size-pre-trained-model.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-batch-size-pre-trained-model.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13
+</figcaption>
+</figure>
+</div>
+<p>从上图可以看到，当Batch Size比较小的时候，模型的Loss会，这就是引出来了critical batch size的概念：</p>
+</section>
+<section id="learning-rate" class="level3" data-number="2.2.5">
+<h3 data-number="2.2.5" class="anchored" data-anchor-id="learning-rate"><span class="header-section-number">2.2.5</span> Learning Rate</h3>
+<p>Optimal Learning Rate 会根据模型的规模和Batch Size的不同而有所不同，通常来说，随着模型规模的增加，Optimal Learning Rate也会增加，但是当Batch Size增加到一定程度的时候，Optimal Learning Rate就会趋于一个稳定的水平，这也就是为什么在LLM的训练中，我们需要根据模型规模和Batch Size来选择合适的Learning Rate。概念提出 <span class="math inline">\(\mu\)</span>P scaling aware initialization, 通过这种方法，我们可以在不同的模型规模和Batch Size下，来选择合适的Learning Rate，从而得到一个比较好的模型性能。</p>
+<p>看到了这里，我们了解到，所有的scaling law都是基于 neg-log-perplexity的，也就是说，我们是通过观察模型的Loss来进行分析的，但是当down-stream有不同的指标时，模型就不能有很好的预测，</p>
+<p>Joint Data-Model Scaling Law</p>
 
 
 

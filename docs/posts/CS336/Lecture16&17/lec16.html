@@ -436,7 +436,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About</span></a>
+ <span class="menu-text">About website</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -457,13 +457,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/01-transformer/Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Transformer</span></a>
+ <span class="menu-text">01: Transformer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Vision Transformer</span></a>
+ <span class="menu-text">02: Vision Transformer</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/100-AI-Papers/03-deit/DeiT.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03: DeiT</span></a>
   </div>
 </li>
       </ul>
@@ -588,6 +594,18 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../../../posts/DLFaC/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About this book</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter01/Chapter01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 01: Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter02/Chapter02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 02: Probability and Information Theory</span></a>
   </div>
 </li>
       </ul>
@@ -868,7 +886,7 @@ Figure&nbsp;2: 对比了 PPO 与 GRPO 的训练流程差异： <br>上半部分�
 <section id="grpo-algorithm" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="grpo-algorithm"><span class="header-section-number">3.3</span> GRPO Algorithm</h2>
 <p>了解了GRPO的Objective Function (<a href="#eq-grpo" class="quarto-xref">Equation&nbsp;1</a>) 和Advantage计算(<a href="#eq-grpo-advantage" class="quarto-xref">Equation&nbsp;3</a>) 后，我们来看一下GRPO的整体算法流程：</p>
-<div id="algo-grpo" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-line-number="true" data-line-number-punc=":" data-comment-delimiter="#" data-pseudocode-number="1" data-no-end="false">
+<div id="algo-grpo" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-pseudocode-number="1" data-indent-size="1.2em" data-line-number="true" data-line-number-punc=":" data-comment-delimiter="#" data-no-end="false">
 <div class="pseudocode">
 \begin{algorithm} \caption{Iterative Group Relative Policy Optimization (GRPO)}\begin{algorithmic} \Require initial policy model $\pi_{\theta_{\text{init}}}$; reward model(s) $r_\phi$; task prompts $\mathcal{D}$; hyperparameters $\epsilon, \beta, \mu$; group size $G$; iterations $I$; steps $M$ \Ensure trained policy $\pi_\theta$ \State $\pi_\theta \gets \pi_{\theta_{\text{init}}}$ \For{$\text{iteration} = 1, \ldots, I$} \State $\pi_{\text{ref}} \gets \pi_\theta$ \Comment{reference (anchor) policy} \For{$\text{step} = 1, \ldots, M$} \State Sample a batch $\mathcal{D}_b$ from $\mathcal{D}$ \State $\pi_{\theta_{\text{old}}} \gets \pi_\theta$ \Comment{snapshot old policy} \ForAll{$q \in \mathcal{D}_b$} \State Sample $G$ outputs $\{o_i\}_{i=1}^{G} \sim \pi_{\theta_{\text{old}}}(\cdot \mid q)$ \State Compute rewards $\{r_i\}_{i=1}^{G}$ by $r_i \gets r_\phi(q, o_i)$ \State Compute group-relative advantages $\{\hat{A}_{i,t}\}$ for each token $t$ in each $o_i$ \EndFor \For{$\text{GRPO-iter} = 1, \ldots, \mu$} \State Update $\pi_\theta$ by maximizing the GRPO objective \EndFor \State Update $r_\phi$ via continuous training using a replay mechanism \EndFor \EndFor \State \Return $\pi_\theta$ \end{algorithmic} \end{algorithm}
 </div>

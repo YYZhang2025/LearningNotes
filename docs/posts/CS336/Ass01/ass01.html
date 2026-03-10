@@ -436,7 +436,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">About</span></a>
+ <span class="menu-text">About website</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -457,13 +457,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/01-transformer/Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Transformer</span></a>
+ <span class="menu-text">01: Transformer</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Vision Transformer</span></a>
+ <span class="menu-text">02: Vision Transformer</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/100-AI-Papers/03-deit/DeiT.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03: DeiT</span></a>
   </div>
 </li>
       </ul>
@@ -588,6 +594,18 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../../../posts/DLFaC/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About this book</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter01/Chapter01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 01: Introduction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../posts/DLFaC/Chapter02/Chapter02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chapter 02: Probability and Information Theory</span></a>
   </div>
 </li>
       </ul>
@@ -805,7 +823,7 @@ window.Quarto = {
 <li><strong>Repeat</strong>: 重复步骤2,3，直到达到预定的合并次数</li>
 </ol>
 <p>BPE 的伪代码如下所示：</p>
-<div id="algo-bpe" class="pseudocode-container quarto-float" data-line-number-punc=":" data-pseudocode-number="1" data-comment-delimiter="#" data-line-number="true" data-no-end="false" data-indent-size="1.2em" data-caption-prefix="Algorithm">
+<div id="algo-bpe" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-no-end="false" data-line-number-punc=":" data-comment-delimiter="#" data-pseudocode-number="1" data-line-number="true" data-indent-size="1.2em">
 <div class="pseudocode">
 \begin{algorithm} \caption{BPE Training} \begin{algorithmic} \Require Corpus text $\mathcal{D}$ \Require Number of merges $M$ \Require Special tokens $\mathcal{S}$ (e.g., \texttt{&lt;|endoftext|&gt;}) \Ensure Vocabulary $V$, merge rules list $\Pi$ \State Convert each document $x \in \mathcal{D}$ into bytes $b(x)$ \State Initialize tokenized corpus as sequences of single-byte tokens \State $V \gets \{0,1,\dots,255\} \cup \mathcal{S}$ \State $\Pi \gets [\,]$ \For{$t = 1$ \textbf{to} $M$} \State $C \gets$ empty map from pair $\to$ count \For{\textbf{each} token sequence $s$ in the corpus} \Comment{Count adjacent byte-token pairs} \For{\textbf{each} index $i$ from $1$ to $|s|-1$} \State $C[(s_i, s_{i+1})] \gets C[(s_i, s_{i+1})] + 1$ \EndFor \EndFor \State Choose $(a,b)$ with the largest count in $C$ \Comment{Select the most frequent pair} \State Define a new token $new$ as the merge of $(a,b)$ \State $V \gets V \cup \{new\}$ \Comment{Create a new merged token and record the merge rule} \State Append $(a,b)\rightarrow new$ to $\Pi$ \For{\textbf{each} token sequence $s$ in the corpus} \Comment{Replace all occurrences of $(a,b)$ in the corpus} \State Replace adjacent $(a,b)$ with $new$ left-to-right (non-overlapping) \EndFor \EndFor \State \Return $V, \Pi$ \end{algorithmic} \end{algorithm}
 </div>

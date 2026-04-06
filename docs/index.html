@@ -32,8 +32,6 @@ ul.task-list li input[type="checkbox"] {
 <meta name="quarto:offset" content="./">
 <link href="./posts/100-AI-Papers/100_Papers_index.html" rel="next">
 <link href="././style/icon.avif" rel="icon">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -51,6 +49,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.css" rel="stylesheet">
 <script src="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -78,35 +79,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description','listing-image','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-E8EJCZTZG1"></script>
 
 <script type="text/javascript">
@@ -174,35 +146,6 @@ document.addEventListener("DOMContentLoaded", function () {
       </style>
     
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -493,327 +436,15 @@ window.Quarto = {
 <p>这个网站的Logo是我家的猫，叫做花花。希望大家在AI的时代，能够像花花一样，保持好奇心和探索精神，不断地学习和成长。也希望这个网站能够成为一个有价值，有内容的网站，帮助更多的人学习和成长。也希望这只可爱的猫咪能够给大家带来一些快乐和温暖。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./style/huahua.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><a href="./style/huahua.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="./style/huahua.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></a></p>
 </figure>
 </div>
-</section>
-</section>
-<section id="paper-listed" class="level1">
-<h1>100 Paper Listed</h1>
-
 
 
 </section>
+</section>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1775467697093" data-listing-reading-time-sort="37" data-listing-word-count-sort="7349">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/01-transformer/post.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/01-transformer/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/01-transformer/post.html" class="no-external">01: Attention is All You Need (<tag style="color:orange">Transformer</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/01-transformer/post.html" class="no-external">
-<p>Transformer 是一种基于 <strong>自注意力机制</strong> 的深度学习架构，能够并行处理序列，在语言、视觉和多模态任务中表现出色；并且作为 <strong>GPT</strong>、<strong>BERT</strong> 等大型语言模型（LLM）的核心基础，推动了当今生成式人工智能的快速发展。在本篇文章中，我们将深入探讨 Transformer 的基本原理，以及关键组件，包括 <strong>Word Embedding</strong>、<strong>Position Embedding</strong>、<strong>Attention</strong>、<strong>Normalization Layer</strong> 和 <strong>Feed Forward Layer</strong>。并通过在 <code>Ted Talks</code> 数据集上的实验，展示 Transformer 在实际任务中的应用效果。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/01-transformer/post.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Q29tcHV0ZXIlMjBWaXNpb24lMkNUcmFuc2Zvcm1lcg==" data-listing-file-modified-sort="1771782608168" data-listing-reading-time-sort="22" data-listing-word-count-sort="4354">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/02-vision-transformer/post.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/02-vision-transformer/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/02-vision-transformer/post.html" class="no-external">02: An Image is Worth <span class="math inline">\(16 \times 16\)</span> Words: Transformers for Image Recognition at Scale (<tag style="color:orange">Vision-Transformer</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/02-vision-transformer/post.html" class="no-external">
-<p>Vision Transformer (ViT) 通过将图像切分为 Patch 并直接应用标准 Transformer 架构，实现了图像分类任务。本文介绍了 ViT 的核心组件，包括 <code>Patch Embedding</code>、<code>Position Embedding</code>、<code>[CLS] Token</code> 以及 Transformer 编码器块，探讨了 ViT 相较于传统 CNN 的归纳偏置差异(Inductive Bias)，并展示了 ViT 在大规模数据集上的优异表现。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/02-vision-transformer/post.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-file-modified-sort="1775468465871" data-listing-reading-time-sort="4" data-listing-word-count-sort="684">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/03-deit/post.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/03-deit/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/03-deit/post.html" class="no-external">03: Training data-efficient image transformers &amp; distillation through attention (<tag style="color:orange">DeiT</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/03-deit/post.html" class="no-external">
-<p>DeiT提出了一种通过知识蒸馏（distillation token 与 attention-based distillation）显著提升 Vision Transformer 数据效率的方法，使 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/03-deit/post.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-file-modified-sort="1775468456318" data-listing-reading-time-sort="11" data-listing-word-count-sort="2176">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/04-swin-transformer/post.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/04-swin-transformer/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/04-swin-transformer/post.html" class="no-external">04: Swin Transformer: Hierarchical Vision Transformer using Shifted Windows (<tag style="color:orange">Swin-Transformer</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/04-swin-transformer/post.html" class="no-external">
-<p>Swin Transformer 是一种使用层次化结构和滑动窗口自注意力机制的ViT模型，既保留了局部建模的高效性，又通过窗口偏移实现跨区域信息交互，可作为通用视觉骨干网络，适用于图像分类、目标检测和语义分割等多种视觉任务。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/04-swin-transformer/post.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="Q29tcHV0ZXIlMjBWaXNpb24lMkNUcmFuc2Zvcm1lcg==" data-listing-file-modified-sort="1771606327832" data-listing-reading-time-sort="1" data-listing-word-count-sort="15">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/05-vivit/ViViT.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/05-vivit/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/05-vivit/ViViT.html" class="no-external">05: ViViT: A Video Vision Transformer(<tag style="color:blue">ViViT</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/05-vivit/ViViT.html" class="no-external">
-<p>ViViT: A Video Vision Transformer提出将 Vision Transformer 系统性扩展到视频建模，通过<em>时空分解</em>与<em>高效注意力设计</em>直接对视频序列进行建模，在视频分类等任务上取得强性能与良好可扩展性。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/05-vivit/ViViT.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="TXVsdGklMjBNb2RhbGl0eSUyQ1JlcHJlc2VudGF0aW9uJTIwTGVhcm5pbmc=" data-listing-file-modified-sort="1771606327834" data-listing-reading-time-sort="1" data-listing-word-count-sort="14">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/06-clip/CLIP.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/06-clip/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/06-clip/CLIP.html" class="no-external">06: Learning Transferable Visual Models From Natural Language Supervision (<tag style="color:blue">CLIP</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/06-clip/CLIP.html" class="no-external">
-<p>一种通过对齐图像与自然语言文本的对比学习框架，在海量图文对上训练统一表示，从而获得强零样本泛化能力的视觉模型。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/06-clip/CLIP.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="U2VsZiUyMFN1cGVydmlzZWQlMjBMZWFybmluZyUyQ1JlcHJlc2VudGF0aW9uJTIwTGVhcm5pbmc=" data-listing-file-modified-sort="1771606327836" data-listing-reading-time-sort="1" data-listing-word-count-sort="14">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/07-dino/DINO.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/07-dino/assets/DINO-illustration.gif" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/07-dino/DINO.html" class="no-external">07: Emerging Properties in Self-Supervised Vision Transformers (<tag style="color:blue">DINO</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/07-dino/DINO.html" class="no-external">
-<p>一种无需标签的自监督学习方法，通过教师–学生自蒸馏训练 Vision Transformer，自发涌现出语义一致的全局表示与清晰的注意力分割能力。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/07-dino/DINO.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="U2VsZiUyMFN1cGVydmlzZWQlMjBMZWFybmluZyUyQ0dlbmVyYXRpdmUlMjBNb2RlbCUyQ1JlcHJlc2VudGF0aW9uJTIwTGVhcm5pbmc=" data-listing-file-modified-sort="1771606327847" data-listing-reading-time-sort="8" data-listing-word-count-sort="1405">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/08-vae/VAE.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/08-vae/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/08-vae/VAE.html" class="no-external">08: Auto-Encoding Variational Bayes (<tag style="color:blue">VAE</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/08-vae/VAE.html" class="no-external">
-<p>VAE（变分自动编码器）是一类结合概率图模型与神经网络的生成模型，它通过引入可参数化的近似后验 <span class="math inline">\(q_\phi(z|x)\)</span> 来摊销推断成本，并用最大化 ELBO 的方式同时学习数据的潜在表示与生成过程：其中重建项确保模型能从潜变量还原数据，KL 项则将潜空间约束为接近先验的连续结构。借助重参数化技巧，VAE 能在端到端训练中高效地学习一个平滑、可采样的潜空间，从而实现表示学习、插值、生成等功能，是现代深度生成模型的重要基础。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/08-vae/VAE.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="U2VsZiUyMFN1cGVydmlzZWQlMjBMZWFybmluZyUyQ1JlcHJlc2VudGF0aW9uJTIwTGVhcm5pbmclMkNBdXRvRW5jb2Rlcg==" data-listing-file-modified-sort="1771606327855" data-listing-reading-time-sort="1" data-listing-word-count-sort="29">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/09-mae/MAE.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/09-mae/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/09-mae/MAE.html" class="no-external">09: Masked Autoencoders Are Scalable Vision Learners(<tag style="color:blue">MAE</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/09-mae/MAE.html" class="no-external">
-<p>一种通过随机遮挡大比例图像 patch 并重建缺失内容进行自监督学习的方法，使 Vision Transformer 能以更高效率和更好可扩展性学习通用视觉表示。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/09-mae/MAE.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-listing-file-modified-sort="1775468430365" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/100_Papers_index.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/100-AI-Papers/01-transformer/assets/cover.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/100_Papers_index.html" class="no-external">100 Papers with Code</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/100_Papers_index.html" class="no-external">
-<p>Hi, this is a (planned) collection of 100 influential research papers in AI field each paired with my implementation of the corresponding code. The goal of this project is to provide researchers, practitioners, and enthusiasts with accessible summaries of seminal works, along with practical code resources that make it easier to understand, reproduce, and apply the core ideas behind these papers. By bridging the gap between theory and practice, I hope to foster a deeper understanding of key AI concepts and facilitate innovation in the field.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/100_Papers_index.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-categories="R2VuZXJhdGl2ZSUyME1vZGVs" data-listing-file-modified-sort="1771606327859" data-listing-reading-time-sort="1" data-listing-word-count-sort="17">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/10-pixel-gated-cnn/Pixel Gated CNN.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/10-pixel-gated-cnn/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/10-pixel-gated-cnn/Pixel Gated CNN.html" class="no-external">10: Conditional Image Generation with PixelCNN Decoders (<tag style="color:blue">Pixel Gated CNN</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/10-pixel-gated-cnn/Pixel Gated CNN.html" class="no-external">
-<p>一种基于像素级自回归建模的条件图像生成方法，通过引入门控卷积（Gated CNN）在给定条件（如类别或上下文）下逐像素生成高质量图像。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/10-pixel-gated-cnn/Pixel Gated CNN.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-categories="UmVwcmVzZW50YXRpb24lMjBMZWFybmluZyUyQ1NlbGYlMjBTdXBlcnZpc2VkJTIwTGVhcm5pbmc=" data-listing-file-modified-sort="1771606327860" data-listing-reading-time-sort="2" data-listing-word-count-sort="269">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/11-vq-vae/VQ_VAE.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/11-vq-vae/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/11-vq-vae/VQ_VAE.html" class="no-external">11: Neural Discrete Representation Learning (<tag style="color:blue">VQ_VAE</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/11-vq-vae/VQ_VAE.html" class="no-external">
-<p>一种通过离散化潜在表示并使用码本进行重构的生成模型，将连续表示转为离散符号，从而学习高质量、可组合的视觉表示并支持高效生成。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/11-vq-vae/VQ_VAE.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="12" data-categories="R2VuZXJhdGl2ZSUyME1vZGVs" data-listing-file-modified-sort="1771606327863" data-listing-reading-time-sort="1" data-listing-word-count-sort="17">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/15-stable-diffusion/Latent Diffusion Model.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/15-stable-diffusion/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/15-stable-diffusion/Latent Diffusion Model.html" class="no-external">15: High-Resolution Image Synthesis with Latent Diffusion Models (<tag style="color:blue">Latent Diffusion Model</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/15-stable-diffusion/Latent Diffusion Model.html" class="no-external">
-<p>一种在低维潜在空间中进行扩散建模的生成方法，在显著降低计算成本的同时，实现高分辨率、高质量的图像生成。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/15-stable-diffusion/Latent Diffusion Model.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="13" data-categories="R2VuZXJhdGl2ZSUyME1vZGVsJTJDRGlmZnVzaW9uJTIwTW9kZWw=" data-listing-file-modified-sort="1771606327865" data-listing-reading-time-sort="1" data-listing-word-count-sort="29">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/16-dit/DiT.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/16-dit/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/16-dit/DiT.html" class="no-external">16: Scalable Diffusion Models with Transformers (<tag style="color:blue">DiT</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/16-dit/DiT.html" class="no-external">
-<p>一种将 Transformer 架构引入扩散模型的生成方法，通过序列化建模与规模化训练，在大模型与大数据设置下实现更强的生成质量与可扩展性。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/16-dit/DiT.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="14" data-categories="VHJhbnNmb3JtZXI=" data-listing-file-modified-sort="1771606327866" data-listing-reading-time-sort="4" data-listing-word-count-sort="675">
-<div class="thumbnail"><a href="./posts/100-AI-Papers/17-flash-attention/Flash Attention.html" class="no-external">
-
-<img loading="lazy" src="./posts/100-AI-Papers/17-flash-attention/assets/cover.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/100-AI-Papers/17-flash-attention/Flash Attention.html" class="no-external">FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness(<tag style="color:blue">Flash Attention</tag>)</a>
-</h3>
-<div class="delink listing-description"><a href="./posts/100-AI-Papers/17-flash-attention/Flash Attention.html" class="no-external">
-<p>FlashAttention 是一IO-aware的exact Attention 实现：它把 QKᵀ 和 softmax 的计算按块（tiling）搬进片上 SRAM/共享内存，用<strong>在线 softmax（维护 running max 与 sum 的 log-sum-exp 归一化）</strong>在不保存完整注意力矩阵的情况下完成计算，并且通过Recomputing的技术，从而显著减少 HBM 读写、降低显存占用并加速。</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/100-AI-Papers/17-flash-attention/Flash Attention.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="15" data-listing-file-modified-sort="1771661653187" data-listing-reading-time-sort="1" data-listing-word-count-sort="32">
-<div class="thumbnail"><a href="./404.html" class="no-external">
-
-<p class="card-img-top"><img src="../../../../../LearningNotes/style/404.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./404.html" class="no-external">Oops! That page can’t be found.</a>
-</h3>
-<div class="delink listing-description"><a href="./404.html" class="no-external">
-Sorry, the page you are looking for is not reachable. Please check back later!
-</a></div>
-</div>
-<div class="metadata">
-<a href="./404.html" class="no-external">
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -1286,6 +917,38 @@ Sorry, the page you are looking for is not reachable. Please check back later!
     })(document);
     </script>
   
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

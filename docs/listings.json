@@ -2,31 +2,31 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/CS336/index.html",
-      "/posts/DLFaC/index.html",
-      "/posts/100-AI-Papers/01-transformer/Transformer.html",
-      "/posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html",
-      "/posts/100-AI-Papers/03-deit/DeiT.html",
-      "/posts/100-AI-Papers/04-swin-transformer/Swin-Transformer.html",
+      "/posts/100-AI-Papers/01-transformer/post.html",
+      "/posts/100-AI-Papers/02-vision-transformer/post.html",
+      "/posts/100-AI-Papers/03-deit/post.html",
+      "/posts/100-AI-Papers/04-swin-transformer/post.html",
       "/posts/100-AI-Papers/05-vivit/ViViT.html",
       "/posts/100-AI-Papers/06-clip/CLIP.html",
       "/posts/100-AI-Papers/07-dino/DINO.html",
       "/posts/100-AI-Papers/08-vae/VAE.html",
       "/posts/100-AI-Papers/09-mae/MAE.html",
+      "/posts/100-AI-Papers/100_Papers_index.html",
       "/posts/100-AI-Papers/10-pixel-gated-cnn/Pixel Gated CNN.html",
       "/posts/100-AI-Papers/11-vq-vae/VQ_VAE.html",
       "/posts/100-AI-Papers/15-stable-diffusion/Latent Diffusion Model.html",
       "/posts/100-AI-Papers/16-dit/DiT.html",
-      "/posts/100-AI-Papers/17-flash-attention/Flash Attention.html"
+      "/posts/100-AI-Papers/17-flash-attention/Flash Attention.html",
+      "/404.html"
     ]
   },
   {
     "listing": "/posts/100-AI-Papers/100_Papers_index.html",
     "items": [
-      "/posts/100-AI-Papers/01-transformer/Transformer.html",
-      "/posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html",
-      "/posts/100-AI-Papers/03-deit/DeiT.html",
-      "/posts/100-AI-Papers/04-swin-transformer/Swin-Transformer.html",
+      "/posts/100-AI-Papers/01-transformer/post.html",
+      "/posts/100-AI-Papers/02-vision-transformer/post.html",
+      "/posts/100-AI-Papers/03-deit/post.html",
+      "/posts/100-AI-Papers/04-swin-transformer/post.html",
       "/posts/100-AI-Papers/05-vivit/ViViT.html",
       "/posts/100-AI-Papers/06-clip/CLIP.html",
       "/posts/100-AI-Papers/07-dino/DINO.html",
@@ -37,34 +37,6 @@
       "/posts/100-AI-Papers/15-stable-diffusion/Latent Diffusion Model.html",
       "/posts/100-AI-Papers/16-dit/DiT.html",
       "/posts/100-AI-Papers/17-flash-attention/Flash Attention.html"
-    ]
-  },
-  {
-    "listing": "/posts/DLFaC/index.html",
-    "items": [
-      "/posts/DLFaC/Chapter01/Chapter01.html",
-      "/posts/DLFaC/Chapter02/Chapter02.html"
-    ]
-  },
-  {
-    "listing": "/posts/CS336/index.html",
-    "items": [
-      "/posts/CS336/Lecture01/lec01.html",
-      "/posts/CS336/Lecture02/lec02.html",
-      "/posts/CS336/Lecture03/lec03.html",
-      "/posts/CS336/Lecture04/lec04.html",
-      "/posts/CS336/Lecture05&06/lec05.html",
-      "/posts/CS336/Lecture07&08/lec07.html",
-      "/posts/CS336/Lecture9&11/lec9.html",
-      "/posts/CS336/Lecture10/lec10.html",
-      "/posts/CS336/Lecture12/lec12.html",
-      "/posts/CS336/Lecture13&14/lec13.html",
-      "/posts/CS336/Lecture15/lec15.html",
-      "/posts/CS336/Lecture16&17/lec16.html",
-      "/posts/CS336/Ass01/ass01.html",
-      "/posts/CS336/Ass02/ass02.html",
-      "/posts/CS336/Ass04/ass04.html",
-      "/posts/CS336/Ass05/ass05.html"
     ]
   }
 ]

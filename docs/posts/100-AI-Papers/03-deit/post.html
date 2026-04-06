@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="VAE（变分自动编码器）是一类结合概率图模型与神经网络的生成模型，它通过引入可参数化的近似后验 q_\phi(z|x) 来摊销推断成本，并用最大化 ELBO 的方式同时学习数据的潜在表示与生成过程：其中重建项确保模型能从潜变量还原数据，KL 项则将潜空间约束为接近先验的连续结构。借助重参数化技巧，VAE 能在端到端训练中高效地学习一个平滑、可采样的潜空间，从而实现表示学习、插值、生成等功能，是现代深度生成模型的重要基础。">
+<meta name="description" content="DeiT提出了一种通过知识蒸馏（distillation token 与 attention-based distillation）显著提升 Vision Transformer 数据效率的方法，使 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。">
 
-<title>08: Auto-Encoding Variational Bayes (VAE) – Learning Note</title>
+<title>03: Training data-efficient image transformers &amp; distillation through attention (DeiT) – Learning Note</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,41 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -85,6 +50,8 @@ div.csl-indent {
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
+<link href="../../../posts/100-AI-Papers/04-swin-transformer/post.html" rel="next">
+<link href="../../../posts/100-AI-Papers/02-vision-transformer/post.html" rel="prev">
 <link href="../../.././style/icon.avif" rel="icon">
 <script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -103,6 +70,9 @@ div.csl-indent {
 <link href="../../../site_libs/quarto-contrib/line-highlight-1.0.0/line-highlight.css" rel="stylesheet">
 <script src="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -401,7 +371,7 @@ window.Quarto = {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title">08: Auto-Encoding Variational Bayes (<tag style="color:blue">VAE</tag>)</h1>
+          <h1 class="quarto-secondary-nav-title">03: Training data-efficient image transformers &amp; distillation through attention (<tag style="color:orange">DeiT</tag>)</h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -439,13 +409,13 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">📝 100 AI Papers with Code</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../posts/100-AI-Papers/100_Papers_index.html" class="sidebar-item-text sidebar-link">
@@ -466,7 +436,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../posts/100-AI-Papers/03-deit/post.html" class="sidebar-item-text sidebar-link">
+  <a href="../../../posts/100-AI-Papers/03-deit/post.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">03: DeiT</span></a>
   </div>
 </li>
@@ -488,31 +458,25 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#vae" id="toc-vae" class="nav-link active" data-scroll-target="#vae"><span class="header-section-number">1</span> VAE</a>
+  <li><a href="#preliminary" id="toc-preliminary" class="nav-link active" data-scroll-target="#preliminary"><span class="header-section-number">1</span> Preliminary</a>
   <ul>
-  <li><a href="#experiment" id="toc-experiment" class="nav-link" data-scroll-target="#experiment"><span class="header-section-number">1.1</span> Experiment</a></li>
+  <li><a href="#knowledge-distillation" id="toc-knowledge-distillation" class="nav-link" data-scroll-target="#knowledge-distillation"><span class="header-section-number">1.1</span> Knowledge Distillation</a></li>
   </ul></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">2</span> Summary</a></li>
-  <li><a href="#key-concepts" id="toc-key-concepts" class="nav-link" data-scroll-target="#key-concepts"><span class="header-section-number">3</span> Key Concepts</a></li>
-  <li><a href="#q-a" id="toc-q-a" class="nav-link" data-scroll-target="#q-a"><span class="header-section-number">4</span> Q &amp; A</a></li>
-  <li><a href="#related-resource-further-reading" id="toc-related-resource-further-reading" class="nav-link" data-scroll-target="#related-resource-further-reading"><span class="header-section-number">5</span> Related resource &amp; Further Reading</a></li>
-  <li><a href="#preliminary" id="toc-preliminary" class="nav-link" data-scroll-target="#preliminary"><span class="header-section-number">6</span> Preliminary</a>
+  <li><a href="#deit" id="toc-deit" class="nav-link" data-scroll-target="#deit"><span class="header-section-number">2</span> DeiT</a>
   <ul>
-  <li><a href="#latent-variable-models" id="toc-latent-variable-models" class="nav-link" data-scroll-target="#latent-variable-models"><span class="header-section-number">6.1</span> Latent Variable Models</a></li>
-  <li><a href="#autoencoder" id="toc-autoencoder" class="nav-link" data-scroll-target="#autoencoder"><span class="header-section-number">6.2</span> AutoEncoder</a></li>
-  <li><a href="#kl-divergence" id="toc-kl-divergence" class="nav-link" data-scroll-target="#kl-divergence"><span class="header-section-number">6.3</span> KL-Divergence</a></li>
-  <li><a href="#variational-inference" id="toc-variational-inference" class="nav-link" data-scroll-target="#variational-inference"><span class="header-section-number">6.4</span> Variational Inference</a></li>
-  </ul></li>
-  <li><a href="#vae-1" id="toc-vae-1" class="nav-link" data-scroll-target="#vae-1"><span class="header-section-number">7</span> VAE</a>
+  <li><a href="#why-need-distillation" id="toc-why-need-distillation" class="nav-link" data-scroll-target="#why-need-distillation"><span class="header-section-number">2.1</span> Why need distillation?</a></li>
+  <li><a href="#loss-functions-in-deit" id="toc-loss-functions-in-deit" class="nav-link" data-scroll-target="#loss-functions-in-deit"><span class="header-section-number">2.2</span> Loss Functions in DeiT</a>
   <ul>
-  <li><a href="#re-parameterization-trick" id="toc-re-parameterization-trick" class="nav-link" data-scroll-target="#re-parameterization-trick"><span class="header-section-number">7.1</span> Re-parameterization Trick</a></li>
-  <li><a href="#amortized-inference" id="toc-amortized-inference" class="nav-link" data-scroll-target="#amortized-inference"><span class="header-section-number">7.2</span> Amortized Inference</a></li>
-  <li><a href="#experiements" id="toc-experiements" class="nav-link" data-scroll-target="#experiements"><span class="header-section-number">7.3</span> Experiements</a></li>
+  <li><a href="#hard-vs.-soft-distillation" id="toc-hard-vs.-soft-distillation" class="nav-link" data-scroll-target="#hard-vs.-soft-distillation"><span class="header-section-number">2.2.1</span> Hard vs.&nbsp;Soft Distillation</a></li>
+  <li><a href="#classical-distillation-vs.-token-distillation" id="toc-classical-distillation-vs.-token-distillation" class="nav-link" data-scroll-target="#classical-distillation-vs.-token-distillation"><span class="header-section-number">2.2.2</span> Classical Distillation vs.&nbsp;Token Distillation</a></li>
   </ul></li>
-  <li><a href="#summary-1" id="toc-summary-1" class="nav-link" data-scroll-target="#summary-1"><span class="header-section-number">8</span> Summary</a></li>
-  <li><a href="#key-concepts-1" id="toc-key-concepts-1" class="nav-link" data-scroll-target="#key-concepts-1"><span class="header-section-number">9</span> Key Concepts</a></li>
-  <li><a href="#q-a-1" id="toc-q-a-1" class="nav-link" data-scroll-target="#q-a-1"><span class="header-section-number">10</span> Q &amp; A</a></li>
-  <li><a href="#related-resource-further-reading-1" id="toc-related-resource-further-reading-1" class="nav-link" data-scroll-target="#related-resource-further-reading-1"><span class="header-section-number">11</span> Related resource &amp; Further Reading</a></li>
+  <li><a href="#teacher-model" id="toc-teacher-model" class="nav-link" data-scroll-target="#teacher-model"><span class="header-section-number">2.3</span> Teacher Model</a></li>
+  <li><a href="#experiment" id="toc-experiment" class="nav-link" data-scroll-target="#experiment"><span class="header-section-number">2.4</span> Experiment</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">3</span> Summary</a></li>
+  <li><a href="#key-concepts" id="toc-key-concepts" class="nav-link" data-scroll-target="#key-concepts"><span class="header-section-number">4</span> Key Concepts</a></li>
+  <li><a href="#q-a" id="toc-q-a" class="nav-link" data-scroll-target="#q-a"><span class="header-section-number">5</span> Q &amp; A</a></li>
+  <li><a href="#related-resource-further-reading" id="toc-related-resource-further-reading" class="nav-link" data-scroll-target="#related-resource-further-reading"><span class="header-section-number">6</span> Related resource &amp; Further Reading</a></li>
   </ul>
 </nav>
     </div>
@@ -522,17 +486,12 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">08: Auto-Encoding Variational Bayes (<tag style="color:blue">VAE</tag>)</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">Self Supervised Learning</div>
-    <div class="quarto-category">Generative Model</div>
-    <div class="quarto-category">Representation Learning</div>
-  </div>
-  </div>
+<h1 class="title d-none d-lg-block">03: Training data-efficient image transformers &amp; distillation through attention (<tag style="color:orange">DeiT</tag>)</h1>
+</div>
 
 <div>
   <div class="description">
-    VAE（变分自动编码器）是一类结合概率图模型与神经网络的生成模型，它通过引入可参数化的近似后验 <span class="math inline">\(q_\phi(z|x)\)</span> 来摊销推断成本，并用最大化 ELBO 的方式同时学习数据的潜在表示与生成过程：其中重建项确保模型能从潜变量还原数据，KL 项则将潜空间约束为接近先验的连续结构。借助重参数化技巧，VAE 能在端到端训练中高效地学习一个平滑、可采样的潜空间，从而实现表示学习、插值、生成等功能，是现代深度生成模型的重要基础。
+    DeiT提出了一种通过知识蒸馏（distillation token 与 attention-based distillation）显著提升 Vision Transformer 数据效率的方法，使 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。
   </div>
 </div>
 
@@ -549,275 +508,260 @@ window.Quarto = {
 </header>
 
 
-<p><img src="assets/cover.png" class="img-fluid"> # Preliminary</p>
-<section id="vae" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> VAE</h1>
-<section id="experiment" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="experiment"><span class="header-section-number">1.1</span> Experiment</h2>
+<p>再上一篇，我们介绍了 Vision Transformer（ViT），它将 Transformer 架构成功应用于计算机视觉任务，展示了在大规模数据集上优越的性能。然而，ViT 对训练数据的需求非常高（data hungry），在中小规模数据集上表现不佳（在CIFAR-10上仅有30%左右的准确率）。为了解决这个问题，DeiT（Data-efficient Image Transformers）提出了一种基于知识蒸馏的方法，通过引入一个专门的蒸馏 token 和 attention-based distillation 技术，使得 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。</p>
+<p>在本篇文章中，我们将深入探讨 DeiT 的核心思想、实验结果以及其在计算机视觉领域的影响。我们将首先介绍 DeiT 的基本架构和训练方法，然后分析其在多个数据集上的表现，最后总结其关键概念并提供相关资源供进一步学习。</p>
+<section id="preliminary" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Preliminary</h1>
+<p>首先，我们来准备一些必要的背景知识，以便更好地理解 DeiT 的创新之处。当然，我们要先了解什么是<a href="https://yyzhang2025.github.io/LearningNotes/posts/100-AI-Papers/02-vision-transformer/Vision-Transformer.html">Vision Transformer</a> 在这里就不多赘述了，有需要的同学可以回顾一下上一篇文章。其次，我们还需要了解一下知识蒸馏（Knowledge Distillation）的基本概念。</p>
+<section id="knowledge-distillation" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="knowledge-distillation"><span class="header-section-number">1.1</span> Knowledge Distillation</h2>
+<p>Knowledge Distillation(<span class="citation" data-cites="DistillingKnowledgeNeural2015hinton">(<a href="#ref-DistillingKnowledgeNeural2015hinton" role="doc-biblioref">Hinton, Vinyals, and Dean 2015</a>)</span>) 是一种<strong>Model Compression</strong>技术，旨在将一个大型、复杂的教师模型（teacher model）中的知识传递给一个较小、较简单的学生模型（student model）。通过这种方式，<u>学生模型可以在保持较高性能的同时减少计算资源的需求</u>。通过最小化KL-Divergence等损失函数，学生模型学习模仿教师模型的输出分布，从而获得更好的泛化能力:</p>
+<p><span id="eq-kd-loss"><span class="math display">\[
+L_{KD} = \alpha L_{CE}(y, p_{student}) + (1 - \alpha) L_{KL}(p_{teacher}, p_{student})
+\tag{1}\]</span></span></p>
+<p>其中，<span class="math inline">\(L_{CE}\)</span> 是学生模型的Cross Entropy Loss，<span class="math inline">\(L_{KL}\)</span> 是教师模型和学生模型输出分布之间的 KL 散度，<span class="math inline">\(\alpha\)</span> 是一个权衡参数, <span class="math inline">\(p_{teacher}\)</span> 和 <span class="math inline">\(p_{student}\)</span> 分别是教师模型和学生模型的输出概率分布, <span class="math inline">\(y\)</span> 是真实标签的one-hot encoding。</p>
+<p>从这个损失函数(<a href="#eq-kd-loss" class="quarto-xref">Equation&nbsp;1</a>)可以看出，知识蒸馏不仅考虑了学生模型与真实标签之间的误差（通过交叉熵损失），还考虑了学生模型与教师模型输出分布之间的差异（通过 KL 散度）。这种双重监督机制使得学生模型能够更好地捕捉教师模型中的知识，从而在性能上得到提升。</p>
 </section>
 </section>
-<section id="summary" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Summary</h1>
+<section id="deit" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> DeiT</h1>
+<p>有了上述背景知识，我们现在可以深入探讨 DeiT 的核心创新。DeiT是由 Facebook AI Research（FAIR）的研究人员提出的，旨在通过知识蒸馏显著提升 Vision Transformer 的数据效率。DeiT 的核心思想是引入一个专门的蒸馏 token 和 attention-based distillation 技术，使得 ViT 能在中小规模数据集上高效训练并达到与 CNN 可比的性能。DeiT的整体架构如下图所示：</p>
+<div id="fig-deit-architecture" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-deit-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="./assets/cover.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Overview of the DeiT architecture."><img src="./assets/cover.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-deit-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Overview of the DeiT architecture.
+</figcaption>
+</figure>
+</div>
+<p>从图中可以看出，DeiT 在 ViT 的基础上引入了一个新的蒸馏 token （<code>[DIS]</code>），该 token 通过与教师模型的输出进行对齐来学习教师模型的知识。并且在训练过程中，DeiT 同时优化两个损失函数：</p>
+<ul>
+<li>一个是常规的交叉熵损失，用于监督 class token 的分类性能；</li>
+<li>另一个是 KL 散度损失，用于监督 distillation token 的输出与教师模型的输出分布之间的一致性。</li>
+</ul>
+<p>从代码实现的角度来看，DeiT 的训练过程可以分为以下几个步骤：</p>
+<ol type="1">
+<li><strong>教师模型训练</strong>：首先，训练一个大型的教师模型（通常是一个预训练的 CNN）来获得高性能的视觉特征表示。</li>
+<li><strong>学生模型初始化</strong>：然后，初始化一个较小的学生模型（DeiT），并引入一个新的蒸馏 token。</li>
+<li><strong>知识蒸馏训练</strong>：在训练过程中，学生模型通过最小化与教师模型输出的 KL 散度来学习教师模型的知识，同时通过最小化注意力分布差异来进一步提升性能。</li>
+</ol>
+<p>接下来我们来具体看一下DeiT的实现细节，以及为什么要这么设定。</p>
+<section id="why-need-distillation" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="why-need-distillation"><span class="header-section-number">2.1</span> Why need distillation?</h2>
+<div id="fig-throughput-accuracy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-throughput-accuracy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="./assets/throughput-accuracy.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: 比较 DeiT 与其他模型在吞吐量（images/s）和精度（top-1 accuracy）上的权衡。"><img src="./assets/throughput-accuracy.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-throughput-accuracy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: 比较 DeiT 与其他模型在吞吐量（images/s）和精度（top-1 accuracy）上的权衡。
+</figcaption>
+</figure>
+</div>
+<p>在 DeiT 的实验中，作者比较了不同模型在吞吐量（images/s）和精度（top-1 accuracy）上的权衡。通过引入知识蒸馏，DeiT 在保持较高精度的同时显著提升了吞吐量。这表明 DeiT 的核心创新（引入 distillation token 和 attention-based distillation）在提升 ViT 的数据效率方面起到了关键作用，使得 ViT 能够在中小规模数据集上高效训练并达到与 CNN 可比的性能。</p>
 </section>
-<section id="key-concepts" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Key Concepts</h1>
-</section>
-<section id="q-a" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Q &amp; A</h1>
-</section>
-<section id="related-resource-further-reading" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Related resource &amp; Further Reading</h1>
-<p>介绍了Vision Model 和 Language Model， 以及如何通过Self-Supervised Learning 来学习Vision的 Representation <a href="../../../posts/100-AI-Papers/07-dino/DINO.html">DINO</a>, 接下来我们将会更新一系列的生成式模型（Generative Models）。生成式模型在当下是很热门的话题，比如<a href="https://stability.ai/">Stable Diffusion</a>， <a href="https://nanabanana.ai/">Nana Banana</a> 这些模型都是基本思想都是基于Latent Variable Models，接下来，我们就来看看Variable Autoencoder这一篇，Latent Variable 模型。</p>
-</section>
-<section id="preliminary" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Preliminary</h1>
-<p>在这一节，我们先了解一些前置知识，以便我们可以更好的理解这篇文章。</p>
-<section id="latent-variable-models" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="latent-variable-models"><span class="header-section-number">6.1</span> Latent Variable Models</h2>
-<p>在深度学习中，我们经常处理 高维、复杂、带噪声的真实世界数据：图像、语音、文本…… 这些数据的背后，其实常常有一些 未被直接观测到的隐藏结构 —— 这就是 “Latent Variables”（潜变量）。</p>
-<p>想象一下，你看一张人脸照片。照片是观测变量（observed variable）。 但是让这张脸“看起来像某个人”的，是一些不能直接看到的因素： • 光照（lighting） • 情绪（expression） • 姿态（pose） • 脸部特征（identity） • 背景（background）</p>
-<p>这些因素虽然没有在数据中显式标注，却真实存在，并决定了我们看到的图像。 潜变量模型的目标，就是用数学方式把这些“隐藏因素”建模出来。</p>
-<p><img src="assets/VAE-latent-variable-models-face.png" class="img-fluid"></p>
-<p>Latent Variable Model（LVM）是一类 假设观测数据是由一些隐藏变量生成的概率模型。 比如我们看到的数据<span class="math inline">\(\mathrm{x} \in \mathbb{R}^{d}\)</span>, 那它有相对应的隐藏变量 <span class="math inline">\(z \in \mathbb{R}^{k}\)</span> 其中 <span class="math inline">\(k \ll d\)</span> . <span class="math inline">\(z\)</span> 是我们观察不到的，也就是所谓的 Latent Variable.</p>
-<p>在使用Latent Variable Model时，我们有两个关键的任务： 1. Inference: 根据 <span class="math inline">\(\mathrm{x}\)</span> 我们来推断出 <span class="math inline">\(\mathrm{z}\)</span> 是什么，比如，给定一张人脸的照片，这个模型需要找出 - 这张脸是男生还是女生 - 表情是开心还是悲伤 - 是什么样的姿势 在数学上，就是求后验分布 <span class="math inline">\(p(\mathrm{z} | \mathrm{x})\)</span> 2. Generation: 通过 <span class="math inline">\(\mathrm{z}\)</span>， 我们来生成一个 <span class="math inline">\(\mathrm{x}\)</span>。 这个就是生成模型。</p>
-<p>Latent Variable Model 是现代生成式模型的基石，基本上所有的生成式模型，比如 GAN， DDPM， Flow Model 等，都是以Latent Variable Model为基础，在此条件下，通过不同求 Latent Variable 的方法，来解决这种问题。</p>
-</section>
-<section id="autoencoder" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="autoencoder"><span class="header-section-number">6.2</span> AutoEncoder</h2>
-<p><img src="assets/VAE-Autoencoder.png" class="img-fluid"></p>
-<p>AutoEncoder 是一种Self-Supervised Learning 的方法。 它可以让神经网络学会压缩，并且在还原数据，通过这种方法，我们可以学习到的低纬度的Latent Variable <span class="math inline">\(\mathrm{z}\)</span>。 AutoEncoder 也可以看作是Latent Variable Model的一种学习方法。 AutoEncoder 也通常用在Representation Learning 表征学习。</p>
-</section>
-<section id="kl-divergence" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="kl-divergence"><span class="header-section-number">6.3</span> KL-Divergence</h2>
-<p>KL 散度（<strong>Kullback–Leibler Divergence</strong>）是用来衡量两个概率分布之间差异的一种度量方法。定义如下: <span class="math display">\[
-D_{KL}(Q \| P) = \mathbb{E}_{x \sim Q}\left[ \log \frac{Q(x)}{P(x)} \right]
-\]</span></p>
-<p>直观的解释KL-Divergence就是: - 如果数据 <span class="math inline">\(x\)</span> 是从 <span class="math inline">\(Q\)</span> 分布中来的，但如果我们用 <span class="math inline">\(P\)</span> 分布 来解释这些数据，会损失多少信息量</p>
-<p>对于高斯分布（Gaussian Distribution），我们KL- Divergence有以下的形式：</p>
-<p>$$</p>
-<p>D_{KL}(Q | P) = $$</p>
-<p>如果是Diagonal Gaussian， 那么KL-Divergence 可以简化为： $$ D_{KL}(q ,|, p)</p>
-<p>_{i=1}^{d} $$</p>
+<section id="loss-functions-in-deit" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="loss-functions-in-deit"><span class="header-section-number">2.2</span> Loss Functions in DeiT</h2>
+<p>在DeiT这篇文章中，它将Distillation 分为两个维度：</p>
+<ol type="1">
+<li><strong>Hard vs Soft Distillation</strong>：Hard distillation 直接使用教师模型的 argmax 类别作为伪标签进行交叉熵监督，而 soft distillation 则通过对齐教师模型和学生模型的 softmax 分布来进行监督。</li>
+<li><strong>Classical Distllation vs Token Distillation</strong>：Classical distillation 直接对学生模型的 class token 输出进行蒸馏，而 token distillation 则引入一个专门的 distillation token，通过自注意力与其他 token 交互并预测教师模型的标签。</li>
+</ol>
+<p>我们先来看一下Hard vs Soft Distillation</p>
+<section id="hard-vs.-soft-distillation" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="hard-vs.-soft-distillation"><span class="header-section-number">2.2.1</span> Hard vs.&nbsp;Soft Distillation</h3>
+<p>Soft Distllation 是最常见的Knowledge Distillation的方法，与我们在前面提到的 KD Loss(<a href="#eq-kd-loss" class="quarto-xref">Equation&nbsp;1</a>) 中的 KL 散度部分类似，旨在对齐教师模型和学生模型的输出分布。它的损失函数可以表示为：</p>
 <p><span class="math display">\[
-D_{KL}(q(\mathbf{z}) \ \| \  \mathcal{N}(0, I)) =
-\frac{1}{2}
-\sum_{i=1}^{d}
-\left(
-\mu_{q,i}^2 + \sigma_{q,i}^2 - \log \sigma_{q,i}^2 - 1
-\right)
+\mathcal{L}_\text{global} = (1 - \lambda) \cdot \mathcal{L}_\text{CE}(\psi(Z_s), y) + \lambda \cdot T^2 \cdot \mathcal{L}_\text{KL}(\psi(Z_t / T), \psi(Z_s / T))
 \]</span></p>
-<p>需要注意的一个点是，KL-Divergence是不对称的， <span class="math display">\[
-D_{KL}(Q \| P) \neq D_{KL}(P \| Q)
+<p>其中，<span class="math inline">\(T\)</span> 是温度参数，用于平滑教师模型的输出分布，<span class="math inline">\(Z_t\)</span> 和 <span class="math inline">\(Z_s\)</span> 分别是教师模型和学生模型的输出的 logits，<span class="math inline">\(\psi\)</span> 是 softmax 函数，<span class="math inline">\(\lambda\)</span> 是权衡参数。</p>
+<p>通过调节温度参数 <span class="math inline">\(T\)</span>，我们可以控制教师模型输出分布的平滑程度，从而影响学生模型学习的效果。通常情况下，较高的温度会使教师模型的输出分布更加平滑，有助于学生模型更好地捕捉教师模型中的知识。</p>
+<p>与soft distillation相比， DeiT提出了hard distillation的概念，即直接使用教师模型的 argmax 类别作为伪标签进行交叉熵监督。它的损失函数可以表示为：</p>
+<p><span class="math display">\[
+\mathcal{L}_\text{global}^{\text{hard}} = \frac{1}{2} \cdot \mathcal{L}_\text{CE}(\psi(Z_s), y) + \frac{1}{2} \cdot \mathcal{L}_\text{CE}(\psi(Z_s), \text{argmax}(Z_t))
 \]</span></p>
-<p>为什么我们要强调这一点，是因为： 对于不同位置的Q，P我们所求的是不一样的，简单来说，就是用 <span class="math inline">\(\|\)</span> 后面的分布，来approximate <span class="math inline">\(\|\)</span> 前面的分布，具体如下图。</p>
-<p><img src="assets/VAE-KL-Divergnce.png" class="img-fluid"></p>
-</section>
-<section id="variational-inference" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="variational-inference"><span class="header-section-number">6.4</span> Variational Inference</h2>
-<p>Variational Inference（VI，变分推断）是一种用可优化、易计算的分布来近似一个难以求解的后验分布，通过最小化两者之间的 KL 距离，从而实现高效概率推断的方法。 在 Latent Variable 模型中，我们想求： <span class="math display">\[
-p (\mathrm{z} | \mathrm{x}) = \frac{p(\mathrm{x}, \mathrm{z})}{p(\mathrm{x})}
-\]</span></p>
-<p>通常 <span class="math inline">\(p(\mathrm{x})\)</span> 是不可求的，因为: <span class="math display">\[
-p(\mathrm{x}) = \int p(\mathrm{x}, \mathrm{z}) d\mathrm{z}
-\]</span> 通常是不可能直接求的。因此我们采取一种 “曲线救国” 的方式： 我们不去计算真正的后验，而是找一个 可计算并且可优化的分布来近似它： <span class="math display">\[
-q(z | x) \approx p(z | x)
-\]</span> 实现起来也是很简单的 1. 选一个可计算的分布族 （Variational Family） 2. 让它尽可能的接近真实的后验： <span class="math display">\[
-\underset{\phi}{\min}  D_{KL}(q_{\phi}(z | x ) \| p(z | x))
-\]</span></p>
-<p>直观的来说，Variational Inference 就是：不过不断拉升，旋转，一个椭圆型 <span class="math inline">\(q\)</span>, 来使它尽可能的可以和云朵形状的 <span class="math inline">\(p\)</span> 来重叠</p>
-</section>
-</section>
-<section id="vae-1" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> VAE</h1>
-<p>论文试图解决的核心问题是：</p>
-<blockquote class="blockquote">
-<p>How can we perform efficient inference and learning in directed probabilistic models, in the presence of continuous latent variables with intractable posterior distributions, and large datasets <cite> Auto-Encoding Variational Bayes, p.1 </cite></p>
-</blockquote>
-<blockquote class="blockquote">
-<p>如何在具有连续潜变量、后验分布不可解（intractable posterior）、以及大规模数据集（large datasets）情况下，在有向概率模型（directed probabilistic model）中，进行有效的推断（inference）和学习（learning）？ ￼ 也就是说，当我们设定一个生成模型 p_(x,z) （观测 x、潜变量 z）但其后验 p_(z|x) 难以直接计算的时候，如何使用变分贝叶斯（variational Bayes）方法来进行近似推断，并且该方法能扩展到大数据、可用神经网络进行“编码-解码”结构使用。</p>
-</blockquote>
-<p>Variational Autoencoder（VAE）是一类通过引入可参数化的变分分布 <span class="math inline">\(q_\phi(z|x)\)</span> 来近似难以解析的真实后验 <span class="math inline">\(p(z|x)\)</span>，并以<strong>连续潜变量</strong>为核心结构，从而实现对数据潜在空间的建模与可采样生成的深度生成模型。</p>
-<p>我们有一些数据 <span class="math inline">\(\mathrm{x}_{1}, \dots \mathrm{x}_{n}\)</span>， 希望计算 <span class="math inline">\(\log p_{\theta}(\mathrm{X}) = \sum_{i=1}^{N} \log p_{\theta}(\mathrm{x}_{i})\)</span> <img src="assets/VAE-Overview.png" class="img-fluid"> ## Evidence Lower BOund(ELBO)</p>
-<p>Also known as variational lower bound</p>
-<p>我们知道，对于高纬度的数据，我们不能直接求出所谓的 Likelihood。对于一个 data point, 我们有: <span class="math display">\[
-\begin{split}
-\log p_\theta(x)
-&amp; = \log \int p_{\theta}(x, z)\ dz \\
-&amp; = \log  \int p_{\theta}(x, z)\
-\frac{q_\phi(z \mid x)}{q_\phi(z \mid x)}\  dz \\
-&amp; \geq \boxed{ \mathbb{E}_{q_{\phi}}[\log p_{\theta}(x, z) - \log q_{\phi}(z | x)] }\\
-&amp; = \mathbb{E}_{q_{\phi}}[\log p_{\theta}(x |z) + \log p_{\theta}(z) - \log q_{\phi}(z | x)] \\
-&amp;=  \mathbb{E}_{q_{\phi}}[\log p_{\theta}(x | z) ]  - \mathbb{E}_{q_{\phi}}\left[ \log \frac{q_{\phi}(z | x)}{p_{\theta}(z)} \right]\\
-&amp;=  \mathbb{E}_{q_{\phi}}[\log p_{\theta}(x | z) ]  - D_{KL}[q_{\phi}(z | x) \| p_{\theta}(z)] \\
-&amp; \approx \log p_{\theta}(x | z) - D_{KL}[q_{\phi}(z | x) \| p_{\theta}(z)]
-\end{split}
-\]</span></p>
-<p>This is known as SGVB estimator &gt; SGVB (Stochastic Gradient Variational Bayes) estimator can be used for ef- ficient approximate posterior inference in almost any model with continuous latent variables and/or parameters, and is straightforward to optimize using standard stochastic gradient ascent techniques. &gt; <cite> Auto-Encoding Variational Bayes, p.1 </cite></p>
-<p>我们可以看到，对于一个data point，我们可以通过这个ELBO来优化这个NN，对于一个 Batch的数据，我们则有: <span class="math display">\[
-\log p_{\theta}(X) = \sum_{i = 1}^{B} \log p_{\theta}(x_{i} | z) - D_{KL}[q_{\phi}(z | x_{i}) \| p_{\theta}(z)]
-\]</span></p>
-<p>不过对于这个方法，存在一个问题就是 <span class="math inline">\(z\)</span> 是从 <span class="math inline">\(q_{\phi}(z | x_{i})\)</span> 中 sample出来的，对于这种类型的数据，我们不能计算它的Gradient，于是作者提出了 Re-parameterization Trick</p>
-<section id="re-parameterization-trick" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="re-parameterization-trick"><span class="header-section-number">7.1</span> Re-parameterization Trick</h2>
-<p><img src="assets/VAE-Reparameter-Trick.png" class="img-fluid"> 如上图可见，<span class="math inline">\(z\)</span> 是由 <span class="math inline">\(x, \phi\)</span> 决定的。通过这种方式，那么我们改取怎么样的 <span class="math inline">\(g_{\phi}(x, \epsilon)\)</span> 呢。文章中给出了3个基本的方法： 1. 方法1 2. 2 3. c</p>
-<div class="callout callout-style-default callout-note callout-titled" title="REINFORCE">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>在 DeiT 的实验中，作者发现 hard distillation 在强增强和数据匮乏的情况下表现更好，推测是因为 hard 监督更稳健、更“像标签”，而 soft distillation 在这种情况下可能过于平滑，导致学生模型难以捕捉教师模型中的关键信息。</p>
+<div class="note foldable is-open">
+<div class="note-header foldable-header">
+<p>NOTE: Convert Between Hard and Soft Distillation</p>
 </div>
-<div class="callout-title-container flex-fill">
-REINFORCE
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>对于 Re-Parametrization Trick是针对 <span class="math inline">\(z\)</span> 是 Continuous的情况，如果 <span class="math inline">\(z\)</span> 是离散（Discrete) 的 那么我们则可以使用 REINFOCE 的方法。</p>
+<div class="note-container foldable-content">
+<p>论文中提到，Hard-Label Disllation 可以通过Label Smoothing的方法，从而转化为Soft Distillation。具体来说，在Transformer的章节，我们已经了解了Label Smoothing的概念：它通过将真实标签的 one-hot encoding 转换为一个平滑的分布来防止模型过拟合：</p>
+<p><span class="math display">\[
+y_{smooth} = (1 - \epsilon) \cdot y + \epsilon / K
+\]</span></p>
+<p>其中，<span class="math inline">\(y\)</span> 是原始的 one-hot 标签，<span class="math inline">\(\epsilon\)</span> 是平滑参数，<span class="math inline">\(K\)</span> 是类别总数，通过这种方法，True Label有<span class="math inline">\(1 - \epsilon\)</span> 的概率，而其他类别有 <span class="math inline">\(\epsilon / K\)</span> 的概率。通过调整 <span class="math inline">\(\epsilon\)</span> 的值，我们可以在 Hard Distillation 和 Soft Distillation 之间进行平滑过渡, 比如当 <span class="math inline">\(\epsilon\)</span> 接近 0 时，<span class="math inline">\(y_{smooth}\)</span> 接近于原始的 one-hot 标签，类似于 Hard Distillation；当 <span class="math inline">\(\epsilon\)</span> 较大时，<span class="math inline">\(y_{smooth}\)</span> 更加平滑，类似于 Soft Distillation。</p>
 </div>
 </div>
 </section>
-<section id="amortized-inference" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="amortized-inference"><span class="header-section-number">7.2</span> Amortized Inference</h2>
-<p>还有一个比较容易被忽略的一点就是，VAE 还运用了Amortized Inference。什么意思呢？</p>
-<p>传统的变分推断中，我们需要为每一个观测样本 x 单独优化一个变分分布 q(z|x) 的参数，这意味着每来一个新样本都要重新做一遍变分优化，成本非常高。而在 VAE 中，我们不再为每个样本单独优化后验，而是训练一个 共享的推断网络（Encoder） 来预测 q_(z|x) 的参数。也就是说，模型通过学习一个函数 f_(x) 来一次性“摊销”所有样本的推断成本，使得对任意新样本 x，只需一次前向传播就能得到近似后验，不再需要昂贵的 per-sample 优化。这种方式极大地提升了推断效率，也让变分推断能够在深度学习规模上落地。</p>
-<p>也就是用神经网络来一次性学习后验</p>
-<p><img src="assets/VAE-AEVB-alg.png" class="img-fluid"> 将上面的几个结合起来，我们就得到的了 Auto-Encoding VB Algorithm。<br>
-## 和 AutoEncoder的关系</p>
-<p><img src="assets/encoder-decoder-architecture.png" class="img-fluid"></p>
-</section>
-<section id="experiements" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="experiements"><span class="header-section-number">7.3</span> Experiements</h2>
-<p>VAE Loss can be defined as this one:</p>
-<div class="sourceCode" id="cb1" data-code-line-numbers=""><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">class</span> VAELoss(nn.Module):</span>
-<span id="cb1-2"><a href="#cb1-2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, rec_loss<span class="op">=</span><span class="st">"bce"</span>, kl_beta<span class="op">=</span><span class="fl">1.0</span>):</span>
-<span id="cb1-3"><a href="#cb1-3"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
-<span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a>        <span class="va">self</span>.rec_loss <span class="op">=</span> rec_loss.lower()</span>
-<span id="cb1-6"><a href="#cb1-6"></a>        <span class="va">self</span>.kl_beta <span class="op">=</span> kl_beta</span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a>        <span class="va">self</span>.<span class="bu">eval</span>()</span>
-<span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, x_recon, mu, logvar):</span>
-<span id="cb1-11"><a href="#cb1-11"></a>        B <span class="op">=</span> x.shape[<span class="dv">0</span>]</span>
-<span id="cb1-12"><a href="#cb1-12"></a>        <span class="cf">if</span> <span class="va">self</span>.rec_loss <span class="op">==</span> <span class="st">"bce"</span>:</span>
-<span id="cb1-13"><a href="#cb1-13"></a>            rec <span class="op">=</span> F.binary_cross_entropy(x_recon, x, reduction<span class="op">=</span><span class="st">"sum"</span>)</span>
-<span id="cb1-14"><a href="#cb1-14"></a>        <span class="cf">elif</span> <span class="va">self</span>.rec_loss <span class="op">==</span> <span class="st">"mse"</span>:</span>
-<span id="cb1-15"><a href="#cb1-15"></a>            rec <span class="op">=</span> F.mse_loss(x_recon, x, reduction<span class="op">=</span><span class="st">"sum"</span>)</span>
-<span id="cb1-16"><a href="#cb1-16"></a></span>
-<span id="cb1-17"><a href="#cb1-17"></a>        <span class="co"># KL divergence: D_KL(q(z|x) || p(z))</span></span>
-<span id="cb1-18"><a href="#cb1-18"></a>        kl <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> torch.<span class="bu">sum</span>(logvar.exp() <span class="op">+</span> mu.<span class="bu">pow</span>(<span class="dv">2</span>) <span class="op">-</span> logvar <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb1-19"><a href="#cb1-19"></a></span>
-<span id="cb1-20"><a href="#cb1-20"></a>        total <span class="op">=</span> (rec <span class="op">+</span> <span class="va">self</span>.kl_beta <span class="op">*</span> kl) <span class="op">/</span> B</span>
-<span id="cb1-21"><a href="#cb1-21"></a></span>
-<span id="cb1-22"><a href="#cb1-22"></a>        <span class="cf">return</span> total, {</span>
-<span id="cb1-23"><a href="#cb1-23"></a>            <span class="st">"recon"</span>: rec.detach().cpu() <span class="op">/</span> B,</span>
-<span id="cb1-24"><a href="#cb1-24"></a>            <span class="st">"kl"</span>: kl.detach().cpu() <span class="op">/</span> B,</span>
-<span id="cb1-25"><a href="#cb1-25"></a>        }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The Loss curve and illustration examples:</p>
+<section id="classical-distillation-vs.-token-distillation" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="classical-distillation-vs.-token-distillation"><span class="header-section-number">2.2.2</span> Classical Distillation vs.&nbsp;Token Distillation</h3>
+<p>了解了 Loss 函数的不同，接下来我们来看一下 Classical Distillation 和 Token Distillation 的区别。我们知道在传统的知识蒸馏方法中，学生模型直接对齐教师模型的输出 logits，这种方法我们称之为 Classical Distillation。 并且ViT 的输出是一个 class token 的表示，我们可以直接对齐这个 class token 的输出与教师模型的输出进行蒸馏，这也是一种常见的做法。然而，DeiT 提出了一个创新的概念，即引入一个专门的 distillation token，通过自注意力与其他 token 交互并预测教师模型的标签。这种方法被称为 Token Distillation。 在 Token Distillation 中，学生模型不仅通过 class token 来进行分类，还通过 distillation token 来学习教师模型的知识。具体来说，distillation token 会通过自注意力机制与其他 token 进行交互，从而形成一个结构化的信息流，使得学生模型能够更好地捕捉教师模型中的知识。</p>
+<div id="fig-disllation-methods-compare" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-disllation-methods-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="./assets/disllation-methods-compare.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: Comparison of different distillation methods in DeiT."><img src="./assets/disllation-methods-compare.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-disllation-methods-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Comparison of different distillation methods in DeiT.
+</figcaption>
+</figure>
+</div>
+<p>我们可以看到，通过不用的Loss 以及不用的蒸馏方法，组合 （<code>Hard + Token</code>） 的效果明显优于其他组合，说明 DeiT 的核心创新（引入 distillation token 和 hard distillation）在提升 ViT 的数据效率方面起到了关键作用。</p>
+<div class="tldr foldable is-open">
+<div class="tldr-header foldable-header">
+<p>TL;DR: DeiT</p>
+</div>
+<div class="tldr-container foldable-content">
+<p>回头看DeiT的核心创新，我们可以总结为以下几点：</p>
+<ol type="1">
+<li><strong>引入 Distillation Token</strong>：DeiT 在 ViT 的基础上引入了一个专门的 distillation token，通过自注意力与其他 token 交互并预测教师模型的标签，从而实现了更有效的知识蒸馏。</li>
+<li><strong>Hard Distillation 的优势</strong>：DeiT 强调在强增强和数据匮乏的情况下，hard distillation 比 soft distillation 更稳健、更“像标签”，从而在多个数据集上取得了更好的性能。</li>
+<li><strong>Late Fusion 的效果</strong>：在推理时，DeiT 通过融合 class head 和 distill head 的预测来提升鲁棒性和精度，这种 late fusion 的策略在实验中表现出色。</li>
+</ol>
+<p>很简单，也很实用。</p>
+</div>
+</div>
 </section>
 </section>
-<section id="summary-1" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Summary</h1>
-<p>总结一下，VAE 这篇文章 <span class="citation" data-cites="AutoEncodingVariationalBayes2022kingma">(<a href="#ref-AutoEncodingVariationalBayes2022kingma" role="doc-biblioref">Kingma and Welling 2022</a>)</span> 讲了写什么： VAE 通过ELBO 来优化 Latent Variable Model，通过 Re-parameterization trick 和 Amortized Inference，使得Latent Variable Model 在大数据集上得到显著的效果。VAE 为之后的很多生成式模型奠定了基础。</p>
+<section id="teacher-model" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="teacher-model"><span class="header-section-number">2.3</span> Teacher Model</h2>
+<p>有了损失函数，以及Token Distillation的概念，接下来我们来看看如何选择Teacher Model。DeiT的团队观察到：用卷积网络（convnet）当 teacher，蒸馏效果更好，甚至比“用另一个性能差不多的 transformer 当 teacher”更能让学生 DeiT 提升，他们认为这是因为 CNN 的归纳偏置（局部性等）能通过蒸馏迁移给 ViT，缓解 ViT 在小数据训练时的劣势。因此，DeiT 的默认设置是使用一个预训练的 CNN 作为教师模型来指导 DeiT 的训练。</p>
+<p>在CNN中，它们比较不同的RegNet的变体，</p>
+<div id="fig-regnet_teacher" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-regnet_teacher-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="./assets/regnet_teacher.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Compare different RegNet variants as teachers for DeiT-S."><img src="./assets/regnet_teacher.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-regnet_teacher-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Compare different RegNet variants as teachers for DeiT-S.
+</figcaption>
+</figure>
+</div>
+<p>因此在 DeiT 的实验中，作者选择了 RegNetY-16GF 作为教师模型，因为它在 ImageNet 上表现出色，并且具有适当的容量来指导 DeiT 的训练。通过使用这个预训练的 CNN 作为教师模型，DeiT 能够更有效地学习到视觉特征，从而在多个数据集上取得了显著的性能提升。</p>
 </section>
-<section id="key-concepts-1" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> Key Concepts</h1>
-<table class="table">
+<section id="experiment" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="experiment"><span class="header-section-number">2.4</span> Experiment</h2>
+</section>
+</section>
+<section id="summary" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Summary</h1>
+<p>在这篇文章中，我们深入探讨了 DeiT（Data-efficient Image Transformers）的核心创新和实验结果。DeiT 通过引入一个专门的蒸馏 token 和 attention-based distillation 技术，显著提升了 Vision Transformer 的数据效率，使其能够在中小规模数据集上高效训练并达到与 CNN 可比的性能。我们还分析了 DeiT 在多个数据集上的表现，并总结了其关键概念，如 hard distillation、token distillation 和 late fusion 等。</p>
+</section>
+<section id="key-concepts" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Key Concepts</h1>
+<div id="tbl-transformer-key-concepts" class="hover quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<div aria-describedby="tbl-transformer-key-concepts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-hover table">
 <colgroup>
-<col style="width: 41%">
-<col style="width: 58%">
+<col style="width: 40%">
+<col style="width: 59%">
 </colgroup>
 <thead>
 <tr class="header">
-<th><strong>Concept</strong></th>
-<th><strong>Explanation</strong></th>
+<th>Concept</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Latent Variable Model</td>
-<td>用潜变量建模数据生成过程<br></td>
+<td>Data-efficient training</td>
+<td>通过更强的数据增强/正则/训练日程等，使 ViT 在 ImageNet-only 下也能稳定收敛并获得高精度</td>
 </tr>
 <tr class="even">
-<td>Variational Inference</td>
-<td>用可学习的分布近似后验<br></td>
+<td>Knowledge distillation</td>
+<td>Teacher–student 训练范式，让 student 学 teacher 的输出/分布</td>
 </tr>
 <tr class="odd">
-<td>Evidence Lower Bound (ELBO)</td>
-<td><span class="math inline">\(\log p(x)\)</span> 的可优化下界, 通常 $$<br></td>
+<td>Hard-label distillation</td>
+<td>用 teacher 的 argmax 类别当伪标签做交叉熵监督</td>
 </tr>
 <tr class="even">
-<td>Amortized Inference</td>
-<td>利用一个 Encoder 网络来表示整体的变分推断</td>
+<td>Soft distillation (KL)</td>
+<td>对齐 teacher/student 的 softmax 分布，常见为 KL + CE</td>
 </tr>
 <tr class="odd">
-<td>Recognition Model / Encoder Network</td>
-<td>输出 <span class="math inline">\(z\)</span> 的分布函数 <span class="math inline">\(p_\phi(z \| x)\)</span></td>
+<td>Distillation token</td>
+<td>在输入序列加入专职 token，通过自注意力与其他 token 交互并预测 teacher 标签</td>
 </tr>
 <tr class="even">
-<td>Generative Model / Decoder Network</td>
-<td>从latent variable <span class="math inline">\(z\)</span> 来生成 <span class="math inline">\(x\)</span> <span class="math inline">\(p_{\theta}(x \| z)\)</span></td>
+<td>Late fusion</td>
+<td>推理时融合 class head 与 distill head 的预测</td>
 </tr>
 <tr class="odd">
-<td>AutoEncoder</td>
-<td>数据压缩的一种方法，让</td>
+<td>Inductive bias transfer</td>
+<td>借助 CNN teacher 把局部性等归纳偏置迁移给 ViT</td>
 </tr>
 <tr class="even">
-<td>Re-parameterization trick</td>
-<td>使得梯度可以传递到Recognition Model里面</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
+<td>Throughput–accuracy trade-off</td>
+<td>用 image/s 与 top-1 精度共同衡量部署价值。</td>
 </tr>
 </tbody>
 </table>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-transformer-key-concepts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Key Concepts in DeiT
+</figcaption>
+</figure>
+</div>
 </section>
-<section id="q-a-1" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> Q &amp; A</h1>
-<p>Question 1: What is the machine learning framework of VAE-type models? VAE 属于 生成模型（generative model）+ 变分推断（variational inference） 框架。它将生成过程 p_(z) 和 p_(x|z) 与推断网络 q_(z|x) 结合，通过最大化 ELBO 来同时学习 和 。</p>
-<p>Question 2: 在 VAE 中，为什么直接对 p_(x) 进行优化不可行？ 因为 p_(x) 里有一个对潜变量 z 的积分（或求和），通常是不可解析的： <span class="math display">\[
-\log p_\theta(x) = \log \int p_\theta(x, z)\, dz
-                 = \log \int p_\theta(x \mid z)\, p(z)\, dz
-\]</span></p>
-<p>Question 3: reparameterization trick）是如何让 q_(z|x) 的梯度可计算的？</p>
-<p>Question 4: 为什么 VAE 有时生成模糊？根本原因是什么？如何改进？</p>
+<section id="q-a" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Q &amp; A</h1>
+<div class="question foldable">
+<div class="question-header foldable-header">
+<p>Question 1: DeiT 和 ViT 的结构差异到底在哪里？</p>
+</div>
+<div class="question-container foldable-content">
+<p>Answer: DeiT-B 与 ViT-B 结构基本一致，主要差异在训练策略；引入 distillation 时额外加入 distillation token 以及对应的 head/损失与融合策略。</p>
+</div>
+</div>
+<div class="question foldable">
+<div class="question-header foldable-header">
+<p>Question 2: 为什么 DeiT 强调 hard distillation，soft distillation 反而不行？</p>
+</div>
+<div class="question-container foldable-content">
+<p>Answer: 论文实证显示在相同设置下 hard distill 明显优于 soft（例如 DeiT-B@224：soft≈81.8，而 hard≈83.0），推测 hard 监督在强增强与数据匮乏下更稳、更“像标签”。</p>
+</div>
+</div>
+<div class="question foldable">
+<div class="question-header foldable-header">
+<p>Question 3: distillation token 相比“直接对 logits 做蒸馏”到底多了什么？</p>
+</div>
+<div class="question-container foldable-content">
+<p>Answer: 它把 teacher 信号绑定到序列里一个专职 token，并让该 token 通过自注意力与 patch/class token 交互，形成结构化的信息流；实证上 token 蒸馏与双头融合优于常规蒸馏基线。</p>
+</div>
+</div>
+<div class="question foldable">
+<div class="question-header foldable-header">
+<p>Question 4: 推理时用 class token 还是 distillation token？</p>
+</div>
+<div class="question-container foldable-content">
+<p>Answer: 两者都可以单独做分类，但论文默认用 late fusion（两路 softmax 相加）效果最好；并且 distillation token 往往略强、与 CNN 预测更相关。</p>
+</div>
+</div>
+<div class="question foldable">
+<div class="question-header foldable-header">
+<p>Question 5: 为什么“CNN 当 teacher 比 Transformer 当 teacher 更好”？</p>
+</div>
+<div class="question-container foldable-content">
+<p>Answer: 论文观察到 CNN teacher 的蒸馏效果更佳，合理解释是 CNN 的归纳偏置（局部性等）能通过蒸馏迁移给 ViT，缓解 ViT 在小数据训练时的劣势。</p>
+</div>
+</div>
 </section>
-<section id="related-resource-further-reading-1" class="level1" data-number="11">
-<h1 data-number="11"><span class="header-section-number">11</span> Related resource &amp; Further Reading</h1>
-<p>虽然VAE提出的概念很简单的，但是训练时，还是会存在许多的问题，就比如 Poster Collapse。</p>
-<p><span class="citation" data-cites="VVAELEARNINGBASIC2017higgins">(<a href="#ref-VVAELEARNINGBASIC2017higgins" role="doc-biblioref">Higgins et al. 2017</a>)</span> <span class="math inline">\(\beta\)</span>-VAE: https://openreview.net/forum?id=Sy2fzU9gl</p>
-<p><span class="citation" data-cites="UnderstandingDisentangling$v$VAE2018burgess">(<a href="#ref-UnderstandingDisentangling$v$VAE2018burgess" role="doc-biblioref">Burgess et al. 2018</a>)</span></p>
-<p>文章中有提到 <span class="citation" data-cites="NVAEDeepHierarchical2021vahdat">(<a href="#ref-NVAEDeepHierarchical2021vahdat" role="doc-biblioref">Vahdat and Kautz 2021</a>)</span> <a href="https://arxiv.org/abs/2007.03898">NVAE: A Deep Hierarchical Variational Autoencoder</a> NVAE 相比传统 VAE 的最大不同在于：它不是只使用一个简单的潜变量 <span class="math inline">\(\mathrm{z}\)</span> 来一次性生成整张图像，而是采用深度分层的潜变量结构，让图像生成过程从粗到细逐层细化。同时，它为了解决深层 VAE 容易训练不稳定的问题，使用了专门设计的<strong>深度解码器结构（ResNet + GroupNorm）</strong>和训练技巧来防止 KL 崩塌，使每一层潜变量都能有效工作。简单来说，传统 VAE 是一次性生成图像，而 NVAE 是像画画一样分多层逐步完善图像，并通过改进架构保证训练稳定和生成质量更高。</p>
-<p>可以发现，我们这个VAE，是无法根据我们的要求来生成数据，只能Random Generate Image。那如何给他一个 Conditional 呢 <span class="citation" data-cites="LearningStructuredOutput2015sohn">(<a href="#ref-LearningStructuredOutput2015sohn" role="doc-biblioref">Sohn, Lee, and Yan 2015</a>)</span> Conditional VAE（CVAE） <span class="math display">\[
-p_\theta(x \mid y, z)
-\]</span></p>
-<p><span class="math display">\[
-q_\phi(z \mid x, y)
-\]</span></p>
-<p><span class="math display">\[
-\mathcal{L}(x, y)
-= \mathbb{E}_{q_\phi(z\mid x,y)}[\log p_\theta(x \mid y, z)]
-  - D_{KL}(q_\phi(z\mid x,y) \Vert p(z))
-\]</span></p>
+<section id="related-resource-further-reading" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Related resource &amp; Further Reading</h1>
+<p><a href="https://ai.meta.com/blog/data-efficient-image-transformers-a-promising-new-technique-for-image-classification/?utm_source=chatgpt.com">Meta Blog: Data-efficient image Transformers: A promising new technique for image classification</a> <a href="https://huggingface.co/docs/transformers/en/model_doc/deit?utm_source=chatgpt.com">Huggingface DeiT model card</a></p>
 
 
 
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-UnderstandingDisentangling$v$VAE2018burgess" class="csl-entry" role="listitem">
-Burgess, Christopher P., Irina Higgins, Arka Pal, Loic Matthey, Nick Watters, Guillaume Desjardins, and Alexander Lerchner. 2018. <span>“Understanding Disentangling in $β$-<span>VAE</span>.”</span> April 10, 2018. <a href="https://doi.org/10.48550/arXiv.1804.03599">https://doi.org/10.48550/arXiv.1804.03599</a>.
-</div>
-<div id="ref-VVAELEARNINGBASIC2017higgins" class="csl-entry" role="listitem">
-Higgins, Irina, Loic Matthey, Arka Pal, Christopher Burgess, Xavier Glorot, Matthew Botvinick, Shakir Mohamed, and Alexander Lerchner. 2017. <span>“Β-<span>VAE</span>: <span>LEARNING BASIC VISUAL CONCEPTS WITH A CONSTRAINED VARIATIONAL FRAMEWORK</span>.”</span>
-</div>
-<div id="ref-AutoEncodingVariationalBayes2022kingma" class="csl-entry" role="listitem">
-Kingma, Diederik P., and Max Welling. 2022. <span>“Auto-<span>Encoding Variational Bayes</span>.”</span> December 10, 2022. <a href="https://doi.org/10.48550/arXiv.1312.6114">https://doi.org/10.48550/arXiv.1312.6114</a>.
-</div>
-<div id="ref-LearningStructuredOutput2015sohn" class="csl-entry" role="listitem">
-Sohn, Kihyuk, Honglak Lee, and Xinchen Yan. 2015. <span>“Learning <span>Structured Output Representation</span> Using <span>Deep Conditional Generative Models</span>.”</span> In <em>Advances in <span>Neural Information Processing Systems</span></em>. Vol. 28. Curran Associates, Inc. <a href="https://proceedings.neurips.cc/paper_files/paper/2015/hash/8d55a249e6baa5c06772297520da2051-Abstract.html">https://proceedings.neurips.cc/paper_files/paper/2015/hash/8d55a249e6baa5c06772297520da2051-Abstract.html</a>.
-</div>
-<div id="ref-NVAEDeepHierarchical2021vahdat" class="csl-entry" role="listitem">
-Vahdat, Arash, and Jan Kautz. 2021. <span>“<span>NVAE</span>: <span>A Deep Hierarchical Variational Autoencoder</span>.”</span> January 8, 2021. <a href="https://doi.org/10.48550/arXiv.2007.03898">https://doi.org/10.48550/arXiv.2007.03898</a>.
+<div id="ref-DistillingKnowledgeNeural2015hinton" class="csl-entry" role="listitem">
+Hinton, Geoffrey, Oriol Vinyals, and Jeff Dean. 2015. <span>“Distilling the <span>Knowledge</span> in a <span>Neural Network</span>.”</span> March 9, 2015. <a href="https://doi.org/10.48550/arXiv.1503.02531">https://doi.org/10.48550/arXiv.1503.02531</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1269,6 +1213,18 @@ Vahdat, Arash, and Jan Kautz. 2021. <span>“<span>NVAE</span>: <span>A Deep Hie
   }
   loadGiscus();
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../posts/100-AI-Papers/02-vision-transformer/post.html" class="pagination-link" aria-label="02: Vision Transformer">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">02: Vision Transformer</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../posts/100-AI-Papers/04-swin-transformer/post.html" class="pagination-link" aria-label="04: Swin Transformer">
+        <span class="nav-page-text">04: Swin Transformer</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
@@ -1315,6 +1271,38 @@ Vahdat, Arash, and Jan Kautz. 2021. <span>“<span>NVAE</span>: <span>A Deep Hie
     })(document);
     </script>
   
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
